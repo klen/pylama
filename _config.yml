@@ -1,0 +1,7 @@
+name: pylama
+subtitle: Code audit tool for python.
+
+auto: true
+pygments: true
+
+production_url: http://klen.github.com

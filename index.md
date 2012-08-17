@@ -1,3 +1,9 @@
+---
+layout: default
+title: pylama
+description: Code audit tool for python.
+---
+
 Pylama
 ======
 
