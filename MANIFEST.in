@@ -1,0 +1,2 @@
+recursive-include adrest *
+exclude *.pyc *.orig
