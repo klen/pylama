@@ -1,2 +1,3 @@
 *.pyc
 .ropeproject
+*.egg-info

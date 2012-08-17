@@ -1,19 +1,21 @@
 #!/usr/bin/env python
 from os import path as op
+from sys import version_info
 
 from setuptools import setup, find_packages
 
 from pylama import version, __project__, __license__
 
 
-def read(fname):
-    try:
-        return open(op.join(op.dirname(__file__), fname)).read()
-    except IOError:
-        return ''
+read = lambda f: open(op.join(op.dirname(__file__), f)).read() if op.exists(f) else ''
 
 
-META_DATA = dict(
+install_requires = []
+if version_info < (2, 7):
+    install_requires.append('argparse')
+
+
+meta = dict(
     name=__project__,
     version=version,
     license=__license__,
@@ -27,9 +29,16 @@ META_DATA = dict(
 
     packages=find_packages(),
 
-    test_suite = 'tests.__main__',
+    entry_points={
+        'console_scripts': [
+            'pylama = pylama.main:shell',
+        ]
+    },
+
+    install_requires=install_requires,
+    test_suite = 'tests',
 )
 
 
 if __name__ == "__main__":
-    setup(**META_DATA)
+    setup(**meta)

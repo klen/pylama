@@ -23,8 +23,7 @@ test: audit
 
 .PHONY: audit
 audit:
-	pep8 $(MODULE) --ignore=E501
-	pyflakes $(MODULE)
+	python -m "pylama.main" -i 'E501' --skip='messages.py'
 
 .PHONY: doc
 doc:
