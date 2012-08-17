@@ -100,3 +100,10 @@ License
 -------
 
 Licensed under a **GNU lesser general public license**.
+
+
+Credits
+-------
+
+* **pyflakes** [Divmod, Inc](http://divmod.com)
+* **pep8** [Johann C. Rocholl](http://github.com/jcrocholl/pep8)
