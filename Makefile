@@ -11,10 +11,11 @@ clean:
 	find . -name "*.orig" -delete
 
 .PHONY: register
+register:
 	python setup.py register
 
 .PHONY: upload
-upload: doc
+upload:
 	python setup.py sdist upload || echo 'Upload already'
 
 .PHONY: test
@@ -26,7 +27,6 @@ audit:
 	python -m "pylama.main" -i 'E501' --skip='messages.py'
 
 .PHONY: doc
-doc:
+doc: docs
 	python setup.py build_sphinx --source-dir=docs/ --build-dir=docs/_build --all-files
 	python setup.py upload_sphinx --upload-dir=docs/_build/html
-
