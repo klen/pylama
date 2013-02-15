@@ -1,4 +1,5 @@
 import logging
+import fnmatch
 import re
 import sys
 from argparse import ArgumentParser
@@ -85,7 +86,7 @@ def shell():
     parser.add_argument("--select", "-s", default='', help="Select errors and warnings.")
     parser.add_argument("--linters", "-l", default=','.join(default_linters), help="Select errors and warnings.")
     parser.add_argument("--complexity", "-c", default=default_complexity, type=int, help="Set mccabe complexity.")
-    parser.add_argument("--skip", help="Skip files (Ex. messages.py)")
+    parser.add_argument("--skip", help="Skip files by mask (Ex. */messages.py)")
     args = parser.parse_args()
 
     linters = set(filter(lambda i: i, args.linters.split(',')))
@@ -95,24 +96,35 @@ def shell():
     logger.setLevel(logging.INFO if args.verbose else logging.WARN)
 
     paths = [args.path]
+
     if op.isdir(args.path):
         paths = []
         for root, _, files in walk(args.path):
-            paths += [op.join(root, f) for f in files if f.endswith('.py') and not f.endswith(args.skip or '\/')]
+            paths += [op.join(root, f) for f in files if f.endswith('.py')]
 
-    error = None
-    for path in paths:
+    for path in skip_paths(args, paths):
         logger.info("Parse file: %s" % path)
         errors = run(path, ignore=ignore, select=select, linters=linters, complexity=args.complexity)
-        for e in errors:
-            e['rel'] = op.relpath(e['filename'], op.dirname(args.path))
-            error = 1
-            logger.warning("%(rel)s:%(lnum)s %(text)s", e)
+        for error in errors:
+            error['rel'] = op.relpath(error['filename'], op.dirname(args.path))
+            logger.warning("%(rel)s:%(lnum)s %(text)s", error)
 
-    sys.exit(error)
+    sys.exit(int(bool(errors)))
 
 
 MODERE = re.compile(r'^\s*#\s+(?:pymode\:)?((?:lint[\w_]*=[^:\n\s]+:?)+)', re.I | re.M)
+
+
+def skip_paths(args, paths):
+    patterns = []
+
+    if args.skip:
+        patterns = [re.compile(fnmatch.translate(p)) for p in args.skip.split(',')]
+
+    for path in paths:
+        if any(pattern.match(path) for pattern in patterns):
+            continue
+        yield path
 
 
 def parse_modeline(code):

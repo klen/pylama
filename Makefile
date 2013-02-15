@@ -23,10 +23,9 @@ test: audit
 
 .PHONY: audit
 audit:
-	python -m "pylama.main" -i 'E501' --skip='messages.py'
+	python -m "pylama.main" -i 'E501' --skip='*/messages.py'
 
 .PHONY: doc
 doc:
 	python setup.py build_sphinx --source-dir=docs/ --build-dir=docs/_build --all-files
 	python setup.py upload_sphinx --upload-dir=docs/_build/html
-

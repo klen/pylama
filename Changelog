@@ -1,3 +1,9 @@
+2013-02-15  klen
+
+	* Update pep8 and pyflakes
+	* `skip` option allowed to use unix file masks
+	* `skip` option allowed to use many patterns (split by comma)
+
 2012-08-17  klen
 
 	* Initial release
