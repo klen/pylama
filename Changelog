@@ -1,6 +1,6 @@
 2013-02-15  klen
 
-	* Version 0.1.2
+	* Version 0.1.3
 	* Update pep8 and pyflakes
 	* `skip` option allowed to use unix file masks
 	* `skip` option allowed to use many patterns (split by comma)
