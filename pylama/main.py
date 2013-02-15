@@ -11,7 +11,6 @@ from . import utils
 default_linters = 'pep8', 'pyflakes', 'mccabe'
 default_complexity = 10
 logger = logging.Logger('pylama')
-logger.addHandler(logging.StreamHandler())
 
 
 def run(path, ignore=None, select=None, linters=default_linters, **meta):
@@ -87,13 +86,19 @@ def shell():
     parser.add_argument("--linters", "-l", default=','.join(default_linters), help="Select linters.")
     parser.add_argument("--complexity", "-c", default=default_complexity, type=int, help="Set mccabe complexity.")
     parser.add_argument("--skip", help="Skip files by masks (comma-separated, Ex. */messages.py)")
+    parser.add_argument("--report", "-r", help="Filename for report.")
     args = parser.parse_args()
 
     linters = set(filter(lambda i: i, args.linters.split(',')))
     ignore = set(filter(lambda i: i, args.ignore.split(',')))
     select = set(filter(lambda i: i, args.select.split(',')))
 
+    # Setup logger
     logger.setLevel(logging.INFO if args.verbose else logging.WARN)
+    if args.report:
+        logger.addHandler(logging.FileHandler(args.report, mode='w'))
+    else:
+        logger.addHandler(logging.StreamHandler())
 
     paths = [args.path]
 
