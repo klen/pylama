@@ -131,6 +131,7 @@ class ExportBinding(Binding):
 
 class Scope(dict):
     importStarred = False       # set to True when import * is found
+    usesLocals = False
 
 
     def __repr__(self):
@@ -194,6 +195,7 @@ class Checker(object):
         self.filename = filename
         self.scopeStack = [ModuleScope()]
         self.futuresAllowed = True
+        self.root = tree
         self.handleChildren(tree)
         self._runDeferred(self._deferredFunctions)
         # Set _deferredFunctions to None so that deferFunction will fail
@@ -284,6 +286,53 @@ class Checker(object):
     def report(self, messageClass, *args, **kwargs):
         self.messages.append(messageClass(self.filename, *args, **kwargs))
 
+    def lowestCommonAncestor(self, lnode, rnode, stop=None):
+        if not stop:
+            stop = self.root
+        if lnode is stop:
+            return lnode
+        if rnode is stop:
+            return rnode
+
+        if lnode is rnode:
+            return lnode
+        if (lnode.level > rnode.level):
+            return self.lowestCommonAncestor(lnode.parent, rnode, stop)
+        if (rnode.level > lnode.level):
+            return self.lowestCommonAncestor(lnode, rnode.parent, stop)
+        if lnode.parent is rnode.parent:
+            return lnode.parent
+        else:
+            return self.lowestCommonAncestor(lnode.parent, rnode.parent, stop)
+
+    def descendantOf(self, node, ancestors, stop=None):
+        for a in ancestors:
+            try:
+                p = self.lowestCommonAncestor(node, a, stop)
+                if not p is stop:
+                    return True
+            except AttributeError:
+                # Skip some bogus objects like <_ast.Pass>
+                pass
+        return False
+
+    def onFork(self, parent, lnode, rnode, items):
+            return int(self.descendantOf(lnode, items, parent)) + \
+                int(self.descendantOf(rnode, items, parent))
+
+    def differentForks(self, lnode, rnode):
+        "True, if lnode and rnode are located on different forks of IF/TRY"
+        ancestor = self.lowestCommonAncestor(lnode, rnode)
+        if isinstance(ancestor, _ast.If):
+            for fork in (ancestor.body, ancestor.orelse):
+                if self.onFork(ancestor, lnode, rnode, fork) == 1:
+                    return True
+        if isinstance(ancestor, _ast.TryExcept):
+            for fork in (ancestor.body, ancestor.handlers, ancestor.orelse):
+                if self.onFork(ancestor, lnode, rnode, fork) == 1:
+                    return True
+        return False
+
     def handleChildren(self, tree):
         for node in iter_child_nodes(tree):
             self.handleNode(node, tree)
@@ -306,6 +355,7 @@ class Checker(object):
                (isinstance(node, _ast.ImportFrom) or self.isDocstring(node)):
             self.futuresAllowed = False
         nodeType = node.__class__.__name__.upper()
+        node.level = self.nodeDepth
         try:
             handler = getattr(self, nodeType)
             handler(node)
@@ -356,7 +406,8 @@ class Checker(object):
         if (isinstance(self.scope.get(value.name), FunctionDefinition)
                     and isinstance(value, FunctionDefinition)):
             if not value._property_decorator:
-                self.report(messages.RedefinedFunction,
+                if not self.differentForks(loc, self.scope[value.name].source):
+                    self.report(messages.RedefinedFunction,
                             loc, value.name, self.scope[value.name].source)
 
         if not isinstance(self.scope, ClassScope):
@@ -367,8 +418,9 @@ class Checker(object):
                         and (not isinstance(value, Importation) or value.fullName == existing.fullName)
                         and reportRedef):
 
-                    self.report(messages.RedefinedWhileUnused,
-                                loc, value.name, scope[value.name].source)
+                    if not self.differentForks(loc, existing.source):
+                        self.report(messages.RedefinedWhileUnused,
+                                loc, value.name, existing.source)
 
         if isinstance(value, UnBinding):
             try:
@@ -428,6 +480,10 @@ class Checker(object):
         """
         Handle occurrence of Name (which can be a load/store/delete access.)
         """
+        if node.id == 'locals' and isinstance(node.parent, _ast.Call):
+            # we are doing locals() call in current scope
+            self.scope.usesLocals = True
+
         # Locate the name in locals / function / globals scopes.
         if isinstance(node.ctx, (_ast.Load, _ast.AugLoad)):
             # try local scope
@@ -523,9 +579,15 @@ class Checker(object):
 
         # Check for property decorator
         func_def = FunctionDefinition(node.name, node)
-        for decorator in node.decorator_list:
-            if getattr(decorator, 'attr', None) in ('setter', 'deleter'):
-                func_def._property_decorator = True
+
+        if hasattr(node, 'decorators'):
+            for decorator in node.decorators:
+                if getattr(decorator, 'attr', None) in ('setter', 'deleter'):
+                    func_def._property_decorator = True
+        else:
+            for decorator in node.decorator_list:
+                if getattr(decorator, 'attr', None) in ('setter', 'deleter'):
+                    func_def._property_decorator = True
 
         self.addBinding(node, func_def)
         self.LAMBDA(node)
@@ -569,6 +631,7 @@ class Checker(object):
                 """
                 for name, binding in self.scope.iteritems():
                     if (not binding.used and not name in self.scope.globals
+                        and not self.scope.usesLocals
                         and isinstance(binding, Assignment)):
                         self.report(messages.UnusedVariable,
                                     binding.source, name)
