@@ -111,9 +111,12 @@ def shell():
         logger.info("Parse file: %s" % path)
         errors = run(path, ignore=ignore, select=select, linters=linters, complexity=args.complexity)
         for error in errors:
-            error['rel'] = op.relpath(error['filename'], op.dirname(args.path))
-            error['col'] = error.get('col', 1)
-            logger.warning("%(rel)s:%(lnum)s:%(col)s: %(text)s", error)
+            try:
+                error['rel'] = op.relpath(error['filename'], op.dirname(args.path))
+                error['col'] = error.get('col', 1)
+                logger.warning("%(rel)s:%(lnum)s:%(col)s: %(text)s", error)
+            except KeyError:
+                continue
 
     sys.exit(int(bool(errors)))
 
