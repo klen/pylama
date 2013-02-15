@@ -19,3 +19,5 @@ class LamaTest(unittest.TestCase):
 
         errors = run('pylama/pyflakes/messages.py', ignore=['E3'], select=['E301'])
         self.assertEqual(len(errors), 3)
+        self.assertTrue(errors[0]['col'])
+

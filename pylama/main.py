@@ -112,7 +112,8 @@ def shell():
         errors = run(path, ignore=ignore, select=select, linters=linters, complexity=args.complexity)
         for error in errors:
             error['rel'] = op.relpath(error['filename'], op.dirname(args.path))
-            logger.warning("%(rel)s:%(lnum)s %(text)s", error)
+            error['col'] = error.get('col', 1)
+            logger.warning("%(rel)s:%(lnum)s:%(col)s: %(text)s", error)
 
     sys.exit(int(bool(errors)))
 
