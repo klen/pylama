@@ -84,9 +84,9 @@ def shell():
     parser.add_argument("--ignore", "-i", default='', help="Ignore errors and warnings.")
     parser.add_argument("--verbose", "-v", action='store_true', help="Verbose mode.")
     parser.add_argument("--select", "-s", default='', help="Select errors and warnings.")
-    parser.add_argument("--linters", "-l", default=','.join(default_linters), help="Select errors and warnings.")
+    parser.add_argument("--linters", "-l", default=','.join(default_linters), help="Select linters.")
     parser.add_argument("--complexity", "-c", default=default_complexity, type=int, help="Set mccabe complexity.")
-    parser.add_argument("--skip", help="Skip files by mask (Ex. */messages.py)")
+    parser.add_argument("--skip", help="Skip files by masks (comma-separated, Ex. */messages.py)")
     args = parser.parse_args()
 
     linters = set(filter(lambda i: i, args.linters.split(',')))

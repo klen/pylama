@@ -57,10 +57,11 @@ Options
     --select SELECT, -s SELECT
                             Select errors and warnings.
     --linters LINTERS, -l LINTERS
-                            Select errors and warnings.
+                            Select linters.
     --complexity COMPLEXITY, -c COMPLEXITY
                             Set mccabe complexity.
-    --skip SKIP           Skip files (Ex. messages.py)
+    --skip SKIP           Skip files by masks (comma-separated, Ex.
+                            */messages.py)
 
 
 ### File modeline
