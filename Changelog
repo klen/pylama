@@ -1,6 +1,7 @@
 2013-03-14  klen
 
 	* PEP8 to version 1.4.5;
+	* Added Pylint 0.27.0 (disabled by default)
 
 2013-02-15  klen
 
