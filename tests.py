@@ -22,6 +22,10 @@ class LamaTest(unittest.TestCase):
         self.assertEqual(len(errors), 3)
         self.assertTrue(errors[0]['col'])
 
+        errors = run('reindent.py')
+        self.assertEqual(len(errors), 3)
+        self.assertTrue(errors[0]['col'])
+
         # test pylint
         errors = run('pylama/pylint/utils.py', linters=['pylint'])
         self.assertEqual(len(errors), 12)
