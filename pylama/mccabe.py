@@ -23,6 +23,7 @@ class ASTVisitor:
     def __init__(self):
         self.node = None
         self._cache = {}
+        self.visitor = None
 
     def default(self, node, *args):
         if hasattr(node, 'getChildNodes'):
@@ -48,7 +49,7 @@ class ASTVisitor:
         """Do preorder walk of tree using visitor"""
         self.visitor = visitor
         visitor.visit = self.dispatch
-        self.dispatch(tree, *args)  # XXX *args make sense?
+        self.dispatch(tree, *args)
 
 
 class PathNode:
@@ -57,8 +58,8 @@ class PathNode:
         self.look = look
 
     def to_dot(self):
-        print('node [shape=%s,label="%s"] %d;' % \
-                (self.look, self.name, self.dot_id()))
+        print('node [shape=%s,label="%s"] %d;' %
+              (self.look, self.name, self.dot_id()))
 
     def dot_id(self):
         return id(self)
@@ -79,8 +80,8 @@ class PathGraph:
         for node in self.nodes:
             node.to_dot()
         for node, nexts in self.nodes.items():
-            for next in nexts:
-                print('%s -- %s;' % (node.dot_id(), next.dot_id()))
+            for nxt in nexts:
+                print('%s -- %s;' % (node.dot_id(), nxt.dot_id()))
         print('}')
 
     def complexity(self):
@@ -244,9 +245,9 @@ def get_code_complexity(code, min=7, filename='stdin'):
             continue
         if graph.complexity() >= min:
             complex.append(dict(
-                type = 'W',
-                lnum = graph.lineno,
-                text = '%s %r is too complex (%d)' % (
+                type='W',
+                lnum=graph.lineno,
+                text='%s %r is too complex (%d)' % (
                     WARNING_CODE,
                     graph.entity,
                     graph.complexity(),
@@ -292,4 +293,4 @@ def main(argv):
 if __name__ == '__main__':
     main(sys.argv[1:])
 
-# lint=0
+# pymode:lint=0
