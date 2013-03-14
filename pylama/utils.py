@@ -5,10 +5,14 @@ from .pep8 import BaseReport, StyleGuide
 from .pyflakes import checker
 
 
-__all__ = 'pep8', 'mccabe', 'pyflakes'
+__all__ = 'pep8', 'mccabe', 'pyflakes', 'pylint'
 
 
 class PEP8Report(BaseReport):
+
+    def __init__(self, *args, **kwargs):
+        super(PEP8Report, self).__init__(*args, **kwargs)
+        self.errors = []
 
     def init_file(self, filename, lines, expected, line_offset):
         super(PEP8Report, self).init_file(
@@ -59,3 +63,29 @@ def pyflakes(path, code=None, **meta):
             type='E'
         ))
     return errors
+
+
+def pylint(path, **meta):
+    from pylama.pylint.lint import Run
+    from pylama.pylint.reporters import BaseReporter
+
+    class Reporter(BaseReporter):
+
+        def __init__(self):
+            BaseReporter.__init__(self)
+            self.errors = []
+
+        def _display(self, layout):
+            pass
+
+        def add_message(self, msg_id, location, msg):
+            _, _, line, col = location[1:]
+            self.errors.append(dict(
+                lnum=line,
+                col=col,
+                text="%s %s" % (msg_id, msg),
+                type=msg_id[0]
+            ))
+
+    runner = Run([path], reporter=Reporter(), exit=False)
+    return runner.linter.reporter.errors

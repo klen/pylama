@@ -22,6 +22,7 @@ def run(path, ignore=None, select=None, linters=default_linters, **meta):
         try:
             linter = getattr(utils, lint)
         except AttributeError:
+            logging.warning("Linter `{0}` not found.".format(lint))
             continue
 
         try:
@@ -61,9 +62,10 @@ def run(path, ignore=None, select=None, linters=default_linters, **meta):
             break
 
         except Exception, e:
-            assert True
+            import traceback
+            logging.error(traceback.format_exc())
 
-    errors = filter(lambda e: _ignore_error(e, select, ignore), errors)
+    errors = [e for e in errors if _ignore_error(e, select, ignore)]
     return sorted(errors, key=lambda x: x['lnum'])
 
 
@@ -82,7 +84,7 @@ def shell():
     parser.add_argument("path", nargs='?', default=getcwd(), help="Path on file or directory.")
     parser.add_argument("--verbose", "-v", action='store_true', help="Verbose mode.")
 
-    split_csp_list = lambda s: set(filter(lambda i: i, s.split(',')))
+    split_csp_list = lambda s: list(set(i for i in s.split(',') if i))
 
     parser.add_argument(
         "--select", "-s", default='',
