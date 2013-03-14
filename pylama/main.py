@@ -39,7 +39,8 @@ def run(path, ignore=None, select=None, linters=default_linters, **meta):
                 for e in linter(path, code=code, **meta):
                     e.update(
                         col=e.get('col') or 0,
-                        text="%s [%s]" % (e.get('text', '').strip().replace("'", "\"").split('\n')[0], lint),
+                        text="%s [%s]" % (e.get('text', '').strip(
+                        ).replace("'", "\"").split('\n')[0], lint),
                         filename=path,
                         **meta
                     )
@@ -81,8 +82,10 @@ def _ignore_error(e, select, ignore):
 
 def shell():
     parser = ArgumentParser(description="Code audit tool for python.")
-    parser.add_argument("path", nargs='?', default=getcwd(), help="Path on file or directory.")
-    parser.add_argument("--verbose", "-v", action='store_true', help="Verbose mode.")
+    parser.add_argument("path", nargs='?', default=getcwd(),
+                        help="Path on file or directory.")
+    parser.add_argument(
+        "--verbose", "-v", action='store_true', help="Verbose mode.")
 
     split_csp_list = lambda s: list(set(i for i in s.split(',') if i))
 
@@ -100,9 +103,11 @@ def shell():
         help="Ignore errors and warnings. (comma-separated)")
     parser.add_argument(
         "--skip", default='',
-        type=lambda s: [re.compile(fnmatch.translate(p)) for p in s.split(',')],
+        type=lambda s: [re.compile(fnmatch.translate(p))
+                        for p in s.split(',')],
         help="Skip files by masks (comma-separated, Ex. */messages.py)")
-    parser.add_argument("--complexity", "-c", default=default_complexity, type=int, help="Set mccabe complexity.")
+    parser.add_argument("--complexity", "-c", default=default_complexity,
+                        type=int, help="Set mccabe complexity.")
     parser.add_argument("--report", "-r", help="Filename for report.")
     args = parser.parse_args()
 
@@ -122,10 +127,12 @@ def shell():
 
     for path in skip_paths(args, paths):
         logger.info("Parse file: %s" % path)
-        errors = run(path, ignore=args.ignore, select=args.select, linters=args.linters, complexity=args.complexity)
+        errors = run(path, ignore=args.ignore, select=args.select,
+                     linters=args.linters, complexity=args.complexity)
         for error in errors:
             try:
-                error['rel'] = op.relpath(error['filename'], op.dirname(args.path))
+                error['rel'] = op.relpath(
+                    error['filename'], op.dirname(args.path))
                 error['col'] = error.get('col', 1)
                 logger.warning("%(rel)s:%(lnum)s:%(col)s: %(text)s", error)
             except KeyError:
@@ -134,7 +141,8 @@ def shell():
     sys.exit(int(bool(errors)))
 
 
-MODERE = re.compile(r'^\s*#\s+(?:pymode\:)?((?:lint[\w_]*=[^:\n\s]+:?)+)', re.I | re.M)
+MODERE = re.compile(
+    r'^\s*#\s+(?:pymode\:)?((?:lint[\w_]*=[^:\n\s]+:?)+)', re.I | re.M)
 
 
 def skip_paths(args, paths):
@@ -149,7 +157,7 @@ def parse_modeline(code):
     params = dict(lint=1)
     if seek:
         params = dict(v.split('=') for v in seek.group(1).split(':'))
-        params['lint'] = int(params['lint'])
+        params['lint'] = int(params.get('lint', 1))
     return params
 
 

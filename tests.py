@@ -24,4 +24,4 @@ class LamaTest(unittest.TestCase):
 
         # test pylint
         errors = run('pylama/pylint/utils.py', linters=['pylint'])
-        self.assertEqual(len(errors), 5)
+        self.assertEqual(len(errors), 12)

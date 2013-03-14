@@ -7,7 +7,8 @@ from setuptools import setup, find_packages
 from pylama import version, __project__, __license__
 
 
-read = lambda f: open(op.join(op.dirname(__file__), f)).read() if op.exists(f) else ''
+read = lambda f: open(
+    op.join(op.dirname(__file__), f)).read() if op.exists(f) else ''
 
 
 install_requires = []

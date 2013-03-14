@@ -36,7 +36,7 @@ class PEP8Report(BaseReport):
 P8Style = StyleGuide(reporter=PEP8Report)
 
 
-def pep8(path, code=None, **meta):
+def pep8(path, **meta):
     " PEP8 code checking. "
 
     return P8Style.input_file(path)
@@ -72,8 +72,8 @@ def pylint(path, **meta):
     class Reporter(BaseReporter):
 
         def __init__(self):
-            BaseReporter.__init__(self)
             self.errors = []
+            BaseReporter.__init__(self)
 
         def _display(self, layout):
             pass
@@ -87,5 +87,8 @@ def pylint(path, **meta):
                 type=msg_id[0]
             ))
 
-    runner = Run([path], reporter=Reporter(), exit=False)
+    runner = Run(
+        [path, '--rcfile', 'pylint.rc'], reporter=Reporter(), exit=False)
     return runner.linter.reporter.errors
+
+# pymode:lint_ignore=W0231
