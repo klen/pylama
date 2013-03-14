@@ -23,4 +23,4 @@ test: audit
 
 .PHONY: audit
 audit:
-	python -m "pylama.main" -i 'E501' --skip='*/messages.py'
+	python -m "pylama.main" -i 'E501' --skip='*pylama/pep8.py,*/messages.py,*/pylama/_/*,*/pylama/pylint/*,*/.env/*' -l "pylint,pep8,pyflakes,mccabe"

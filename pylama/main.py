@@ -22,6 +22,7 @@ def run(path, ignore=None, select=None, linters=default_linters, **meta):
         try:
             linter = getattr(utils, lint)
         except AttributeError:
+            logging.warning("Linter `{0}` not found.".format(lint))
             continue
 
         try:
@@ -61,9 +62,10 @@ def run(path, ignore=None, select=None, linters=default_linters, **meta):
             break
 
         except Exception, e:
-            assert True
+            import traceback
+            logging.error(traceback.format_exc())
 
-    errors = filter(lambda e: _ignore_error(e, select, ignore), errors)
+    errors = [e for e in errors if _ignore_error(e, select, ignore)]
     return sorted(errors, key=lambda x: x['lnum'])
 
 
@@ -80,18 +82,29 @@ def _ignore_error(e, select, ignore):
 def shell():
     parser = ArgumentParser(description="Code audit tool for python.")
     parser.add_argument("path", nargs='?', default=getcwd(), help="Path on file or directory.")
-    parser.add_argument("--ignore", "-i", default='', help="Ignore errors and warnings.")
     parser.add_argument("--verbose", "-v", action='store_true', help="Verbose mode.")
-    parser.add_argument("--select", "-s", default='', help="Select errors and warnings.")
-    parser.add_argument("--linters", "-l", default=','.join(default_linters), help="Select linters.")
+
+    split_csp_list = lambda s: list(set(i for i in s.split(',') if i))
+
+    parser.add_argument(
+        "--select", "-s", default='',
+        type=split_csp_list,
+        help="Select errors and warnings. (comma-separated)")
+    parser.add_argument(
+        "--linters", "-l", default=','.join(default_linters),
+        type=split_csp_list,
+        help="Select linters. (comma-separated)")
+    parser.add_argument(
+        "--ignore", "-i", default='',
+        type=split_csp_list,
+        help="Ignore errors and warnings. (comma-separated)")
+    parser.add_argument(
+        "--skip", default='',
+        type=lambda s: [re.compile(fnmatch.translate(p)) for p in s.split(',')],
+        help="Skip files by masks (comma-separated, Ex. */messages.py)")
     parser.add_argument("--complexity", "-c", default=default_complexity, type=int, help="Set mccabe complexity.")
-    parser.add_argument("--skip", help="Skip files by masks (comma-separated, Ex. */messages.py)")
     parser.add_argument("--report", "-r", help="Filename for report.")
     args = parser.parse_args()
-
-    linters = set(filter(lambda i: i, args.linters.split(',')))
-    ignore = set(filter(lambda i: i, args.ignore.split(',')))
-    select = set(filter(lambda i: i, args.select.split(',')))
 
     # Setup logger
     logger.setLevel(logging.INFO if args.verbose else logging.WARN)
@@ -109,7 +122,7 @@ def shell():
 
     for path in skip_paths(args, paths):
         logger.info("Parse file: %s" % path)
-        errors = run(path, ignore=ignore, select=select, linters=linters, complexity=args.complexity)
+        errors = run(path, ignore=args.ignore, select=args.select, linters=args.linters, complexity=args.complexity)
         for error in errors:
             try:
                 error['rel'] = op.relpath(error['filename'], op.dirname(args.path))
@@ -125,13 +138,8 @@ MODERE = re.compile(r'^\s*#\s+(?:pymode\:)?((?:lint[\w_]*=[^:\n\s]+:?)+)', re.I 
 
 
 def skip_paths(args, paths):
-    patterns = []
-
-    if args.skip:
-        patterns = [re.compile(fnmatch.translate(p)) for p in args.skip.split(',')]
-
     for path in paths:
-        if any(pattern.match(path) for pattern in patterns):
+        if args.skip and any(pattern.match(path) for pattern in args.skip):
             continue
         yield path
 
