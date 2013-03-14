@@ -3,7 +3,11 @@ Pylama
 
 [![Build Status](https://secure.travis-ci.org/klen/pylama.png?branch=master)](http://travis-ci.org/klen/pylama)
 
-Code audit tool for python.
+Code audit tool for python. Pylama wraps these tools:
+
+* [PEP8](https://github.com/jcrocholl/pep8) © 2012-2013, Florent Xicluna;
+* [PyFlakes](https://github.com/kevinw/pyflakes) © 2005-2013, Kevin Watters;
+* [Mccabe](http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html) © Ned Batchelder;
 
 
 Requirements:
