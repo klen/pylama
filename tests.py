@@ -17,7 +17,11 @@ class LamaTest(unittest.TestCase):
         errors = run('pylama/pyflakes/messages.py', ignore=['E3'])
         self.assertEqual(len(errors), 2)
 
-        errors = run('pylama/pyflakes/messages.py', ignore=['E3'], select=['E301'])
+        errors = run(
+            'pylama/pyflakes/messages.py', ignore=['E3'], select=['E301'])
         self.assertEqual(len(errors), 3)
         self.assertTrue(errors[0]['col'])
 
+        # test pylint
+        errors = run('pylama/pylint/utils.py', linters=['pylint'])
+        self.assertEqual(len(errors), 5)

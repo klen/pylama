@@ -3,7 +3,12 @@ Pylama
 
 [![Build Status](https://secure.travis-ci.org/klen/pylama.png?branch=master)](http://travis-ci.org/klen/pylama)
 
-Code audit tool for python.
+Code audit tool for python. Pylama wraps these tools:
+
+* [PEP8](https://github.com/jcrocholl/pep8) © 2012-2013, Florent Xicluna;
+* [PyFlakes](https://github.com/kevinw/pyflakes) © 2005-2013, Kevin Watters;
+* [Mccabe](http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html) © Ned Batchelder;
+* [Pylint](http://pylint.org`) © 2013, Logilab;
 
 
 Requirements:
@@ -51,17 +56,19 @@ Options
 
     optional arguments:
     -h, --help            show this help message and exit
-    --ignore IGNORE, -i IGNORE
-                            Ignore errors and warnings.
     --verbose, -v         Verbose mode.
     --select SELECT, -s SELECT
-                            Select errors and warnings.
+                            Select errors and warnings. (comma-separated)
     --linters LINTERS, -l LINTERS
-                            Select linters.
-    --complexity COMPLEXITY, -c COMPLEXITY
-                            Set mccabe complexity.
+                            Select linters. (comma-separated)
+    --ignore IGNORE, -i IGNORE
+                            Ignore errors and warnings. (comma-separated)
     --skip SKIP           Skip files by masks (comma-separated, Ex.
                             */messages.py)
+    --complexity COMPLEXITY, -c COMPLEXITY
+                            Set mccabe complexity.
+    --report REPORT, -r REPORT
+                            Filename for report.
 
 
 ### File modeline
