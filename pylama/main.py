@@ -89,15 +89,15 @@ def shell():
     parser.add_argument(
         "--select", "-s", default='',
         type=split_csp_list,
-        help="Select errors and warnings.")
+        help="Select errors and warnings. (comma-separated)")
     parser.add_argument(
         "--linters", "-l", default=','.join(default_linters),
         type=split_csp_list,
-        help="Select linters.")
+        help="Select linters. (comma-separated)")
     parser.add_argument(
         "--ignore", "-i", default='',
         type=split_csp_list,
-        help="Ignore errors and warnings.")
+        help="Ignore errors and warnings. (comma-separated)")
     parser.add_argument(
         "--skip", default='',
         type=lambda s: [re.compile(fnmatch.translate(p)) for p in s.split(',')],
