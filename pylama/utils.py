@@ -87,8 +87,10 @@ def pylint(path, **meta):
                 type=msg_id[0]
             ))
 
+    attrs = meta.get('pylint', [])
+
     runner = Run(
-        [path, '--rcfile', 'pylint.rc'], reporter=Reporter(), exit=False)
+        [path] + attrs, reporter=Reporter(), exit=False)
     return runner.linter.reporter.errors
 
 # pymode:lint_ignore=W0231

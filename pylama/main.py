@@ -1,9 +1,10 @@
-import logging
 import fnmatch
 import re
 import sys
-from argparse import ArgumentParser
 from os import getcwd, walk, path as op
+
+import logging
+from argparse import ArgumentParser
 
 from . import utils
 
@@ -15,8 +16,8 @@ logger = logging.Logger('pylama')
 
 def run(path, ignore=None, select=None, linters=default_linters, **meta):
     errors = []
-    ignore = ignore or []
-    select = select or []
+    ignore = ignore and list(ignore) or []
+    select = select and list(select) or []
 
     for lint in linters:
         try:
@@ -38,27 +39,29 @@ def run(path, ignore=None, select=None, linters=default_linters, **meta):
             if params.get('lint'):
                 for e in linter(path, code=code, **meta):
                     e.update(
-                        col=e.get('col') or 0,
-                        text="%s [%s]" % (e.get('text', '').strip(
-                        ).replace("'", "\"").split('\n')[0], lint),
-                        filename=path,
-                        **meta
+                        col=e.get('col', 0),
+                        lnum=e.get('lnum', 0),
+                        type=e.get('type', 'E'),
+                        text="{0} [{1}]".format(
+                            e.get('text', '').strip().replace(
+                                "'", "\"").split('\n')[0], lint),
+                        filename=path or '',
                     )
                     errors.append(e)
 
         except IOError, e:
             errors.append(dict(
                 lnum=0,
+                type='E',
                 col=0,
-                text=str(e),
-                **meta
+                text=str(e)
             ))
         except SyntaxError, e:
             errors.append(dict(
-                lnum=e.lineno,
+                lnum=e.lineno or 0,
+                type='E',
                 col=e.offset or 0,
-                text=e.args[0],
-                **meta
+                text=e.args[0]
             ))
             break
 
