@@ -1,13 +1,12 @@
 # (c) 2005 Divmod, Inc.  See LICENSE file for details
 
-
 class Message(object):
     message = ''
     message_args = ()
-
-    def __init__(self, filename, lineno):
+    def __init__(self, filename, loc, use_column=True):
         self.filename = filename
-        self.lineno = lineno
+        self.lineno = loc.lineno
+        self.col = getattr(loc, 'col_offset', None) if use_column else None
 
     def __str__(self):
         return '%s:%s: %s' % (self.filename, self.lineno, self.message % self.message_args)
@@ -29,16 +28,8 @@ class RedefinedWhileUnused(Message):
         self.message_args = (name, orig_lineno)
 
 
-class RedefinedInListComp(Message):
-    message = 'W801 rlist comprehension redefines %r from line %r'
-
-    def __init__(self, filename, lineno, name, orig_lineno):
-        Message.__init__(self, filename, lineno)
-        self.message_args = (name, orig_lineno)
-
-
 class ImportShadowedByLoopVar(Message):
-    message = 'W403 iimport %r from line %r shadowed by loop variable'
+    message = 'W403 import %r from line %r shadowed by loop variable'
 
     def __init__(self, filename, lineno, name, orig_lineno):
         Message.__init__(self, filename, lineno)
@@ -46,7 +37,7 @@ class ImportShadowedByLoopVar(Message):
 
 
 class ImportStarUsed(Message):
-    message = "W404 ''from %s import *' used; unable to detect undefined names"
+    message = "W404 'from %s import *' used; unable to detect undefined names"
 
     def __init__(self, filename, lineno, modname):
         Message.__init__(self, filename, lineno)
@@ -70,7 +61,8 @@ class UndefinedExport(Message):
 
 
 class UndefinedLocal(Message):
-    message = "W804 local variable %r (defined in enclosing scope on line %r) referenced before assignment"
+    message = "W804 local variable %r (defined in enclosing scope on line " \
+            "%r) referenced before assignment"
 
     def __init__(self, filename, lineno, name, orig_lineno):
         Message.__init__(self, filename, lineno)
@@ -85,8 +77,8 @@ class DuplicateArgument(Message):
         self.message_args = (name,)
 
 
-class Redefined(Message):
-    message = 'W806 redefinition of %r from line %r'
+class RedefinedFunction(Message):
+    message = 'W806 redefinition of function %r from line %r'
 
     def __init__(self, filename, lineno, name, orig_lineno):
         Message.__init__(self, filename, lineno)
@@ -106,6 +98,7 @@ class UnusedVariable(Message):
     Indicates that a variable has been explicity assigned to but not actually
     used.
     """
+
     message = 'W806 local variable %r is assigned to but never used'
 
     def __init__(self, filename, lineno, names):
