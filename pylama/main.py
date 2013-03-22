@@ -97,6 +97,9 @@ def shell():
     split_csp_list = lambda s: list(set(i for i in s.split(',') if i))
 
     parser.add_argument(
+        "--format", "-f", default='pep8', choices=['pep8', 'pylint'],
+        help="Error format.")
+    parser.add_argument(
         "--select", "-s", default='',
         type=split_csp_list,
         help="Select errors and warnings. (comma-separated)")
@@ -132,6 +135,10 @@ def shell():
         for root, _, files in walk(args.path):
             paths += [op.join(root, f) for f in files if f.endswith('.py')]
 
+    pattern = "%(rel)s:%(lnum)s:%(col)s: %(text)s"
+    if args.format == 'pylint':
+        pattern = "%(rel)s:%(lnum)s [%(type)s] %(text)s"
+
     for path in skip_paths(args, paths):
         logger.info("Parse file: %s" % path)
         errors = run(path, ignore=args.ignore, select=args.select,
@@ -141,7 +148,7 @@ def shell():
                 error['rel'] = op.relpath(
                     error['filename'], op.dirname(args.path))
                 error['col'] = error.get('col', 1)
-                logger.warning("%(rel)s:%(lnum)s:%(col)s: %(text)s", error)
+                logger.warning(pattern, error)
             except KeyError:
                 continue
 

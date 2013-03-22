@@ -1,7 +1,8 @@
 2013-03-22  klen
 
-	* Version 0.2.4
-	* Added 'skipline' flag. See `# nolint`
+	* Version 0.2.4;
+	* Added 'skipline' flag. See `# nolint`;
+	* Added pylint parseable format;
 
 2013-03-15  klen
 
