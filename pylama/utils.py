@@ -1,4 +1,5 @@
 import _ast
+from os import path as op, environ
 
 from .mccabe import get_code_complexity
 from .pep8 import BaseReport, StyleGuide
@@ -6,6 +7,8 @@ from .pyflakes import checker
 
 
 __all__ = 'pep8', 'mccabe', 'pyflakes', 'pylint'
+
+PYLINT_RC = op.abspath(op.join(op.dirname(__file__), 'pylint.rc'))
 
 
 class PEP8Report(BaseReport):
@@ -88,7 +91,11 @@ def pylint(path, **meta):
                 type=msg_id[0]
             ))
 
-    attrs = meta.get('pylint', [])
+    pylintrc = op.join(environ.get('HOME', ''), '.pylintrc')
+    defattrs = '-r n'
+    if not op.exists(pylintrc):
+        defattrs += ' --rcfile={0}'.format(PYLINT_RC)
+    attrs = meta.get('pylint', defattrs.split())
 
     runner = Run(
         [path] + attrs, reporter=Reporter(), exit=False)

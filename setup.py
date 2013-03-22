@@ -28,6 +28,7 @@ meta = dict(
     author_email='horneds@gmail.com',
     url=' http://github.com/klen/pylama',
 
+    package_data = {"pylama": ['pylint.rc']},
     packages=find_packages(),
 
     entry_points={
