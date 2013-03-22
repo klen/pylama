@@ -137,7 +137,7 @@ def shell():
 
     pattern = "%(rel)s:%(lnum)s:%(col)s: %(text)s"
     if args.format == 'pylint':
-        pattern = "%(rel)s:%(lnum)s [%(type)s] %(text)s"
+        pattern = "%(rel)s:%(lnum)s: [%(type)s] %(text)s"
 
     for path in skip_paths(args, paths):
         logger.info("Parse file: %s" % path)
