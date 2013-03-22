@@ -86,6 +86,14 @@ For disable pylama in current file:
      # lint=0
 
 
+### Skip lines
+
+Just add `# nolint` in end of line for ignore.
+
+     .. Somethere in code
+     x=d+34  # nolint
+
+
 Bug tracker
 -----------
 
