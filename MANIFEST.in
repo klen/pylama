@@ -1,2 +1,2 @@
-recursive-include adrest *
+recursive-include pylama *
 exclude *.pyc *.orig
