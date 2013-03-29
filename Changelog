@@ -1,3 +1,8 @@
+2013-03-29  klen
+
+	* Added git and mercurial hooks;
+	* Version 0.2.8
+
 2013-03-22  klen
 
 	* Version 0.2.7;

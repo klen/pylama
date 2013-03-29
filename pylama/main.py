@@ -12,6 +12,8 @@ from . import utils
 default_linters = 'pep8', 'pyflakes', 'mccabe'
 default_complexity = 10
 logger = logging.Logger('pylama')
+stream = logging.StreamHandler()
+logger.addHandler(stream)
 
 SKIP_PATTERN = '# nolint'
 
@@ -119,14 +121,19 @@ def shell():
     parser.add_argument("--complexity", "-c", default=default_complexity,
                         type=int, help="Set mccabe complexity.")
     parser.add_argument("--report", "-r", help="Filename for report.")
+    parser.add_argument("--hook", action="store_true",
+                        help="Install Git (Mercurial) hook.")
     args = parser.parse_args()
 
     # Setup logger
     logger.setLevel(logging.INFO if args.verbose else logging.WARN)
     if args.report:
+        logger.removeHandler(stream)
         logger.addHandler(logging.FileHandler(args.report, mode='w'))
-    else:
-        logger.addHandler(logging.StreamHandler())
+
+    if args.hook:
+        from .hook import install_hook
+        return install_hook(args.path)
 
     paths = [args.path]
 
@@ -135,18 +142,34 @@ def shell():
         for root, _, files in walk(args.path):
             paths += [op.join(root, f) for f in files if f.endswith('.py')]
 
+    check_files(
+        paths,
+        rootpath=args.path,
+        skip=args.skip,
+        frmt=args.format,
+        ignore=args.ignore,
+        select=args.select,
+        linters=args.linters,
+        complexity=args.complexity,
+    )
+
+
+def check_files(paths, rootpath=None, skip=None, frmt="pep8",
+                select=None, ignore=None, linters=default_linters,
+                complexity=default_complexity):
+    rootpath = rootpath or getcwd()
     pattern = "%(rel)s:%(lnum)s:%(col)s: %(text)s"
-    if args.format == 'pylint':
+    if frmt == 'pylint':
         pattern = "%(rel)s:%(lnum)s: [%(type)s] %(text)s"
 
-    for path in skip_paths(args, paths):
+    for path in skip_paths(skip, paths):
         logger.info("Parse file: %s" % path)
-        errors = run(path, ignore=args.ignore, select=args.select,
-                     linters=args.linters, complexity=args.complexity)
+        errors = run(path, ignore=ignore, select=select,
+                     linters=linters, complexity=complexity)
         for error in errors:
             try:
                 error['rel'] = op.relpath(
-                    error['filename'], op.dirname(args.path))
+                    error['filename'], op.dirname(rootpath))
                 error['col'] = error.get('col', 1)
                 logger.warning(pattern, error)
             except KeyError:
@@ -159,9 +182,9 @@ MODERE = re.compile(
     r'^\s*#\s+(?:pymode\:)?((?:lint[\w_]*=[^:\n\s]+:?)+)', re.I | re.M)
 
 
-def skip_paths(args, paths):
+def skip_paths(skip, paths):
     for path in paths:
-        if args.skip and any(pattern.match(path) for pattern in args.skip):
+        if skip and any(pattern.match(path) for pattern in skip):
             continue
         yield path
 
