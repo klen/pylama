@@ -17,8 +17,8 @@ clean:
 upload:
 	python setup.py sdist upload || echo 'Upload already'
 
-.PHONY: test
-test: audit
+.PHONY: t
+t: audit
 	python setup.py test
 
 .PHONY: audit
