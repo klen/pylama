@@ -36,6 +36,18 @@ meta = dict(
             'pylama = pylama.main:shell',
         ]
     },
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
+        'Intended Audience :: System Administrators',
+        'Natural Language :: Russian',
+        'Natural Language :: English',
+        'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)', # nolint
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3.3',
+        'Environment :: Console',
+        'Topic :: Software Development :: Code Generators',
+    ],
 
     install_requires=install_requires,
     test_suite = 'tests',
