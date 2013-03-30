@@ -10,12 +10,16 @@ Code audit tool for python. Pylama wraps these tools:
 * [Mccabe](http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html) © Ned Batchelder;
 * [Pylint](http://pylint.org`) © 2013, Logilab;
 
+  `Pylint dont supported in python3.`
+
 
 Requirements:
 ------------
 
 * Python 2.6
 * Python 2.7
+* Python 3.2
+* Python 3.3
 
 
 Instalation:
