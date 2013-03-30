@@ -1,4 +1,5 @@
 import unittest
+from sys import version_info
 
 
 class LamaTest(unittest.TestCase):
@@ -23,5 +24,6 @@ class LamaTest(unittest.TestCase):
         self.assertTrue(errors[0]['col'])
 
         # test pylint
-        errors = run('pylama/pylint/utils.py', linters=['pylint'])
-        self.assertEqual(len(errors), 12)
+        if version_info < (3, 0):
+            errors = run('pylama/pylint/utils.py', linters=['pylint'])
+            self.assertEqual(len(errors), 12)

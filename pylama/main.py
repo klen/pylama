@@ -31,38 +31,40 @@ def run(path, ignore=None, select=None, linters=default_linters, **meta):  # nol
             continue
 
         try:
-            code = open(path, "rU").read() + '\n\n'
-            params = parse_modeline(code)
-            params['skip'] = [False]
-            for line in code.split('\n'):
-                params['skip'].append(line.endswith(SKIP_PATTERN))
+            with open(path, "rU") as f:
+                code = f.read() + '\n\n'
+                params = parse_modeline(code)
+                params['skip'] = [False]
+                for line in code.split('\n'):
+                    params['skip'].append(line.endswith(SKIP_PATTERN))
 
-            if params.get('lint_ignore'):
-                ignore += params.get('lint_ignore').split(',')
+                if params.get('lint_ignore'):
+                    ignore += params.get('lint_ignore').split(',')
 
-            if params.get('lint_select'):
-                select += params.get('lint_select').split(',')
+                if params.get('lint_select'):
+                    select += params.get('lint_select').split(',')
 
-            if params.get('lint'):
-                for e in linter(path, code=code, **meta):
-                    e['col'] = e.get('col') or 0
-                    e['lnum'] = e.get('lnum') or 0
-                    e['type'] = e.get('type') or 'E'
-                    e['text'] = "{0} [{1}]".format((e.get(
-                        'text') or '').strip()
-                        .replace("'", "\"").split('\n')[0], lint)
-                    e['filename'] = path or ''
-                    if not params['skip'][e['lnum']]:
-                        errors.append(e)
+                if params.get('lint'):
+                    result = linter(path, code=code, **meta)
+                    for e in result:
+                        e['col'] = e.get('col') or 0
+                        e['lnum'] = e.get('lnum') or 0
+                        e['type'] = e.get('type') or 'E'
+                        e['text'] = "{0} [{1}]".format((e.get(
+                            'text') or '').strip()
+                            .replace("'", "\"").split('\n')[0], lint)
+                        e['filename'] = path or ''
+                        if not params['skip'][e['lnum']]:
+                            errors.append(e)
 
-        except IOError, e:
+        except IOError as e:
             errors.append(dict(
                 lnum=0,
                 type='E',
                 col=0,
                 text=str(e)
             ))
-        except SyntaxError, e:
+        except SyntaxError as e:
             errors.append(dict(
                 lnum=e.lineno or 0,
                 type='E',
@@ -71,7 +73,7 @@ def run(path, ignore=None, select=None, linters=default_linters, **meta):  # nol
             ))
             break
 
-        except Exception, e:
+        except Exception as e:
             import traceback
             logging.error(traceback.format_exc())
 
@@ -162,6 +164,7 @@ def check_files(paths, rootpath=None, skip=None, frmt="pep8",
     if frmt == 'pylint':
         pattern = "%(rel)s:%(lnum)s: [%(type)s] %(text)s"
 
+    errors = []
     for path in skip_paths(skip, paths):
         logger.info("Parse file: %s" % path)
         errors = run(path, ignore=ignore, select=select,

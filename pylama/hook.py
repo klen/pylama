@@ -21,7 +21,7 @@ def git_hook():
     from .main import check_files
     _, files_modified, _ = run("git diff-index --cached --name-only HEAD")
     logger.setLevel('WARN')
-    check_files([f for f in files_modified if f.endswith('.py')])
+    check_files([f for f in map(str, files_modified) if f.endswith('.py')])
 
 
 def hg_hook(ui, repo, **kwargs):

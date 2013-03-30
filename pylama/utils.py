@@ -57,7 +57,7 @@ def pyflakes(path, code=None, **meta):
     errors = []
     tree = compile(code, path, "exec", _ast.PyCF_ONLY_AST)
     w = checker.Checker(tree, path)
-    w.messages.sort(lambda a, b: cmp(a.lineno, b.lineno))
+    w.messages = sorted(w.messages, key=lambda m: m.lineno)
     for w in w.messages:
         errors.append(dict(
             lnum=w.lineno,
@@ -67,6 +67,12 @@ def pyflakes(path, code=None, **meta):
 
 
 def pylint(path, **meta):
+    from sys import version_info
+    if version_info > (2, 8):
+        import logging
+        logging.warn("Pylint don't supported python3 and will be disabled.")
+        return []
+
     from .pylint.lint import Run
     from .pylint.reporters import BaseReporter
 
