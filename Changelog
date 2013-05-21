@@ -1,6 +1,6 @@
 2013-05-21  horneds
 
-	* Version 0.3.3
+	* Version 0.3.4
 	* Now pylama can parse global and file-related options from file.
 
 2013-05-15  horneds
