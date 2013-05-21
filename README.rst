@@ -1,20 +1,23 @@
 Pylama
-======
+######
 
-[![Build Status](https://secure.travis-ci.org/klen/pylama.png?branch=master)](http://travis-ci.org/klen/pylama)
+.. image:: https://secure.travis-ci.org/klen/pylama.png?branch=develop
+    :target: http://travis-ci.org/klen/pylama
+    :alt: Build Status
 
 Code audit tool for python. Pylama wraps these tools:
 
-* [PEP8](https://github.com/jcrocholl/pep8) © 2012-2013, Florent Xicluna;
-* [PyFlakes](https://github.com/kevinw/pyflakes) © 2005-2013, Kevin Watters;
-* [Mccabe](http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html) © Ned Batchelder;
-* [Pylint](http://pylint.org`) © 2013, Logilab;
+* PEP8_ © 2012-2013, Florent Xicluna;
+* PyFlakes_ © 2005-2013, Kevin Watters;
+* Pylint_ © 2013, Logilab;
+* Mccabe_ © Ned Batchelder;
 
-  `Pylint dont supported in python3.`
+
+ |  `Pylint dont supported in python3.`
 
 
 Requirements:
-------------
+============
 
 * Python 2.6
 * Python 2.7
@@ -23,29 +26,33 @@ Requirements:
 
 
 Instalation:
-------------
+============
+::
 
     $ pip install pylama
 
 
 Usage:
-------
+======
 
-Recursive check current directory.
+Recursive check current directory. ::
 
     $ pylama
 
-Ignore some errors
+
+Ignore some errors ::
 
     $ pylama -i W,E501
 
-Set linters
+
+Set linters ::
 
     $ pylama -l "pep8,mccabe"
 
 
 Options
--------
+=======
+::
 
     $ pylama --help
 
@@ -72,7 +79,7 @@ Options
     --ignore IGNORE, -i IGNORE
                             Ignore errors and warnings. (comma-separated)
     --skip SKIP           Skip files by masks (comma-separated, Ex.
-                            */messages.py)
+                            */messages.py,*/.env)
     --complexity COMPLEXITY, -c COMPLEXITY
                             Set mccabe complexity.
     --report REPORT, -r REPORT
@@ -83,30 +90,33 @@ Options
                             '<CURDIR>/pylama.ini'
 
 
-### File modeline
+File modeline
+-------------
 
-You can to set options for pylama inside the file.
+You can to set options for pylama inside the file. ::
 
 
      .. Somethere in code
      # lint_ignore=W:lint_select=W301
 
 
-For disable pylama in current file:
+For disable pylama in current file: ::
 
      .. Somethere in code
      # lint=0
 
 
-### Skip lines
+Skip lines
+----------
 
-Just add `# nolint` in end of line for ignore.
+Just add `# nolint` in end of line for ignore. ::
 
      .. Somethere in code
      x=d+34  # nolint
 
 
-### Configuration file
+Configuration file
+------------------
 
 When starting pylama try loading configuration file. By default: `<CURDIR>/pylama.ini`,
 but you set it with "-o" option.
@@ -114,7 +124,7 @@ but you set it with "-o" option.
 Section `main` set a global options, like `linters` and `skip`. Other sections set
 modeline options for a custom files.
 
-Example: `pylama.ini`
+Example: `pylama.ini` ::
 
     [main]
     format = pylint
@@ -145,3 +155,8 @@ License
 -------
 
 Licensed under a **GNU lesser general public license**.
+
+.. _PEP8: https://github.com/jcrocholl/pep8
+.. _PyFlakes: https://github.com/kevinw/pyflakes 
+.. _Pylint: http://pylint.org
+.. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
