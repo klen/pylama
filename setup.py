@@ -44,7 +44,8 @@ meta = dict(
         'Natural Language :: English',
         'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)', # nolint
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 3',
         'Environment :: Console',
         'Topic :: Software Development :: Code Generators',
     ],

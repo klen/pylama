@@ -23,5 +23,4 @@ t: audit
 
 .PHONY: audit
 audit:
-	python -m "pylama.main" \
-	    --skip='*/.tox/*,*pylama/pep8.py,*pylama/pyflakes/*,*/pylama/_/*,*/pylama/pylint/*,*/.env/*,*dummy.py' -l "pylint,pep8,pyflakes,mccabe" $(CURDIR)
+	python -m "pylama.main"
