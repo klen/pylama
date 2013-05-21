@@ -13,7 +13,7 @@ read = lambda f: open(
 
 install_requires = []
 if version_info < (2, 7):
-    install_requires.append('argparse')
+    install_requires += ['argparse', 'ordereddict']
 
 
 meta = dict(

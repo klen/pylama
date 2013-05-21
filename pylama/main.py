@@ -232,5 +232,3 @@ def prepare_params(section):
 
 if __name__ == '__main__':
     shell()
-
-
