@@ -1,2 +1,10 @@
+include LICENSE
+include MANIFEST.in
+include README.rst
+include requirements.txt
+
 recursive-include pylama *
-exclude *.pyc *.orig
+
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+recursive-exclude * *.orig

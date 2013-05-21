@@ -13,5 +13,6 @@ branches:
 
 install:
     - "if [[ $TRAVIS_PYTHON_VERSION == '2.6' ]]; then pip install argparse; fi"
+    - "if [[ $TRAVIS_PYTHON_VERSION == '2.6' ]]; then pip install ordereddict; fi"
 
 script: make t
