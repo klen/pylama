@@ -49,8 +49,10 @@ Options
 
     $ pylama --help
 
-    usage: pylama [-h] [--ignore IGNORE] [--verbose] [--select SELECT]
-                [--linters LINTERS] [--complexity COMPLEXITY] [--skip SKIP]
+    usage: main.py [-h] [--verbose] [--format {pep8,pylint}] [--select SELECT]
+                [--linters LINTERS] [--ignore IGNORE] [--skip SKIP]
+                [--complexity COMPLEXITY] [--report REPORT] [--hook]
+                [--options OPTIONS]
                 [path]
 
     Code audit tool for python.
@@ -61,6 +63,8 @@ Options
     optional arguments:
     -h, --help            show this help message and exit
     --verbose, -v         Verbose mode.
+    --format {pep8,pylint}, -f {pep8,pylint}
+                            Error format.
     --select SELECT, -s SELECT
                             Select errors and warnings. (comma-separated)
     --linters LINTERS, -l LINTERS
@@ -73,6 +77,10 @@ Options
                             Set mccabe complexity.
     --report REPORT, -r REPORT
                             Filename for report.
+    --hook                Install Git (Mercurial) hook.
+    --options OPTIONS, -o OPTIONS
+                            Select configuration file. By default is
+                            '<CURDIR>/pylama.ini'
 
 
 ### File modeline
@@ -96,6 +104,29 @@ Just add `# nolint` in end of line for ignore.
 
      .. Somethere in code
      x=d+34  # nolint
+
+
+### Configuration file
+
+When starting pylama try loading configuration file. By default: `<CURDIR>/pylama.ini`,
+but you set it with "-o" option.
+
+Section `main` set a global options, like `linters` and `skip`. Other sections set
+modeline options for a custom files.
+
+Example: `pylama.ini`
+
+    [main]
+    format = pylint
+    skip = */.tox/*,*/.env/*
+    linters = pylint,mccabe
+
+    [pylama/main.py]
+    lint_ignore = C901,R0914,W0212
+    lint_select = R
+
+    [setup.py]
+    lint = 0
 
 
 Bug tracker
