@@ -23,6 +23,7 @@ meta = dict(
     description=read('DESCRIPTION'),
     long_description=read('README.rst'),
     platforms=('Any'),
+    keywords='pylint pep8 pyflakes mccabe linter qa',
 
     author='Kirill Klenov',
     author_email='horneds@gmail.com',
@@ -37,16 +38,18 @@ meta = dict(
         ]
     },
     classifiers=[
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Topic :: Software Development :: Quality Assurance",
         'Development Status :: 4 - Beta',
+        'Environment :: Console',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
-        'Natural Language :: Russian',
-        'Natural Language :: English',
         'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)', # nolint
-        'Programming Language :: Python',
+        'Natural Language :: English',
+        'Natural Language :: Russian',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',
-        'Environment :: Console',
+        'Programming Language :: Python',
         'Topic :: Software Development :: Code Generators',
     ],
 
