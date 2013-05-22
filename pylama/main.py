@@ -6,20 +6,20 @@ from os import getcwd, walk, path as op
 import logging
 from argparse import ArgumentParser
 
-from . import utils
+from . import utils, version
 from .inirama import Namespace
 
 
-default_linters = 'pep8', 'pyflakes', 'mccabe'
-default_complexity = 10
-logger = logging.Logger('pylama')
-stream = logging.StreamHandler()
-logger.addHandler(stream)
+DEFAULT_LINTERS = 'pep8', 'pyflakes', 'mccabe'
+DEFAULT_COMPLEXITY = 10
+LOGGER = logging.Logger('pylama')
+STREAM = logging.StreamHandler()
+LOGGER.addHandler(STREAM)
 
 SKIP_PATTERN = '# nolint'
 
 
-def run(path, ignore=None, select=None, linters=default_linters, config=None,
+def run(path, ignore=None, select=None, linters=DEFAULT_LINTERS, config=None,
         **meta):
     errors = []
     ignore = ignore and list(ignore) or []
@@ -100,6 +100,8 @@ def shell():
                         help="Path on file or directory.")
     parser.add_argument(
         "--verbose", "-v", action='store_true', help="Verbose mode.")
+    parser.add_argument('--version', action='version',
+                        version='%(prog)s ' + version)
 
     split_csp_list = lambda s: list(set(i for i in s.split(',') if i))
 
@@ -111,7 +113,7 @@ def shell():
         type=split_csp_list,
         help="Select errors and warnings. (comma-separated)")
     parser.add_argument(
-        "--linters", "-l", default=','.join(default_linters),
+        "--linters", "-l", default=','.join(DEFAULT_LINTERS),
         type=split_csp_list,
         help="Select linters. (comma-separated)")
     parser.add_argument(
@@ -123,7 +125,7 @@ def shell():
         type=lambda s: [re.compile(fnmatch.translate(p))
                         for p in s.split(',')],
         help="Skip files by masks (comma-separated, Ex. */messages.py)")
-    parser.add_argument("--complexity", "-c", default=default_complexity,
+    parser.add_argument("--complexity", "-c", default=DEFAULT_COMPLEXITY,
                         type=int, help="Set mccabe complexity.")
     parser.add_argument("--report", "-r", help="Filename for report.")
     parser.add_argument("--hook", action="store_true",
@@ -134,21 +136,26 @@ def shell():
     options = parser.parse_args()
     actions = dict((a.dest, a) for a in parser._actions)
 
+    # Setup LOGGER
+    LOGGER.setLevel(logging.INFO if options.verbose else logging.WARN)
+    if options.report:
+        LOGGER.removeHandler(STREAM)
+        LOGGER.addHandler(logging.FileHandler(options.report, mode='w'))
+
+    # Read options from configuration file
     config = Namespace()
-    config.silent_read = False
     config.default_section = 'main'
+    LOGGER.info('Try to read configuration from: ' + options.options)
     config.read(options.options)
     for k, v in config.default.items():
         action = actions.get(k)
         if action:
-            setattr(options, action.dest, action.type(v))
+            LOGGER.info('Find option %s (%s)' % (k, v))
+            name, value = action.dest, action.type(v)\
+                if callable(action.type) else v
+            setattr(options, name, value)
 
-    # Setup logger
-    logger.setLevel(logging.INFO if options.verbose else logging.WARN)
-    if options.report:
-        logger.removeHandler(stream)
-        logger.addHandler(logging.FileHandler(options.report, mode='w'))
-
+    # Install VSC hook
     if options.hook:
         from .hook import install_hook
         return install_hook(options.path)
@@ -174,8 +181,8 @@ def shell():
 
 
 def check_files(paths, rootpath=None, skip=None, frmt="pep8",
-                select=None, ignore=None, linters=default_linters,
-                complexity=default_complexity, config=None):
+                select=None, ignore=None, linters=DEFAULT_LINTERS,
+                complexity=DEFAULT_COMPLEXITY, config=None):
     rootpath = rootpath or getcwd()
     pattern = "%(rel)s:%(lnum)s:%(col)s: %(text)s"
     if frmt == 'pylint':
@@ -188,8 +195,14 @@ def check_files(paths, rootpath=None, skip=None, frmt="pep8",
                 params[op.abspath(key)] = prepare_params(section)
 
     errors = []
-    for path in skip_paths(skip, paths):
-        logger.info("Parse file: %s" % path)
+
+    for path in paths:
+        path = op.abspath(path)
+        if any(pattern.match(path) for pattern in skip):
+            LOGGER.info('Skip path: %s' % path)
+            continue
+
+        LOGGER.info("Parse file: %s" % path)
         errors = run(path, ignore=ignore, select=select, linters=linters,
                      complexity=complexity, config=params.get(path))
         for error in errors:
@@ -197,7 +210,7 @@ def check_files(paths, rootpath=None, skip=None, frmt="pep8",
                 error['rel'] = op.relpath(
                     error['filename'], op.dirname(rootpath))
                 error['col'] = error.get('col', 1)
-                logger.warning(pattern, error)
+                LOGGER.warning(pattern, error)
             except KeyError:
                 continue
 
@@ -206,13 +219,6 @@ def check_files(paths, rootpath=None, skip=None, frmt="pep8",
 
 MODERE = re.compile(
     r'^\s*#\s+(?:pymode\:)?((?:lint[\w_]*=[^:\n\s]+:?)+)', re.I | re.M)
-
-
-def skip_paths(skip, paths):
-    for path in paths:
-        if skip and any(pattern.match(path) for pattern in skip):
-            continue
-        yield path
 
 
 def parse_modeline(code):
