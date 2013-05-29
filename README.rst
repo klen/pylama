@@ -19,6 +19,9 @@
     :target: https://crate.io/packages/pylama
     :alt: Downloads
 
+.. raw:: html
+    <iframe style="border: 0; margin: 0; padding: 0;" src="https://www.gittip.com/klen/widget.html" width="48pt" height="22pt"></iframe>
+
 Code audit tool for python. Pylama wraps these tools:
 
 * PEP8_ © 2012-2013, Florent Xicluna;
