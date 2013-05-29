@@ -14,3 +14,6 @@
     :target: https://crate.io/packages/pylama
     :alt: Downloads
 
+.. image:: https://dl.dropboxusercontent.com/u/487440/reformal/donate.png
+    :target: https://www.gittip.com/klen/
+    :alt: Donate

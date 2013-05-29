@@ -19,8 +19,9 @@
     :target: https://crate.io/packages/pylama
     :alt: Downloads
 
-.. raw:: html
-    <iframe style="border: 0; margin: 0; padding: 0;" src="https://www.gittip.com/klen/widget.html" width="48pt" height="22pt"></iframe>
+.. image:: https://dl.dropboxusercontent.com/u/487440/reformal/donate.png
+    :target: https://www.gittip.com/klen/
+    :alt: Donate
 
 Code audit tool for python. Pylama wraps these tools:
 
