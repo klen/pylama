@@ -1,9 +1,16 @@
-Pylama
-######
+|logo| Pylama
+#############
 
 .. image:: https://secure.travis-ci.org/klen/pylama.png?branch=develop
     :target: http://travis-ci.org/klen/pylama
     :alt: Build Status
+
+.. image:: https://coveralls.io/repos/klen/pylama/badge.png
+    :target: https://coveralls.io/r/klen/pylama
+
+.. image:: https://pypip.in/d/pylama/badge.png
+    :target: https://crate.io/packages/pylama
+    :alt: Downloads
 
 Code audit tool for python. Pylama wraps these tools:
 
@@ -17,7 +24,7 @@ Code audit tool for python. Pylama wraps these tools:
 
 
 Requirements:
-============
+=============
 
 * Python 2.6
 * Python 2.7
@@ -160,3 +167,4 @@ Licensed under a **GNU lesser general public license**.
 .. _PyFlakes: https://github.com/kevinw/pyflakes 
 .. _Pylint: http://pylint.org
 .. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
+.. |logo| image:: https://raw.github.com/klen/pylama/develop/logo.png
