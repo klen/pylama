@@ -7,6 +7,11 @@
 
 .. image:: https://coveralls.io/repos/klen/pylama/badge.png
     :target: https://coveralls.io/r/klen/pylama
+    :alt: Coverals
+
+.. image:: https://pypip.in/v/pylama/badge.png
+    :target: https://crate.io/packages/pylama
+    :alt: Version
 
 .. image:: https://pypip.in/d/pylama/badge.png
     :target: https://crate.io/packages/pylama
@@ -20,7 +25,7 @@ Code audit tool for python. Pylama wraps these tools:
 * Mccabe_ © Ned Batchelder;
 
 
- |  `Pylint dont supported in python3.`
+ |  `Pylint doesnt supported in python3.`
 
 
 Requirements:

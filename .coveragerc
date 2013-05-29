@@ -1,0 +1,7 @@
+[run]
+omit =
+    pylama/pyflakes/*
+    pylama/pylint/*
+    pylama/mccabe.py
+    pylama/pep8.py
+    pylama/inirama.py

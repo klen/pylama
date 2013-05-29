@@ -1,18 +1,25 @@
 language: python
 
 python:
-    - "2.6"
     - "2.7"
-    - "3.2"
-    - "3.3"
+
+env:
+    - TOXENV=py26
+    - TOXENV=py27
+    - TOXENV=py33
+    - TOXENV=cov
 
 branches:
     only:
         - master
         - develop
 
-install:
-    - "if [[ $TRAVIS_PYTHON_VERSION == '2.6' ]]; then pip install argparse; fi"
-    - "if [[ $TRAVIS_PYTHON_VERSION == '2.6' ]]; then pip install ordereddict; fi"
+install: pip install --quiet --user-mirrors tox
 
-script: make t
+script: tox
+
+after_script:
+    - if [ $TOXENV == "cov" ]; then
+        pip install --quiet --use-mirrors coveralls;
+        coveralls;
+      fi

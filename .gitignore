@@ -1,6 +1,7 @@
 *.egg-info
 *.pyc
 .DS_Store
+.coverage
 .env
 .ropeproject
 .vimrc
