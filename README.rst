@@ -7,7 +7,7 @@
     :target: http://travis-ci.org/klen/pylama
     :alt: Build Status
 
-.. image:: https://coveralls.io/repos/klen/pylama/badge.png
+.. image:: https://coveralls.io/repos/klen/pylama/badge.png?branch=develop
     :target: https://coveralls.io/r/klen/pylama
     :alt: Coverals
 
@@ -28,6 +28,8 @@ Code audit tool for python. Pylama wraps these tools:
 
 
  |  `Pylint doesnt supported in python3.`
+
+Docs are available at https://pylama.readthedocs.org/. Pull requests with documentation enhancements and/or fixes are awesome and most welcome.
 
 
 Requirements:
