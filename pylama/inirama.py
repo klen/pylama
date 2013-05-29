@@ -2,7 +2,7 @@
     Parse INI files.
 
 """
-from __future__ import unicode_literals, print_function
+from __future__ import unicode_literals, print_function, absolute_import
 
 import io
 import re
@@ -266,4 +266,4 @@ class InterpolationNamespace(Namespace):
 
     section_type = InterpolationSection
 
-# lint_ignore=W0201,R0924
+# lint_ignore=W0201,R0924,F0401
