@@ -1,10 +1,13 @@
+from __future__ import (
+    unicode_literals, print_function, absolute_import, with_statement
+)
+
 import fnmatch
+import logging
 import re
 import sys
-from os import getcwd, walk, path as op
-
-import logging
 from argparse import ArgumentParser
+from os import getcwd, walk, path as op
 
 from . import utils, version
 from .inirama import Namespace
@@ -238,3 +241,5 @@ def prepare_params(section):
 
 if __name__ == '__main__':
     shell()
+
+# lint_ignore=R0914,C901,W0212
