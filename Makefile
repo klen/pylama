@@ -24,3 +24,8 @@ t: audit
 .PHONY: audit
 audit:
 	python -m "pylama.main"
+
+.PHONY: doc
+doc: docs
+	python setup.py build_sphinx --source-dir=docs/ --build-dir=docs/_build --all-files
+	python setup.py upload_sphinx --upload-dir=docs/_build/html

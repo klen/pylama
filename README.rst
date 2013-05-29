@@ -1,9 +1,27 @@
-Pylama
-######
+|logo| Pylama
+#############
+
+.. include:: docs/badges.rst
 
 .. image:: https://secure.travis-ci.org/klen/pylama.png?branch=develop
     :target: http://travis-ci.org/klen/pylama
     :alt: Build Status
+
+.. image:: https://coveralls.io/repos/klen/pylama/badge.png?branch=develop
+    :target: https://coveralls.io/r/klen/pylama
+    :alt: Coverals
+
+.. image:: https://pypip.in/v/pylama/badge.png
+    :target: https://crate.io/packages/pylama
+    :alt: Version
+
+.. image:: https://pypip.in/d/pylama/badge.png
+    :target: https://crate.io/packages/pylama
+    :alt: Downloads
+
+.. image:: https://dl.dropboxusercontent.com/u/487440/reformal/donate.png
+    :target: https://www.gittip.com/klen/
+    :alt: Donate
 
 Code audit tool for python. Pylama wraps these tools:
 
@@ -13,11 +31,13 @@ Code audit tool for python. Pylama wraps these tools:
 * Mccabe_ © Ned Batchelder;
 
 
- |  `Pylint dont supported in python3.`
+ |  `Pylint doesnt supported in python3.`
+
+Docs are available at https://pylama.readthedocs.org/. Pull requests with documentation enhancements and/or fixes are awesome and most welcome.
 
 
 Requirements:
-============
+=============
 
 * Python 2.6
 * Python 2.7
@@ -160,3 +180,4 @@ Licensed under a **GNU lesser general public license**.
 .. _PyFlakes: https://github.com/kevinw/pyflakes 
 .. _Pylint: http://pylint.org
 .. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
+.. |logo| image:: https://raw.github.com/klen/pylama/develop/docs/_static/logo.png
