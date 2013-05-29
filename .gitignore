@@ -1,9 +1,3 @@
-*.egg-info
-*.pyc
-.DS_Store
-.coverage
-.env
-.ropeproject
 .vimrc
-_
 dist
+docs/_build

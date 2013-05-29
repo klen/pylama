@@ -1,6 +1,8 @@
 |logo| Pylama
 #############
 
+.. include:: docs/badges.rst
+
 .. image:: https://secure.travis-ci.org/klen/pylama.png?branch=develop
     :target: http://travis-ci.org/klen/pylama
     :alt: Build Status
@@ -172,4 +174,4 @@ Licensed under a **GNU lesser general public license**.
 .. _PyFlakes: https://github.com/kevinw/pyflakes 
 .. _Pylint: http://pylint.org
 .. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
-.. |logo| image:: https://raw.github.com/klen/pylama/develop/logo.png
+.. |logo| image:: https://raw.github.com/klen/pylama/develop/docs/_static/logo.png
