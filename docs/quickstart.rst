@@ -62,4 +62,10 @@ Options
     --hook                Install Git (Mercurial) hook.
     --options OPTIONS, -o OPTIONS
                             Select configuration file. By default is
-                            '<CURDIR>/pylama.ini'
+                            '*<CURDIR>/pylama.ini'
+
+
+.. _PEP8: https://github.com/jcrocholl/pep8
+.. _PyFlakes: https://github.com/kevinw/pyflakes 
+.. _Pylint: http://pylint.org
+.. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html

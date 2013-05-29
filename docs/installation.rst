@@ -11,6 +11,6 @@ Requirements
 Installation
 =============
 
-**Pylama should be installed using pip: ::
+**Pylama** should be installed using pip: ::
 
     pip install pylama
