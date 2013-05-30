@@ -25,6 +25,8 @@ Customize linters ::
     $ pylama -l "pep8,mccabe"
 
 
+.. _options:
+
 Options
 =======
 ::
