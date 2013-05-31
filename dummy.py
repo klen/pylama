@@ -1,4 +1,7 @@
+#!/usr/bin/env python
+# coding: utf-8
 # (c) 2005 Divmod, Inc.  See LICENSE file for details
+
 
 class Message(object):
     message = ''
