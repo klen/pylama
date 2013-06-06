@@ -1,6 +1,7 @@
 import unittest
 from sys import version_info
-from pylama.main import run
+
+from pylama.core import run
 
 
 class LamaTest(unittest.TestCase):

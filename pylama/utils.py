@@ -45,8 +45,6 @@ class _PEP8Report(BaseReport):
         """
         return self.errors
 
-P8Style = StyleGuide(reporter=_PEP8Report)
-
 
 def pep8(path, **meta):
     """ PEP8 code checking.
@@ -54,6 +52,7 @@ def pep8(path, **meta):
     :return list: List of errors.
 
     """
+    P8Style = StyleGuide(reporter=_PEP8Report)
     return P8Style.input_file(path)
 
 
@@ -102,9 +101,6 @@ def pylint(path, **meta):
 
     from .pylint.lint import Run
     from .pylint.reporters import BaseReporter
-
-    from .pylint.logilab.astng.builder import MANAGER
-    MANAGER.astng_cache.clear()
 
     class Reporter(BaseReporter):
 

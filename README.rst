@@ -108,7 +108,7 @@ Command line options
     --ignore IGNORE, -i IGNORE
                             Ignore errors and warnings. (comma-separated)
     --skip SKIP           Skip files by masks (comma-separated, Ex.
-                            */messages.py)
+                            */messages.py*)
     --complexity COMPLEXITY, -c COMPLEXITY
                             Set mccabe complexity.
     --report REPORT, -r REPORT
