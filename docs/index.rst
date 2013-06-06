@@ -7,13 +7,16 @@ Welcome to Pylama
 
 Welcome to Pylama's documentation.
 
-.. include:: badges.rst
+.. === description ===
+.. include:: ../README.rst
+    :start-line: 3
+    :end-line: 34
 
-.. automodule:: pylama
+:copyright: 2013 by Kirill Klenov.
+:license: BSD, see LICENSE for more details.
 
 .. include:: contents.rst
 
-.. _PEP8: https://github.com/jcrocholl/pep8
-.. _PyFlakes: https://github.com/kevinw/pyflakes 
-.. _Pylint: http://pylint.org
-.. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
+.. === other stuff ===
+.. include:: ../README.rst
+    :start-line: 160

@@ -21,13 +21,14 @@
     :target: https://www.gittip.com/klen/
     :alt: Donate
 
+
 Code audit tool for python. Pylama wraps these tools:
 
 * PEP8_ © 2012-2013, Florent Xicluna;
+* PEP257_  © 2012, GreenSteam, <http://greensteam.dk/>
 * PyFlakes_ © 2005-2013, Kevin Watters;
 * Pylint_ © 2013, Logilab;
 * Mccabe_ © Ned Batchelder;
-
 
  |  `Pylint doesnt supported in python3.`
 
@@ -45,31 +46,39 @@ Requirements:
 
 Instalation:
 ============
+**Pylama** should be installed using pip: ::
 ::
 
     $ pip install pylama
 
 
-Usage:
-======
+Quickstart
+==========
 
-Recursive check current directory. ::
+**Pylama** is easy to use and realy fun for checking code quality.
+Just run `pylama` and get common output from all pylama plugins (PEP8_, PyFlakes_ and etc)
+
+Recursive check the current directory. ::
 
     $ pylama
 
+Recursive check a path. ::
+
+    $ pylama <path_to_directory_or_file>
 
 Ignore some errors ::
 
     $ pylama -i W,E501
 
-
-Set linters ::
+Customize linters ::
 
     $ pylama -l "pep8,mccabe"
 
 
-Options
-=======
+.. _options:
+
+Command line options
+====================
 ::
 
     $ pylama --help
@@ -88,16 +97,18 @@ Options
     optional arguments:
     -h, --help            show this help message and exit
     --verbose, -v         Verbose mode.
+    --version             show program's version number and exit
     --format {pep8,pylint}, -f {pep8,pylint}
                             Error format.
     --select SELECT, -s SELECT
                             Select errors and warnings. (comma-separated)
     --linters LINTERS, -l LINTERS
-                            Select linters. (comma-separated)
+                            Select linters. (comma-separated). Choices are
+                            pep8,pep257,mccabe,pyflakes,pylint.
     --ignore IGNORE, -i IGNORE
                             Ignore errors and warnings. (comma-separated)
     --skip SKIP           Skip files by masks (comma-separated, Ex.
-                            */messages.py,*/.env)
+                            */messages.py*)
     --complexity COMPLEXITY, -c COMPLEXITY
                             Set mccabe complexity.
     --report REPORT, -r REPORT
@@ -108,24 +119,27 @@ Options
                             '<CURDIR>/pylama.ini'
 
 
+.. _modeline:
+
 File modeline
--------------
+=============
 
-You can to set options for pylama inside the file. ::
+You can set :ref:`options` for **Pylama** inside a source files.
 
+::
 
      .. Somethere in code
      # lint_ignore=W:lint_select=W301
 
 
-For disable pylama in current file: ::
+Disable code checking for current file: ::
 
      .. Somethere in code
      # lint=0
 
 
 Skip lines
-----------
+==========
 
 Just add `# nolint` in end of line for ignore. ::
 
@@ -133,14 +147,16 @@ Just add `# nolint` in end of line for ignore. ::
      x=d+34  # nolint
 
 
-Configuration file
-------------------
+.. _config:
 
-When starting pylama try loading configuration file. By default: `<CURDIR>/pylama.ini`,
+Configuration file
+==================
+
+When starting **Pylama** try loading configuration file. By default: `<CURDIR>/pylama.ini`,
 but you set it with "-o" option.
 
-Section `main` set a global options, like `linters` and `skip`. Other sections set
-modeline options for a custom files.
+Section `main` contains a global options (see :ref:`options`), like `linters` and `skip`. Other sections could set
+:ref:`modeline` for a custom files.
 
 Example: `pylama.ini` ::
 
@@ -166,15 +182,25 @@ If you have any suggestions, bug reports or annoyances please report them to the
 Contributing
 ------------
 
-Development of adrest happens at github: https://github.com/klen/adrest
+Development of adrest happens at github: https://github.com/klen/pylama
+
+
+Contributors
+^^^^^^^^^^^^
+
+* klen_ (Kirill Klenov)
 
 
 License
 -------
 
-Licensed under a **GNU lesser general public license**.
+Licensed under a `BSD license`_.
 
+
+.. _klen: http://klen.github.io/
+.. _BSD license: http://www.linfo.org/bsdlicense.html
 .. _PEP8: https://github.com/jcrocholl/pep8
+.. _PEP257: https://github.com/GreenSteam/pep257
 .. _PyFlakes: https://github.com/kevinw/pyflakes 
 .. _Pylint: http://pylint.org
 .. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html

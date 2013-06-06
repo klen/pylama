@@ -2,15 +2,6 @@
 
 .. contents::
 
-Requirements
-=============
-
-- python (2.6, 2.7, 3.2, 3.3)
-
-
-Installation
-=============
-
-**Pylama** should be installed using pip: ::
-
-    pip install pylama
+.. include:: ../README.rst
+    :start-line: 36
+    :end-line: 54

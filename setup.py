@@ -23,7 +23,7 @@ meta = dict(
     description=read('DESCRIPTION'),
     long_description=read('README.rst'),
     platforms=('Any'),
-    keywords='pylint pep8 pyflakes mccabe linter qa',
+    keywords='pylint pep8 pyflakes mccabe linter qa pep257',
 
     author='Kirill Klenov',
     author_email='horneds@gmail.com',

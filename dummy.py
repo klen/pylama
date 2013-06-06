@@ -21,7 +21,6 @@ class UnusedImport(Message):
     def __init__(self, filename, lineno, name):
         Message.__init__(self, filename, lineno)
         self.message_args = (name,)
-        print 'Hello!'
 
 
 class RedefinedWhileUnused(Message):
