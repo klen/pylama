@@ -13,10 +13,14 @@ from __future__ import unicode_literals, print_function
 import io
 import re
 import logging
-from collections import OrderedDict, MutableMapping
+from collections import MutableMapping
+try:
+    from collections import OrderedDict
+except ImportError:
+    from ordereddict import OrderedDict
 
 
-__version__ = '0.3.0'
+__version__ = '0.4.0'
 __project__ = 'Inirama'
 __author__ = "Kirill Klenov <horneds@gmail.com>"
 __license__ = "BSD"

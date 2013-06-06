@@ -1,3 +1,5 @@
+""" Pylama core.
+"""
 from __future__ import absolute_import, with_statement
 
 import fnmatch
@@ -22,6 +24,11 @@ SKIP_PATTERN = '# nolint'
 
 def run(path, ignore=None, select=None, linters=DEFAULT_LINTERS, config=None,
         **meta):
+    """ Run code checking.
+
+    :return errors: list of dictionaries with error's information
+
+    """
     errors = []
     ignore = ignore and list(ignore) or []
     select = select and list(select) or []
@@ -95,6 +102,7 @@ def _ignore_error(e, select, ignore):
 
 
 def shell():
+    """ Endpoint for console. """
     curdir = getcwd()
     parser = ArgumentParser(description="Code audit tool for python.")
     parser.add_argument("path", nargs='?', default=curdir,
@@ -162,31 +170,34 @@ def shell():
     # Install VSC hook
     if options.hook:
         from .hook import install_hook
-        return install_hook(options.path)
+        install_hook(options.path)
 
-    paths = [options.path]
+    else:
 
-    if op.isdir(options.path):
-        paths = []
-        for root, _, files in walk(options.path):
-            paths += [op.join(root, f) for f in files if f.endswith('.py')]
+        paths = [options.path]
 
-    check_files(
-        paths,
-        rootpath=options.path,
-        skip=options.skip,
-        frmt=options.format,
-        ignore=options.ignore,
-        select=options.select,
-        linters=options.linters,
-        complexity=options.complexity,
-        config=config,
-    )
+        if op.isdir(options.path):
+            paths = []
+            for root, _, files in walk(options.path):
+                paths += [op.join(root, f) for f in files if f.endswith('.py')]
+
+        check_files(
+            paths,
+            rootpath=options.path,
+            skip=options.skip,
+            frmt=options.format,
+            ignore=options.ignore,
+            select=options.select,
+            linters=options.linters,
+            complexity=options.complexity,
+            config=config,
+        )
 
 
 def check_files(paths, rootpath=None, skip=None, frmt="pep8",
                 select=None, ignore=None, linters=DEFAULT_LINTERS,
                 complexity=DEFAULT_COMPLEXITY, config=None):
+    """ Check files. """
     rootpath = rootpath or getcwd()
     pattern = "%(rel)s:%(lnum)s:%(col)s: %(text)s"
     if frmt == 'pylint':
@@ -226,6 +237,11 @@ MODERE = re.compile(
 
 
 def parse_modeline(code):
+    """ Parse modeline params from file.
+
+    :return dict: Linter params.
+
+    """
     seek = MODERE.search(code)
     params = dict(lint=1)
     if seek:
@@ -235,6 +251,11 @@ def parse_modeline(code):
 
 
 def prepare_params(section):
+    """ Parse modeline params from configuration.
+
+    :return dict: Linter params.
+
+    """
     params = dict(section)
     params['lint'] = int(params.get('lint', 1))
     return params
