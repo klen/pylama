@@ -1,9 +1,12 @@
 """ Async code checking.
 """
-import Queue
 import logging
 import threading
 from os import path as op
+try:
+    import Queue
+except ImportError:
+    import queue as Queue
 
 from .core import run
 
