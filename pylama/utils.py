@@ -101,6 +101,9 @@ def pylint(path, **meta):
 
     from .pylint.lint import Run
     from .pylint.reporters import BaseReporter
+    from .pylint.logilab.astng import MANAGER
+
+    MANAGER.astng_cache.clear()
 
     class Reporter(BaseReporter):
 
