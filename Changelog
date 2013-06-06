@@ -1,3 +1,9 @@
+2013-06-07  horneds
+
+	* Version 1.0.3
+	* Added PEP257 checker
+	* Experemental async support
+
 2013-05-31  horneds
 
 	* Version 1.0.2
