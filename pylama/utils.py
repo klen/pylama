@@ -3,12 +3,10 @@ from __future__ import absolute_import, with_statement
 import _ast
 from os import path as op, environ
 
-from .mccabe import get_code_complexity
 from .pep8 import BaseReport, StyleGuide
-from .pyflakes import checker
 
 
-__all__ = 'pep8', 'mccabe', 'pyflakes', 'pylint'
+__all__ = 'pep8', 'pep257', 'mccabe', 'pyflakes', 'pylint'
 
 PYLINT_RC = op.abspath(op.join(op.dirname(__file__), 'pylint.rc'))
 
@@ -48,13 +46,17 @@ def pep8(path, **meta):
 
 
 def mccabe(path, code=None, complexity=8, **meta):
-    " MCCabe code checking. "
+    """ MCCabe code checking.
+    """
+    from .mccabe import get_code_complexity
 
     return get_code_complexity(code, complexity, filename=path) or []
 
 
 def pyflakes(path, code=None, **meta):
-    " PyFlakes code checking. "
+    """ Pyflakes code checking.
+    """
+    from .pyflakes import checker
 
     errors = []
     tree = compile(code, path, "exec", _ast.PyCF_ONLY_AST)
@@ -108,5 +110,21 @@ def pylint(path, **meta):
     runner = Run(
         [path] + attrs, reporter=Reporter(), exit=False)
     return runner.linter.reporter.errors
+
+
+def pep257(path, **meta):
+    f = open(path)
+    from .pep257 import check_source
+
+    errors = []
+    for er in check_source(f.read(), path):
+        errors.append(dict(
+            lnum=er.line,
+            col=er.char,
+            text=er.explanation.split('\n')[0].strip(),
+            type='C0110',
+        ))
+    return errors
+
 
 # pymode:lint_ignore=W0231

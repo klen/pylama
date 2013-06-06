@@ -116,7 +116,10 @@ def shell():
     parser.add_argument(
         "--linters", "-l", default=','.join(DEFAULT_LINTERS),
         type=split_csp_list,
-        help="Select linters. (comma-separated)")
+        help=(
+            "Select linters. (comma-separated). Choices are %s."
+            % ','.join(s for s in utils.__all__)
+        ))
     parser.add_argument(
         "--ignore", "-i", default='',
         type=split_csp_list,
@@ -239,5 +242,3 @@ def prepare_params(section):
 
 if __name__ == '__main__':
     shell()
-
-# lint_ignore=R0914,C901,W0212
