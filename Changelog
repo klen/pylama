@@ -1,6 +1,10 @@
-2013-06-17  horneds
+2013-06-20  horneds
 
 	* Version 1.1.0
+	* File's sections in `pylama.ini` now supports a filemasks
+
+2013-06-17  horneds
+
 	* WARNING: Change skipline pattern 'nolint' -> 'noqa' for better
 	  compatibility
 

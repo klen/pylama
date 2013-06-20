@@ -83,7 +83,7 @@ def run(path, ignore=None, select=None, linters=DEFAULT_LINTERS, config=None,
 
     except Exception:
         import traceback
-        logging.error(traceback.format_exc())
+        logging.debug(traceback.format_exc())
 
     errors = [er for er in errors if __ignore_error(er, select, ignore)]
     return sorted(errors, key=lambda x: x['lnum'])
