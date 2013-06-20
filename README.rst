@@ -1,11 +1,25 @@
 |logo| Pylama
 #############
 
+.. _description:
+
+Code audit tool for python. Pylama wraps these tools:
+
+* PEP8_ © 2012-2013, Florent Xicluna;
+* PEP257_  © 2012, GreenSteam, <http://greensteam.dk/>
+* PyFlakes_ © 2005-2013, Kevin Watters;
+* Pylint_ © 2013, Logilab;
+* Mccabe_ © Ned Batchelder;
+
+ |  `Pylint doesnt supported in python3.`
+
+.. _badges:
+
 .. image:: https://secure.travis-ci.org/klen/pylama.png?branch=develop
     :target: http://travis-ci.org/klen/pylama
     :alt: Build Status
 
-.. image:: https://coveralls.io/repos/klen/pylama/badge.png?branch=develop
+.. image:: https://coveralls.io/repos/klen/pylama/badge.png
     :target: https://coveralls.io/r/klen/pylama
     :alt: Coverals
 
@@ -22,27 +36,25 @@
     :alt: Donate
 
 
-Code audit tool for python. Pylama wraps these tools:
-
-* PEP8_ © 2012-2013, Florent Xicluna;
-* PEP257_  © 2012, GreenSteam, <http://greensteam.dk/>
-* PyFlakes_ © 2005-2013, Kevin Watters;
-* Pylint_ © 2013, Logilab;
-* Mccabe_ © Ned Batchelder;
-
- |  `Pylint doesnt supported in python3.`
+.. _documentation:
 
 Docs are available at https://pylama.readthedocs.org/. Pull requests with documentation enhancements and/or fixes are awesome and most welcome.
 
 
+.. _contents:
+
+.. contents::
+
+
+.. _requirements:
+
 Requirements:
 =============
 
-* Python 2.6
-* Python 2.7
-* Python 3.2
-* Python 3.3
+- Python (2.6, 2.7, 3.2, 3.3)
 
+
+.. _installation:
 
 Instalation:
 ============
@@ -51,6 +63,8 @@ Instalation:
 
     $ pip install pylama
 
+
+.. _quickstart:
 
 Quickstart
 ==========
@@ -138,13 +152,15 @@ Disable code checking for current file: ::
      # lint=0
 
 
+.. _skiplines:
+
 Skip lines
 ==========
 
-Just add `# nolint` in end of line for ignore. ::
+Just add `# noqa` in end of line for ignore. ::
 
      .. Somethere in code
-     x=d+34  # nolint
+     x=d+34  # noqa
 
 
 .. _config:
@@ -155,8 +171,9 @@ Configuration file
 When starting **Pylama** try loading configuration file. By default: `<CURDIR>/pylama.ini`,
 but you set it with "-o" option.
 
-Section `main` contains a global options (see :ref:`options`), like `linters` and `skip`. Other sections could set
-:ref:`modeline` for a custom files.
+Section `main` contains a global options (see :ref:`options`), like `linters` and `skip`.
+
+Other sections could set :ref:`modeline` for a custom files by filepath mask.
 
 Example: `pylama.ini` ::
 
@@ -165,13 +182,17 @@ Example: `pylama.ini` ::
     skip = */.tox/*,*/.env/*
     linters = pylint,mccabe
 
-    [pylama/main.py]
+    [*/pylama/main.py]
     lint_ignore = C901,R0914,W0212
     lint_select = R
 
-    [setup.py]
+    [*/tests.py]
+    lint_ignore = C0110
+
+    [*/setup.py]
     lint = 0
 
+.. _bagtracker:
 
 Bug tracker
 -----------
@@ -179,11 +200,15 @@ Bug tracker
 If you have any suggestions, bug reports or annoyances please report them to the issue tracker at https://github.com/klen/pylama/issues
 
 
+.. _contributing:
+
 Contributing
 ------------
 
 Development of adrest happens at github: https://github.com/klen/pylama
 
+
+.. _contributors:
 
 Contributors
 ^^^^^^^^^^^^
@@ -191,11 +216,15 @@ Contributors
 * klen_ (Kirill Klenov)
 
 
+.. _license:
+
 License
 -------
 
 Licensed under a `BSD license`_.
 
+
+.. _links:
 
 .. _klen: http://klen.github.io/
 .. _BSD license: http://www.linfo.org/bsdlicense.html

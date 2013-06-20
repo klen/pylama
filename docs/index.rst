@@ -9,14 +9,14 @@ Welcome to Pylama's documentation.
 
 .. === description ===
 .. include:: ../README.rst
-    :start-line: 3
-    :end-line: 34
+    :start-after: .. _description:
+    :end-before: .. _documentation:
 
 :copyright: 2013 by Kirill Klenov.
 :license: BSD, see LICENSE for more details.
 
-.. include:: contents.rst
+.. contents::
 
-.. === other stuff ===
 .. include:: ../README.rst
-    :start-line: 160
+    :start-after: .. _requirements:
+

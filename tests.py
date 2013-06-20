@@ -34,7 +34,7 @@ class LamaTest(unittest.TestCase):
     def test_pylint(self):
         # test pylint
         if version_info < (3, 0):
-            errors = run('pylama/pylint/utils.py', linters=['pylint'])
+            errors = run('pylama/checkers/pylint/utils.py', linters=['pylint'])
             self.assertEqual(len(errors), 14)
 
     @staticmethod
@@ -45,3 +45,5 @@ class LamaTest(unittest.TestCase):
             raise AssertionError('Test failed.')
         except SystemExit:
             pass
+
+# lint_ignore=C0110

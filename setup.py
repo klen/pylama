@@ -1,3 +1,4 @@
+""" Setup pylama installation. """
 #!/usr/bin/env python
 from os import path as op
 from sys import version_info
@@ -23,7 +24,7 @@ meta = dict(
     description=read('DESCRIPTION'),
     long_description=read('README.rst'),
     platforms=('Any'),
-    keywords='pylint pep8 pyflakes mccabe linter qa pep257',
+    keywords='pylint pep8 pyflakes mccabe linter qa pep257'.split(),
 
     author='Kirill Klenov',
     author_email='horneds@gmail.com',
