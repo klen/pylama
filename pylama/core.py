@@ -1,4 +1,4 @@
-""" Pylama core.
+""" Pylama core functionality. Get params and runs a checkers.
 """
 import logging
 import re
@@ -10,7 +10,7 @@ DEFAULT_LINTERS = 'pep8', 'pyflakes', 'mccabe'
 LOGGER = logging.getLogger('pylama')
 MODERE = re.compile(r'^\s*#\s+(?:pymode\:)?((?:lint[\w_]*=[^:\n\s]+:?)+)',
                     re.I | re.M)
-SKIP_PATTERN = '# nolint'
+SKIP_PATTERN = '# noqa'
 STREAM = logging.StreamHandler()
 
 LOGGER.addHandler(STREAM)
@@ -32,6 +32,7 @@ def run(path, ignore=None, select=None, linters=DEFAULT_LINTERS, config=None,
             code = f.read() + '\n\n'
             params = config or __parse_modeline(code)
             params['skip'] = [False]
+
             for line in code.split('\n'):
                 params['skip'].append(line.endswith(SKIP_PATTERN))
 

@@ -141,10 +141,10 @@ Disable code checking for current file: ::
 Skip lines
 ==========
 
-Just add `# nolint` in end of line for ignore. ::
+Just add `# noqa` in end of line for ignore. ::
 
      .. Somethere in code
-     x=d+34  # nolint
+     x=d+34  # noqa
 
 
 .. _config:
