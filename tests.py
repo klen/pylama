@@ -2,6 +2,8 @@ import unittest
 from sys import version_info
 
 from pylama.core import run
+from pylama.tasks import check_path, async_check_files
+from pylama.main import shell
 
 
 class LamaTest(unittest.TestCase):
@@ -36,6 +38,19 @@ class LamaTest(unittest.TestCase):
         if version_info < (3, 0):
             errors = run('pylama/checkers/pylint/utils.py', linters=['pylint'])
             self.assertEqual(len(errors), 14)
+
+    def test_checkpath(self):
+        errors = check_path('dummy.py', linters=['pep8'])
+        self.assertTrue(errors)
+        self.assertEqual(errors[0]['rel'], 'dummy.py')
+
+    def test_async(self):
+        errors = async_check_files(['dummy.py'], async=True, linters=['pep8'])
+        self.assertTrue(errors)
+
+    def test_shell(self):
+        errors = shell('-o dummy dummy.py'.split(), error=False)
+        self.assertTrue(errors)
 
     @staticmethod
     def test_git_hook():
