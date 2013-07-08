@@ -49,7 +49,7 @@ class LamaCoreTest(unittest.TestCase):
 class LamaTest(unittest.TestCase):
 
     def test_lama(self):
-        errors = run('dummy.py')
+        errors = run('dummy.py', ignore=set(['M234']), config=dict(lint=1))
         self.assertEqual(len(errors), 3)
 
     def test_pyflakes(self):
