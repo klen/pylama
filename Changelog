@@ -1,3 +1,7 @@
+2013-07-08  horneds
+
+	* Merge settings from command lines, ini files and modelines
+
 2013-07-03  horneds
 
 	* PEP8 1.4.6

@@ -3,13 +3,52 @@ from sys import version_info
 
 from pylama.core import run
 from pylama.tasks import check_path, async_check_files
-from pylama.main import shell
+
+
+class LamaCoreTest(unittest.TestCase):
+
+    def test_filters(self):
+        from pylama.core import filter_errors
+
+        self.assertTrue(filter_errors(
+            dict(text='E'), select=['E'], ignore=['E101']
+        ))
+
+        self.assertFalse(filter_errors(
+            dict(text='W'), select=['W100'], ignore=['W']
+        ))
+
+    def test_parse_modeline(self):
+        from pylama.core import parse_modeline
+
+        code = """
+            bla bla bla
+
+            # lint_ignore=W12,E14:lint_select=R
+        """
+
+        params = parse_modeline(code)
+        self.assertEqual(params, dict(
+            lint_ignore='W12,E14', lint_select='R'
+        ))
+
+    def test_prepare_params(self):
+        from pylama.core import prepare_params
+
+        p1 = dict(lint_ignore='W', select='R01', lint=1)
+        p2 = dict(lint=0, lint_ignore='E34,R45', select='E')
+        params = prepare_params(p1, p2)
+
+        self.assertEqual(
+            params,
+            {
+                'ignore': set(['R45', 'E34', 'W']), 'skip': [False], 'lint': 0,
+                'select': set(['R01', 'E'])})
 
 
 class LamaTest(unittest.TestCase):
 
     def test_lama(self):
-
         errors = run('dummy.py')
         self.assertEqual(len(errors), 3)
 
@@ -49,7 +88,15 @@ class LamaTest(unittest.TestCase):
         self.assertTrue(errors)
 
     def test_shell(self):
+        from pylama.main import shell, prepare_params, check_files
+
         errors = shell('-o dummy dummy.py'.split(), error=False)
+        self.assertTrue(errors)
+
+        params = prepare_params(dict(lint='0'))
+        self.assertFalse(params['lint'])
+
+        errors = check_files(['dummy.py'], error=False)
         self.assertTrue(errors)
 
     @staticmethod
@@ -61,4 +108,11 @@ class LamaTest(unittest.TestCase):
         except SystemExit:
             pass
 
-# lint_ignore=C0110
+    @staticmethod
+    def test_hg_hook():
+        from pylama.hook import hg_hook
+        try:
+            hg_hook(None, dict())
+            raise AssertionError('Test failed.')
+        except SystemExit:
+            pass
