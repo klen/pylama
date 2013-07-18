@@ -1,4 +1,4 @@
-""" Pylama shell integration.
+""" Pylama's shell support.
 """
 from __future__ import absolute_import, with_statement
 
@@ -19,11 +19,14 @@ DEFAULT_COMPLEXITY = 10
 def shell(args=None, error=True):
     """ Endpoint for console.
 
+    Parse a command arguments, configuration files and run a checkers.
+
     :return list: list of errors
     :raise SystemExit:
 
     """
     curdir = getcwd()
+
     if args is None:
         args = sys.argv[1:]
 
