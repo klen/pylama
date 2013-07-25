@@ -3,6 +3,7 @@ from sys import version_info
 
 from pylama.core import run
 from pylama.tasks import check_path, async_check_files
+from pylama.config import parse_options
 
 
 class LamaCoreTest(unittest.TestCase):
@@ -79,24 +80,26 @@ class LamaTest(unittest.TestCase):
             self.assertEqual(len(errors), 14)
 
     def test_checkpath(self):
-        errors = check_path('dummy.py', linters=['pep8'])
+        options = parse_options(linters=['pep8'])
+        errors = check_path('dummy.py', options)
+
         self.assertTrue(errors)
         self.assertEqual(errors[0]['rel'], 'dummy.py')
 
     def test_async(self):
-        errors = async_check_files(['dummy.py'], async=True, linters=['pep8'])
+        options = parse_options(async=True, linters=['pep8'])
+        errors = async_check_files(['dummy.py'], options)
+
         self.assertTrue(errors)
 
     def test_shell(self):
-        from pylama.main import shell, prepare_params, check_files
+        from pylama.main import shell, check_files
 
         errors = shell('-o dummy dummy.py'.split(), error=False)
         self.assertTrue(errors)
 
-        params = prepare_params(dict(lint='0'))
-        self.assertFalse(params['lint'])
-
-        errors = check_files(['dummy.py'], error=False)
+        options = parse_options()
+        errors = check_files(['dummy.py'], options=options, error=False)
         self.assertTrue(errors)
 
     @staticmethod
@@ -116,3 +119,26 @@ class LamaTest(unittest.TestCase):
             raise AssertionError('Test failed.')
         except SystemExit:
             pass
+
+    def test_config(self):
+        from pylama.config import get_parser, get_config
+
+        parser = get_parser()
+        self.assertTrue(parser)
+
+        config = get_config()
+        self.assertTrue(config)
+
+        options = parse_options()
+        self.assertTrue(options)
+        self.assertTrue(options.skip)
+        self.assertEqual(options.path, 'pylama')
+
+        options = parse_options(['-l', 'pep257,pep8', '-i', 'E'])
+        self.assertEqual(options.linters, ['pep257', 'pep8'])
+        self.assertEqual(options.ignore, ['E'])
+
+        options = parse_options('-o dummy dummy.py'.split())
+        self.assertEqual(
+            set(options.linters), set(['pep8', 'mccabe', 'pyflakes']))
+        self.assertEqual(options.skip, [])
