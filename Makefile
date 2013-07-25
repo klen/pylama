@@ -18,8 +18,7 @@ upload:
 	python setup.py sdist upload || echo 'Upload already'
 
 .PHONY: t
-# t: audit
-t:
+t: audit
 	python setup.py test
 
 .PHONY: audit
