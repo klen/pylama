@@ -31,6 +31,7 @@ def run(path, ignore=None, select=None, linters=DEFAULT_LINTERS, config=None,
 
     """
     errors = []
+    params = dict(ignore=ignore, select=select)
 
     try:
         with open(path, 'rU') as f:
