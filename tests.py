@@ -135,7 +135,7 @@ class LamaTest(unittest.TestCase):
         self.assertEqual(options.path, 'pylama')
 
         options = parse_options(['-l', 'pep257,pep8', '-i', 'E'])
-        self.assertEqual(options.linters, ['pep257', 'pep8'])
+        self.assertEqual(set(options.linters), set(['pep257', 'pep8']))
         self.assertEqual(options.ignore, ['E'])
 
         options = parse_options('-o dummy dummy.py'.split())
