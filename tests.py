@@ -80,7 +80,7 @@ class LamaTest(unittest.TestCase):
         # test pylint
         if version_info < (3, 0):
             errors = run('pylama/checkers/pylint/utils.py', linters=['pylint'])
-            self.assertEqual(len(errors), 14)
+            self.assertEqual(len(errors), 16)
 
     def test_checkpath(self):
         options = parse_options(linters=['pep8'])

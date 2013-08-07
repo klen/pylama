@@ -114,4 +114,4 @@ def install_hook(path):
         LOGGER.error('VCS has not found. Check your path.')
         sys.exit(1)
 
-# lint_ignore=F0401
+# lint_ignore=F0401,E1103

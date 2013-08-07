@@ -101,9 +101,9 @@ def pylint(path, **meta):
 
     from .checkers.pylint.lint import Run
     from .checkers.pylint.reporters import BaseReporter
-    from .checkers.pylint.logilab.astng import MANAGER
+    from .checkers.pylint.astroid import MANAGER
 
-    MANAGER.astng_cache.clear()
+    MANAGER.astroid_cache.clear()
 
     class Reporter(BaseReporter):
 
