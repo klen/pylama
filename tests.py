@@ -43,8 +43,11 @@ class LamaCoreTest(unittest.TestCase):
         self.assertEqual(
             params,
             {
-                'ignore': set(['R45', 'E34', 'W']), 'skip': [False], 'lint': 0,
-                'select': set(['R01', 'E'])})
+                'ignore': set(['R45', 'E34', 'W']),
+                'select': set(['R01', 'E']),
+                'lint': 0,
+            }
+        )
 
 
 class LamaTest(unittest.TestCase):
