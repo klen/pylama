@@ -1,3 +1,10 @@
+2013-08-07  horneds
+
+	* Version 1.4.0
+	* Pylint 1.0.0
+	* Pep257 0.2.3
+	* mccabe 0.2.1
+
 2013-07-25  horneds
 
 	* Version 1.3.3
