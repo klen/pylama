@@ -1,5 +1,4 @@
-""" SCM hooks. Integration with git and mercurial.
-"""
+""" SCM hooks. Integration with git and mercurial. """
 from __future__ import absolute_import
 
 import sys

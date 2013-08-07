@@ -1,5 +1,7 @@
-""" Pylama's core functionality. Prepare params, check a modeline and run the
-    checkers.
+""" Pylama's core functionality.
+
+Prepare params, check a modeline and run the checkers.
+
 """
 import logging
 import re

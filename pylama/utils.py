@@ -1,5 +1,4 @@
-""" Interfaces for code checking.
-"""
+""" Interfaces for code checking. """
 from __future__ import absolute_import, with_statement
 
 import _ast
