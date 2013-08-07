@@ -107,3 +107,4 @@ class UnusedVariable(Message):
     def __init__(self, filename, lineno, names):
         Message.__init__(self, filename, lineno)
         self.message_args = (names,)
+        error = 1 # noQa and some comments
