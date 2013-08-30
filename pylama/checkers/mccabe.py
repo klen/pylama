@@ -269,7 +269,6 @@ def get_code_complexity(code, threshold=7, filename='stdin'):
 
     if len(complx) == 0:
         return 0
-    print('\n'.join(complx))
     return len(complx)
 
 
