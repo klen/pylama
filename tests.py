@@ -56,6 +56,11 @@ class LamaTest(unittest.TestCase):
         errors = run('dummy.py', ignore=set(['M234']), config=dict(lint=1))
         self.assertEqual(len(errors), 3)
 
+    def test_mccabe(self):
+        from pylama.utils import mccabe
+        errors = mccabe('dummy.py', '')
+        self.assertEqual(errors, [])
+
     def test_pyflakes(self):
         errors = run('dummy.py', linters=['pyflakes'])
         self.assertFalse(errors)
