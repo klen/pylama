@@ -1,6 +1,6 @@
-2013-08-29  horneds
+2013-08-30  horneds
 
-	* Version 1.5.0
+	* Version 1.5.1
 	* Remove ordereddict requirement for python 2.6
 	* pep257 0.2.4
 	* pep8 1.4.7a0
