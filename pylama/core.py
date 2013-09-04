@@ -66,13 +66,12 @@ def run(path, ignore=None, select=None, linters=DEFAULT_LINTERS, config=None,
 
     except IOError as e:
         errors.append(dict(
-            lnum=0, type='E', col=0, text=str(e)
-        ))
+            lnum=0, type='E', col=0, text=str(e), filename=path or ''))
 
     except SyntaxError as e:
         errors.append(dict(
             lnum=e.lineno or 0, type='E', col=e.offset or 0,
-            text=e.args[0] + ' [%s]' % lint
+            text=e.args[0] + ' [%s]' % lint, filename=path or ''
         ))
 
     except Exception:
@@ -85,6 +84,7 @@ def run(path, ignore=None, select=None, linters=DEFAULT_LINTERS, config=None,
         errors = filter_skiplines(code, errors)
 
     return sorted(errors, key=lambda x: x['lnum'])
+
 
 def parse_modeline(code):
     """ Parse params from file's modeline.

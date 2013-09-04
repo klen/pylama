@@ -110,6 +110,9 @@ class LamaTest(unittest.TestCase):
         errors = check_files(['dummy.py'], options=options, error=False)
         self.assertTrue(errors)
 
+        errors = shell(['unknown.py'], error=False)
+        self.assertTrue(errors)
+
     @staticmethod
     def test_git_hook():
         from pylama.hook import git_hook
