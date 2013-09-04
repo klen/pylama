@@ -34,7 +34,7 @@ def run(path, ignore=None, select=None, linters=DEFAULT_LINTERS, config=None,
     """
     errors = []
     params = dict(ignore=ignore, select=select)
-
+    code = None
     try:
         with open(path, 'rU') as f:
             code = f.read() + '\n\n'
@@ -80,10 +80,11 @@ def run(path, ignore=None, select=None, linters=DEFAULT_LINTERS, config=None,
         logging.debug(traceback.format_exc())
 
     errors = [er for er in errors if filter_errors(er, **params)]
-    errors = filter_skiplines(code, errors)
+
+    if code:
+        errors = filter_skiplines(code, errors)
 
     return sorted(errors, key=lambda x: x['lnum'])
-
 
 def parse_modeline(code):
     """ Parse params from file's modeline.
