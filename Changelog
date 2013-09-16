@@ -1,3 +1,8 @@
+2013-09-16  horneds
+
+	* Version 1.5.4
+	* fix default liners value for parsing options (c) Grzegorz Śliwiński
+
 2013-09-05  horneds
 
 	* Version 1.5.3
