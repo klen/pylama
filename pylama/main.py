@@ -27,6 +27,12 @@ def shell(args=None, error=True):
     setup_logger(options)
     LOGGER.info(options)
 
+    # if gjslint used - extend scope of files detection by *.js suffix
+    # '.py' is always present due to core purpose of pylama
+    file_extensions = ['.py']
+    if 'gjslint' in options.linters:
+        file_extensions.append('.js')
+
     # Install VSC hook
     if options.hook:
         from .hook import install_hook
@@ -39,7 +45,7 @@ def shell(args=None, error=True):
         for root, _, files in walk(options.path):
             paths += [
                 op.relpath(op.join(root, f), CURDIR)
-                for f in files if f.endswith('.py')]
+                for f in files if any(f.endswith(x) for x in file_extensions)]
 
     return check_files(paths, options, error=error)
 
