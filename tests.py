@@ -1,5 +1,5 @@
 import unittest
-from sys import version_info
+from sys import version_info, platform
 
 from pylama.core import run
 from pylama.tasks import check_path, async_check_files
@@ -49,6 +49,42 @@ class LamaCoreTest(unittest.TestCase):
             }
         )
 
+    def test_is_code_relevant_for_linter(self):
+        from pylama.core import is_code_relevant_for_linter
+
+        is_relevant = is_code_relevant_for_linter('foo.py', 'pep8')
+        self.assertTrue(is_relevant)
+
+        is_relevant = is_code_relevant_for_linter('foo.py', 'pylint')
+        self.assertTrue(is_relevant)
+
+        is_relevant = is_code_relevant_for_linter('foo.js', 'pylint')
+        self.assertFalse(is_relevant)
+
+        is_relevant = is_code_relevant_for_linter('foo.py', 'gjslint')
+        self.assertFalse(is_relevant)
+
+        is_relevant = is_code_relevant_for_linter('foo.js', 'gjslint')
+        self.assertTrue(is_relevant)
+
+
+class LamaJsTest(unittest.TestCase):
+
+    def test_gjslint(self):
+        args = {'path': 'dummy.js', 'linters': ['gjslint']}
+        errors = run(**args)
+        self.assertEqual(len(errors), 1231)
+
+    def test_ignore_gjslint(self):
+        args = {'path': 'dummy.js', 'linters': ['gjslint'], 'ignore': ['E:0010']}
+        errors = run(**args)
+        self.assertEqual(len(errors), 584)
+
+    def test_select_gjslint(self):
+        args = {'path': 'dummy.js', 'linters': ['gjslint'], 'select': ['E:0001']}
+        errors = run(**args)
+        self.assertEqual(len(errors), 1231)
+
 
 class LamaTest(unittest.TestCase):
 
@@ -84,7 +120,13 @@ class LamaTest(unittest.TestCase):
     def test_pylint(self):
         # test pylint
         if version_info < (3, 0):
-            errors = run('pylama/checkers/pylint/utils.py', linters=['pylint'])
+            args = {
+                'path': 'pylama/checkers/pylint/utils.py',
+                'linters': ['pylint']}
+            if platform.startswith('win'):
+                # trailing whitespace is handled differently on win platforms
+                args.update({'ignore': ['C0303']})
+            errors = run(**args)
             self.assertEqual(len(errors), 16)
 
     def test_checkpath(self):
@@ -148,6 +190,10 @@ class LamaTest(unittest.TestCase):
         options = parse_options(['-l', 'pep257,pep8', '-i', 'E'])
         self.assertEqual(set(options.linters), set(['pep257', 'pep8']))
         self.assertEqual(options.ignore, ['E'])
+
+        options = parse_options(['-l', 'gjslint,pep8', '-i', 'E:0010'])
+        self.assertEqual(set(options.linters), set(['gjslint', 'pep8']))
+        self.assertEqual(options.ignore, ['E:0010'])
 
         options = parse_options('-o dummy dummy.py'.split())
         self.assertEqual(
