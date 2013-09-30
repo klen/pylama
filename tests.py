@@ -71,19 +71,22 @@ class LamaCoreTest(unittest.TestCase):
 class LamaJsTest(unittest.TestCase):
 
     def test_gjslint(self):
-        args = {'path': 'dummy.js', 'linters': ['gjslint']}
-        errors = run(**args)
-        self.assertEqual(len(errors), 1231)
+        if version_info < (3, 0):
+            args = {'path': 'dummy.js', 'linters': ['gjslint']}
+            errors = run(**args)
+            self.assertEqual(len(errors), 1231)
 
     def test_ignore_gjslint(self):
-        args = {'path': 'dummy.js', 'linters': ['gjslint'], 'ignore': ['E:0010']}
-        errors = run(**args)
-        self.assertEqual(len(errors), 584)
+        if version_info < (3, 0):
+            args = {'path': 'dummy.js', 'linters': ['gjslint'], 'ignore': ['E:0010']}
+            errors = run(**args)
+            self.assertEqual(len(errors), 584)
 
     def test_select_gjslint(self):
-        args = {'path': 'dummy.js', 'linters': ['gjslint'], 'select': ['E:0001']}
-        errors = run(**args)
-        self.assertEqual(len(errors), 1231)
+        if version_info < (3, 0):
+            args = {'path': 'dummy.js', 'linters': ['gjslint'], 'select': ['E:0001']}
+            errors = run(**args)
+            self.assertEqual(len(errors), 1231)
 
 
 class LamaTest(unittest.TestCase):
