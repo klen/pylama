@@ -14,6 +14,9 @@ branches:
         - master
         - develop
 
+before_install:
+ - sudo apt-get install -qq python-gflags
+
 install: pip install --quiet --use-mirrors tox
 
 script: tox
