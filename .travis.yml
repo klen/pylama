@@ -14,11 +14,6 @@ branches:
         - master
         - develop
 
-before_install:
- - sudo add-apt-repository ppa:intact/python-gflags
- - sudo apt-get update -qq
- - sudo apt-get install -qq python-gflags
-
 install: pip install --quiet --use-mirrors tox
 
 script: tox
