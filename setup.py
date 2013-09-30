@@ -12,7 +12,7 @@ read = lambda f: open(
     op.join(op.dirname(__file__), f)).read() if op.exists(f) else ''
 
 
-install_requires = []
+install_requires = ['python-gflags']
 if version_info < (2, 7):
     install_requires += ['argparse', 'ordereddict']
 
