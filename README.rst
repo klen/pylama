@@ -220,7 +220,7 @@ Development of adrest happens at github: https://github.com/klen/pylama
 Contributors
 ^^^^^^^^^^^^
 
-* klen_ (Kirill Klenov)
+See AUTHORS_.
 
 
 .. _license:
@@ -233,13 +233,14 @@ Licensed under a `BSD license`_.
 
 .. _links:
 
-.. _klen: http://klen.github.io/
+.. _AUTHORS: https://github.com/klen/pylama/blob/develop/AUTHORS 
 .. _BSD license: http://www.linfo.org/bsdlicense.html
-.. _PEP8: https://github.com/jcrocholl/pep8
+.. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
 .. _PEP257: https://github.com/GreenSteam/pep257
+.. _PEP8: https://github.com/jcrocholl/pep8
 .. _PyFlakes: https://github.com/kevinw/pyflakes 
 .. _Pylint: http://pylint.org
-.. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
 .. _gjslint: https://developers.google.com/closure/utilities
+.. _klen: http://klen.github.io/
 .. |logo| image:: https://raw.github.com/klen/pylama/develop/docs/_static/logo.png
                   :width: 100

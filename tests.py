@@ -1,9 +1,9 @@
 import unittest
 from sys import version_info, platform
 
+from pylama.config import parse_options
 from pylama.core import run
 from pylama.tasks import check_path, async_check_files
-from pylama.config import parse_options
 
 
 class LamaCoreTest(unittest.TestCase):
