@@ -47,7 +47,8 @@ def run(path, ignore=None, select=None, linters=DEFAULT_LINTERS, config=None,
                 return errors
 
             for lint in linters:
-                # security gate to consider just relevant code for current linter
+                # security gate to consider just relevant code
+                # for current linter
                 if not is_code_relevant_for_linter(path, lint):
                     continue
 
@@ -91,7 +92,7 @@ def run(path, ignore=None, select=None, linters=DEFAULT_LINTERS, config=None,
 
 
 def is_code_relevant_for_linter(path, linter):
-    """ Checks if code is relevant to by checked by current linter.
+    """ Check if code is relevant to by checked by current linter.
 
     :return bool: True if:
                   - '.js' file and gjslinter OR
