@@ -1,3 +1,4 @@
 pyflakes
 pep8
 pylint
+pylama

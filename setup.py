@@ -14,7 +14,7 @@ read = lambda f: open(
 
 install_requires = []
 if version_info < (2, 7):
-    install_requires += ['argparse', 'ordereddict']
+    install_requires += ['argparse']
 
 
 meta = dict(
@@ -38,6 +38,7 @@ meta = dict(
             'pylama = pylama.main:shell',
         ]
     },
+
     classifiers=[
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Software Development :: Quality Assurance",
