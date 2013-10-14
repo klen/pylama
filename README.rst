@@ -8,9 +8,9 @@ Code audit tool for Python and JavaScript. Pylama wraps these tools:
 * PEP8_ © 2012-2013, Florent Xicluna;
 * PEP257_  © 2012, GreenSteam, <http://greensteam.dk/>
 * PyFlakes_ © 2005-2013, Kevin Watters;
-* Pylint_ © 2013, Logilab;
 * Mccabe_ © Ned Batchelder;
-* gjslint_ © The Closure Linter Authors
+* Pylint_ © 2013, Logilab (should be installed 'pylama_pylint' module);
+* gjslint_ © The Closure Linter Authors (should be installed 'pylama_gjslint' module);
 
  |  `Pylint doesnt supported in python3.`
 
@@ -198,6 +198,64 @@ Example: `pylama.ini` ::
 
     [*/setup.py]
     lint = 0
+
+Writing a linter
+================
+
+You can write a custom extension for Pylama.
+Custom linter should be a python module. Name should be starts from 'pylama_'.
+
+In 'setup.py' should be defined 'pylama.linter' entry point. ::
+
+    setup(
+        # ...
+        entry_points={
+            'pylama.linter': ['lintername = pylama_lintername.main:Linter'],
+        }
+        # ...
+    ) 
+
+'Linter' should be instance of 'pylama.lint.Linter' class.
+Must implemented two methods:
+
+'allow' take a path and returned true if linter could check this file for errors.
+'run' take a path and meta keywords params and return list of errors.
+
+Example:
+--------
+
+Just virtual 'WOW' checker.
+
+setup.py: ::
+
+    setup(
+        name='pylama_wow',
+        install_requires=[ 'setuptools' ],
+        entry_points={
+            'pylama.linter': ['wow = pylama_wow.main:Linter'],
+        }
+        # ...
+    ) 
+
+pylama_wow.py: ::
+
+    from pylama.lint import Linter as BaseLinter
+
+    class Linter(BaseLinter):
+
+        def allow(self, path):
+            return 'wow' in path
+
+        def run(self, path, **meta):
+            with open(path) as f:
+                if 'wow' in f.read():
+                    return [{
+                        lnum: 0,
+                        col: 0,
+                        text: 'Wow has been finded.',
+                        type: 'WOW'
+                    }]
+
 
 .. _bagtracker:
 
