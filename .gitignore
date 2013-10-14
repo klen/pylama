@@ -36,3 +36,5 @@ nosetests.xml
 
 .vimrc
 docs/_build
+_
+plugins

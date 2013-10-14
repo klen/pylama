@@ -6,9 +6,6 @@ Prepare params, check a modeline and run the checkers.
 import logging
 import re
 
-from . import utils
-
-
 #: A default checkers
 DEFAULT_LINTERS = 'pep8', 'pyflakes', 'mccabe'
 
@@ -23,6 +20,23 @@ MODELINE_RE = re.compile(
 LOGGER = logging.getLogger('pylama')
 STREAM = logging.StreamHandler()
 LOGGER.addHandler(STREAM)
+
+
+def load(name):
+    """ Load linter by name.
+
+    :return module: A linter module
+
+    """
+    try:
+        module = __import__(
+            'pylama.lint.%s' % name, globals(), locals(), ['Linter'])
+        return getattr(module, 'Linter')
+    except ImportError:
+        try:
+            return __import__('pylama_%s' % name, globals(), locals())
+        except ImportError:
+            LOGGER.warning("Linter `%s` not found.", name)
 
 
 def run(path, ignore=None, select=None, linters=DEFAULT_LINTERS, config=None,
@@ -47,18 +61,12 @@ def run(path, ignore=None, select=None, linters=DEFAULT_LINTERS, config=None,
                 return errors
 
             for lint in linters:
-                # security gate to consider just relevant code
-                # for current linter
-                if not is_code_relevant_for_linter(path, lint):
+                linter = load(lint)
+
+                if not linter or not linter.allow(path):
                     continue
 
-                try:
-                    linter = getattr(utils, lint)
-                except AttributeError:
-                    LOGGER.warning("Linter `%s` not found.", lint)
-                    continue
-
-                result = linter(path, code=code, **meta)
+                result = linter.run(path, code=code, **meta)
                 for e in result:
                     e['col'] = e.get('col') or 0
                     e['lnum'] = e.get('lnum') or 0
@@ -89,22 +97,6 @@ def run(path, ignore=None, select=None, linters=DEFAULT_LINTERS, config=None,
         errors = filter_skiplines(code, errors)
 
     return sorted(errors, key=lambda x: x['lnum'])
-
-
-def is_code_relevant_for_linter(path, linter):
-    """ Check if code is relevant to by checked by current linter.
-
-    :return bool: True if:
-                  - '.js' file and gjslinter OR
-                  - '.py' and python linters.
-
-    """
-    if path.endswith('.js') and linter != 'gjslint':
-        return False
-    elif path.endswith('.py') and linter == 'gjslint':
-        return False
-    else:
-        return True
 
 
 def parse_modeline(code):

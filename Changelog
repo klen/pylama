@@ -2,6 +2,7 @@
 
 	* Version 2.0.0
 	* Append JavaScript code checker (c) lukaszpiotr
+	* Create plugin structure (move pylint, gjslint to plugins)
 
 2013-09-16  horneds
 

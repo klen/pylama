@@ -49,24 +49,6 @@ class LamaCoreTest(unittest.TestCase):
             }
         )
 
-    def test_is_code_relevant_for_linter(self):
-        from pylama.core import is_code_relevant_for_linter
-
-        is_relevant = is_code_relevant_for_linter('foo.py', 'pep8')
-        self.assertTrue(is_relevant)
-
-        is_relevant = is_code_relevant_for_linter('foo.py', 'pylint')
-        self.assertTrue(is_relevant)
-
-        is_relevant = is_code_relevant_for_linter('foo.js', 'pylint')
-        self.assertFalse(is_relevant)
-
-        is_relevant = is_code_relevant_for_linter('foo.py', 'gjslint')
-        self.assertFalse(is_relevant)
-
-        is_relevant = is_code_relevant_for_linter('foo.js', 'gjslint')
-        self.assertTrue(is_relevant)
-
 
 class LamaJsTest(unittest.TestCase):
 
