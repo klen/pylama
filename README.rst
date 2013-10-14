@@ -3,13 +3,14 @@
 
 .. _description:
 
-Code audit tool for python. Pylama wraps these tools:
+Code audit tool for Python and JavaScript. Pylama wraps these tools:
 
 * PEP8_ © 2012-2013, Florent Xicluna;
 * PEP257_  © 2012, GreenSteam, <http://greensteam.dk/>
 * PyFlakes_ © 2005-2013, Kevin Watters;
 * Pylint_ © 2013, Logilab;
 * Mccabe_ © Ned Batchelder;
+* gjslint_ © The Closure Linter Authors
 
  |  `Pylint doesnt supported in python3.`
 
@@ -52,6 +53,9 @@ Requirements:
 =============
 
 - Python (2.6, 2.7, 3.2, 3.3)
+- To use JavaScript checker (``gjslint``) you need to install ``python-gflags`` with ``pip install python-gflags``.
+- If your tests are failing on Win platform you are missing: ``curses`` - http://www.lfd.uci.edu/~gohlke/pythonlibs/
+  (The curses library supplies a terminal-independent screen-painting and keyboard-handling facility for text-based terminals)
 
 
 .. _installation:
@@ -88,6 +92,9 @@ Customize linters ::
 
     $ pylama -l "pep8,mccabe"
 
+Customize linters for JavaScript::
+
+    $ pylama --linters=gjslint --ignore=E:0010 <path_to_directory_or_file>
 
 .. _options:
 
@@ -118,7 +125,7 @@ Command line options
                             Select errors and warnings. (comma-separated)
     --linters LINTERS, -l LINTERS
                             Select linters. (comma-separated). Choices are
-                            pep8,pep257,mccabe,pyflakes,pylint.
+                            pep8,pep257,mccabe,pyflakes,pylint,gjslint.
     --ignore IGNORE, -i IGNORE
                             Ignore errors and warnings. (comma-separated)
     --skip SKIP           Skip files by masks (comma-separated, Ex.
@@ -213,7 +220,7 @@ Development of adrest happens at github: https://github.com/klen/pylama
 Contributors
 ^^^^^^^^^^^^
 
-* klen_ (Kirill Klenov)
+See AUTHORS_.
 
 
 .. _license:
@@ -226,12 +233,14 @@ Licensed under a `BSD license`_.
 
 .. _links:
 
-.. _klen: http://klen.github.io/
+.. _AUTHORS: https://github.com/klen/pylama/blob/develop/AUTHORS 
 .. _BSD license: http://www.linfo.org/bsdlicense.html
-.. _PEP8: https://github.com/jcrocholl/pep8
+.. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
 .. _PEP257: https://github.com/GreenSteam/pep257
+.. _PEP8: https://github.com/jcrocholl/pep8
 .. _PyFlakes: https://github.com/kevinw/pyflakes 
 .. _Pylint: http://pylint.org
-.. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
+.. _gjslint: https://developers.google.com/closure/utilities
+.. _klen: http://klen.github.io/
 .. |logo| image:: https://raw.github.com/klen/pylama/develop/docs/_static/logo.png
                   :width: 100
