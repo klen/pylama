@@ -12,9 +12,9 @@ read = lambda f: open(
     op.join(op.dirname(__file__), f)).read() if op.exists(f) else ''
 
 
-install_requires = ['python-gflags']
+install_requires = []
 if version_info < (2, 7):
-    install_requires += ['argparse', 'ordereddict']
+    install_requires += ['argparse']
 
 
 meta = dict(
@@ -38,6 +38,7 @@ meta = dict(
             'pylama = pylama.main:shell',
         ]
     },
+
     classifiers=[
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Software Development :: Quality Assurance",

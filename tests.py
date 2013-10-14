@@ -1,5 +1,4 @@
 import unittest
-from sys import version_info, platform
 
 from pylama.config import parse_options
 from pylama.core import run
@@ -50,36 +49,18 @@ class LamaCoreTest(unittest.TestCase):
         )
 
 
-class LamaJsTest(unittest.TestCase):
-
-    def test_gjslint(self):
-        if version_info < (3, 0):
-            args = {'path': 'dummy.js', 'linters': ['gjslint']}
-            errors = run(**args)
-            self.assertEqual(len(errors), 1231)
-
-    def test_ignore_gjslint(self):
-        if version_info < (3, 0):
-            args = {'path': 'dummy.js', 'linters': ['gjslint'], 'ignore': ['E:0010']}
-            errors = run(**args)
-            self.assertEqual(len(errors), 584)
-
-    def test_select_gjslint(self):
-        if version_info < (3, 0):
-            args = {'path': 'dummy.js', 'linters': ['gjslint'], 'select': ['E:0001']}
-            errors = run(**args)
-            self.assertEqual(len(errors), 1231)
-
-
 class LamaTest(unittest.TestCase):
 
     def test_lama(self):
-        errors = run('dummy.py', ignore=set(['M234']), config=dict(lint=1))
+        errors = run(
+            'dummy.py', ignore=set(['M234', 'C']), config=dict(lint=1))
         self.assertEqual(len(errors), 3)
 
     def test_mccabe(self):
-        from pylama.utils import mccabe
-        errors = mccabe('dummy.py', '')
+        from pylama.lint import LINTERS
+
+        mccabe = LINTERS.get('mccabe')
+        errors = mccabe.run('dummy.py', '')
         self.assertEqual(errors, [])
 
     def test_pyflakes(self):
@@ -91,28 +72,16 @@ class LamaTest(unittest.TestCase):
         self.assertTrue(errors)
 
     def test_ignore_select(self):
-        errors = run('dummy.py', ignore=['E301'])
+        errors = run('dummy.py', ignore=['E301', 'C0110'])
         self.assertEqual(len(errors), 2)
 
-        errors = run('dummy.py', ignore=['E3'])
+        errors = run('dummy.py', ignore=['E3', 'C'])
         self.assertEqual(len(errors), 2)
 
         errors = run(
-            'dummy.py', ignore=['E3'], select=['E301'])
+            'dummy.py', ignore=['E3', 'C'], select=['E301'])
         self.assertEqual(len(errors), 3)
         self.assertTrue(errors[0]['col'])
-
-    def test_pylint(self):
-        # test pylint
-        if version_info < (3, 0):
-            args = {
-                'path': 'pylama/checkers/pylint/utils.py',
-                'linters': ['pylint']}
-            if platform.startswith('win'):
-                # trailing whitespace is handled differently on win platforms
-                args.update({'ignore': ['C0303']})
-            errors = run(**args)
-            self.assertEqual(len(errors), 16)
 
     def test_checkpath(self):
         options = parse_options(linters=['pep8'])
@@ -173,14 +142,11 @@ class LamaTest(unittest.TestCase):
         self.assertEqual(options.path, 'pylama')
 
         options = parse_options(['-l', 'pep257,pep8', '-i', 'E'])
-        self.assertEqual(set(options.linters), set(['pep257', 'pep8']))
+        linters, _ = zip(*options.linters)
+        self.assertEqual(set(linters), set(['pep257', 'pep8']))
         self.assertEqual(options.ignore, ['E'])
 
-        options = parse_options(['-l', 'gjslint,pep8', '-i', 'E:0010'])
-        self.assertEqual(set(options.linters), set(['gjslint', 'pep8']))
-        self.assertEqual(options.ignore, ['E:0010'])
-
         options = parse_options('-o dummy dummy.py'.split())
-        self.assertEqual(
-            set(options.linters), set(['pep8', 'mccabe', 'pyflakes']))
+        linters, _ = zip(*options.linters)
+        self.assertEqual(set(linters), set(['pep8', 'mccabe', 'pyflakes']))
         self.assertEqual(options.skip, [])
