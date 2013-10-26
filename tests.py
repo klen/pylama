@@ -57,7 +57,7 @@ class LamaTest(unittest.TestCase):
         self.assertEqual(len(errors), 3)
 
     def test_mccabe(self):
-        from pylama.lint import LINTERS
+        from pylama.lint.extensions import LINTERS
 
         mccabe = LINTERS.get('mccabe')
         errors = mccabe.run('dummy.py', '')

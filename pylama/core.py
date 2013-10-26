@@ -5,7 +5,7 @@ Prepare params, check a modeline and run the checkers.
 """
 import logging
 import re
-from .lint import LINTERS
+from .lint.extensions import LINTERS
 
 #: The skip pattern
 SKIP_PATTERN = re.compile(r'# *noqa\b', re.I).search
