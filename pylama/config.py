@@ -9,7 +9,7 @@ from argparse import ArgumentParser, Namespace as Options
 from . import version
 from .core import LOGGER, STREAM
 from .inirama import Namespace
-from .lint import LINTERS
+from .lint.extensions import LINTERS
 
 
 #: A default checkers
