@@ -64,6 +64,9 @@ def check_files(paths, options, rootpath=None, error=True):
         if not any(l.allow(path) for _, l in options.linters):
             continue
 
+        if not op.exists(path):
+            continue
+
         if options.skip and any(p.match(path) for p in options.skip):
             LOGGER.info('Skip path: %s', path)
             continue
