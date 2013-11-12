@@ -107,7 +107,7 @@ class LamaTest(unittest.TestCase):
         self.assertTrue(errors)
 
         errors = shell(['unknown.py'], error=False)
-        self.assertTrue(errors)
+        self.assertFalse(errors)
 
     @staticmethod
     def test_git_hook():

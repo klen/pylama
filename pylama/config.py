@@ -127,6 +127,8 @@ def get_parser():
             linter = LINTERS.get(name)
             if linter:
                 result.append((name, linter))
+            else:
+                logging.warn("Linter `%s` not found." % name)
         return result
 
     parser.add_argument(
