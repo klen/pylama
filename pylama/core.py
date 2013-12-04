@@ -5,6 +5,7 @@ Prepare params, check a modeline and run the checkers.
 """
 import logging
 import re
+import sys
 from .lint.extensions import LINTERS
 
 #: The skip pattern
@@ -16,11 +17,14 @@ MODELINE_RE = re.compile(
 
 # Setup a logger
 LOGGER = logging.getLogger('pylama')
-STREAM = logging.StreamHandler()
+LOGGER.propagate = False
+STREAM = logging.StreamHandler(sys.stdout)
 LOGGER.addHandler(STREAM)
 
 
-def run(path, ignore=None, select=None, linters=None, config=None, **meta):
+def run(
+        path, ignore=None, select=None, linters=None, config=None, code=None,
+        **meta):
     """ Run a code checkers with given params.
 
     :return errors: list of dictionaries with error's information
@@ -29,11 +33,9 @@ def run(path, ignore=None, select=None, linters=None, config=None, **meta):
     errors = []
     linters = linters or LINTERS.items()
     params = dict(ignore=ignore, select=select)
-    code = None
     try:
-        with open(path, 'rU') as f:
-            code = f.read() + '\n\n'
-
+        with CodeContext(code, path) as ctx:
+            code = ctx.code
             params = prepare_params(
                 parse_modeline(code), config, ignore=ignore, select=select
             )
@@ -78,7 +80,7 @@ def run(path, ignore=None, select=None, linters=None, config=None, **meta):
 
     errors = [er for er in errors if filter_errors(er, **params)]
 
-    if code:
+    if code and errors:
         errors = filter_skiplines(code, errors)
 
     return sorted(errors, key=lambda x: x['lnum'])
@@ -158,3 +160,26 @@ def filter_skiplines(code, errors):
         errors = [er for er in errors if not er['lnum'] in removed]
 
     return errors
+
+
+class CodeContext(object):
+
+    """ Read file if code is None. """
+
+    def __init__(self, code, path):
+        self.code = code
+        self.path = path
+        self._file = None
+
+    def __enter__(self):
+        if self.code is None:
+            self._file = open(self.path, 'rU')
+            self.code = self._file.read() + '\n\n'
+        return self
+
+    def __exit__(self, t, value, traceback):
+        if not self._file is None:
+            self._file.close()
+
+        if t and LOGGER.level == logging.DEBUG:
+            LOGGER.debug(traceback)

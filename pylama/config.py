@@ -8,7 +8,7 @@ from argparse import ArgumentParser, Namespace as Options
 
 from . import version
 from .core import LOGGER, STREAM
-from .inirama import Namespace
+from .libs.inirama import Namespace
 from .lint.extensions import LINTERS
 
 
@@ -128,7 +128,7 @@ def get_parser():
             if linter:
                 result.append((name, linter))
             else:
-                logging.warn("Linter `%s` not found." % name)
+                logging.warn("Linter `%s` not found.", name)
         return result
 
     parser.add_argument(

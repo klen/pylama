@@ -1,16 +1,21 @@
 """ Load extensions. """
 
-LINTERS = dict()
-
-
 from os import listdir, path as op
 
-curdir = op.dirname(__file__)
-for p in listdir(curdir):
-    if p.startswith('pylama') and op.isdir(op.join(curdir, p)):
-        name = p[len('pylama_'):]
-        module = __import__(
-            'pylama.lint.pylama_%s' % name, globals(), locals(), ['Linter'])
+
+CURDIR = op.dirname(__file__)
+LINTERS = dict()
+PREFIX = 'pylama_'
+
+try:
+    from importlib import import_module
+except ImportError:
+    from ..libs.importlib import import_module
+
+for p in listdir(CURDIR):
+    if p.startswith(PREFIX) and op.isdir(op.join(CURDIR, p)):
+        name = p[len(PREFIX):]
+        module = import_module('.lint.%s%s' % (PREFIX, name), 'pylama')
         LINTERS[name] = getattr(module, 'Linter')()
 
 try:
