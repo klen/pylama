@@ -174,7 +174,7 @@ class CodeContext(object):
     def __enter__(self):
         if self.code is None:
             self._file = open(self.path, 'rU')
-            self.code = self._file.read() + '\n\n'
+            self.code = self._file.read()
         return self
 
     def __exit__(self, t, value, traceback):

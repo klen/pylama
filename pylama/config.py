@@ -1,4 +1,5 @@
 """ Parse arguments from command line and configuration files. """
+
 import fnmatch
 from os import getcwd, path
 from re import compile as re
