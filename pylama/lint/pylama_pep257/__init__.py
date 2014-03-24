@@ -21,6 +21,6 @@ class Linter(BaseLinter):
             errors.append(dict(
                 lnum=er.line,
                 text=er.message,
-                type='W',
+                type='D',
             ))
         return errors
