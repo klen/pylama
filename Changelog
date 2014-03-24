@@ -1,6 +1,7 @@
 2014-03-14  horneds
 
 	* Update pep257
+	* Update pyflakes
 	* Added frosted
 
 2013-11-12  horneds

@@ -33,7 +33,7 @@ docs: docs
 	python setup.py build_sphinx --source-dir=docs/ --build-dir=docs/_build --all-files
 
 .PHONY: libs
-libs: pep257 pep8 pyflakes frosted
+libs: pep257 pep8 pyflakes
 
 $(LIBSDIR)/pep8:
 	mkdir -p $(LIBSDIR)
@@ -46,10 +46,6 @@ $(LIBSDIR)/pyflakes:
 $(LIBSDIR)/pep257:
 	mkdir -p $(LIBSDIR)
 	@git clone https://github.com/GreenSteam/pep257 $(LIBSDIR)/pep257
-
-$(LIBSDIR)/frosted:
-	mkdir -p $(LIBSDIR)
-	@git clone https://github.com/timothycrosley/frosted $(LIBSDIR)/frosted
 
 $(LIBSDIR)/pies:
 	mkdir -p $(LIBSDIR)
@@ -68,7 +64,14 @@ pep8: $(LIBSDIR)/pep8
 .PHONY: pyflakes
 pyflakes: $(LIBSDIR)/pyflakes
 	cd $(LIBSDIR)/pyflakes && git pull --rebase
+	cp -f $(LIBSDIR)/pyflakes/pyflakes/__init__.py $(CURDIR)/pylama/lint/pylama_pyflakes/pyflakes/.
+	cp -f $(LIBSDIR)/pyflakes/pyflakes/messages.py $(CURDIR)/pylama/lint/pylama_pyflakes/pyflakes/.
+	cp -f $(LIBSDIR)/pyflakes/pyflakes/checker.py $(CURDIR)/pylama/lint/pylama_pyflakes/pyflakes/.
 
-.PHONY: frosted
-frosted: $(LIBSDIR)/frosted
+# $(LIBSDIR)/frosted:
+	# mkdir -p $(LIBSDIR)
+	# @git clone https://github.com/timothycrosley/frosted $(LIBSDIR)/frosted
+
+# .PHONY: frosted
+# frosted: $(LIBSDIR)/frosted
 	cd $(LIBSDIR)/frosted && git pull --rebase
