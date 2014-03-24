@@ -1,5 +1,7 @@
-2014-03-14  horneds
+2014-03-24  horneds
 
+	* File options (and modeline) 'lint_ignore' -> 'ignore', 'lint_select'
+	-> 'select', 'lint' -> 'skip'
 	* Update pep257
 	* Update pyflakes
 	* Added frosted

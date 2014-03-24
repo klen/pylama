@@ -150,7 +150,7 @@ You can set :ref:`options` for **Pylama** inside a source files.
 ::
 
      .. Somethere in code
-     # lint_ignore=W:lint_select=W301
+     # pylama:ignore=W:select=W301
 
 
 Disable code checking for current file: ::
@@ -190,14 +190,14 @@ Example: `pylama.ini` ::
     linters = pylint,mccabe
 
     [*/pylama/main.py]
-    lint_ignore = C901,R0914,W0212
-    lint_select = R
+    ignore = C901,R0914,W0212
+    select = R
 
     [*/tests.py]
-    lint_ignore = C0110
+    ignore = C0110
 
     [*/setup.py]
-    lint = 0
+    skip = 1
 
 Writing a linter
 ================

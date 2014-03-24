@@ -1,11 +1,11 @@
 import pytest
 
-from pylama.config import parse_options, get_parser, get_config
+from pylama.config import parse_options, get_config
 from pylama.core import filter_errors, parse_modeline, prepare_params, run
+from pylama.hook import git_hook, hg_hook
 from pylama.lint.extensions import LINTERS
 from pylama.main import shell, check_files
 from pylama.tasks import check_path, async_check_files
-from pylama.hook import git_hook, hg_hook
 
 
 def test_filters():
@@ -14,27 +14,27 @@ def test_filters():
     assert not filter_errors(dict(text='W'), select=['W100'], ignore=['W'])
 
 
-def test_parse_modeline():
+def test_modeline():
 
     code = """
         bla bla bla
 
-        # lint_ignore=W12,E14:lint_select=R
+        # pylama: ignore=W12,E14:select=R:skip=0
     """
 
     params = parse_modeline(code)
-    assert params == dict(lint_ignore='W12,E14', lint_select='R')
+    assert params == dict(ignore='W12,E14', select='R', skip='0')
 
 
 def test_prepare_params():
 
-    p1 = dict(lint_ignore='W', select='R01', lint=1)
-    p2 = dict(lint=0, lint_ignore='E34,R45', select='E')
-    params = prepare_params(p1, p2)
+    p1 = dict(ignore='W', select='R01', skip='0')
+    p2 = dict(ignore='E34,R45', select='E')
+    options = parse_options(ignore=['D'])
+    params = prepare_params(p1, p2, options)
     assert params == {
-        'ignore': set(['R45', 'E34', 'W']),
-        'select': set(['R01', 'E']),
-        'lint': 0}
+        'ignore': set(['R45', 'E34', 'W', 'D']), 'select': set(['R01', 'E']),
+        'skip': False}
 
 
 def test_lama():
@@ -135,9 +135,6 @@ def test_hg_hook():
 
 
 def test_config():
-    parser = get_parser()
-    assert parser
-
     config = get_config()
     assert config
 
