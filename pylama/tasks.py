@@ -26,6 +26,7 @@ class Worker(threading.Thread):
     """ Get tasks from queue and run. """
 
     def __init__(self, path_queue, result_queue):
+        """ Init worker. """
         threading.Thread.__init__(self)
         self.path_queue = path_queue
         self.result_queue = result_queue
@@ -45,7 +46,6 @@ def async_check_files(paths, options, rootpath=None):
     :return list: list of errors
 
     """
-
     errors = []
 
     # Disable async if pylint enabled
@@ -85,21 +85,11 @@ def check_path(path, options=None, rootpath=None, code=None, **meta):
     :return list: list of errors
 
     """
-
     LOGGER.info("Parse file: %s", path)
-    config = dict()
-    if rootpath is None:
-        rootpath = '.'
 
-    for mask in options.file_params:
-        if mask.match(path):
-            config.update(options.file_params[mask])
-
+    rootpath = rootpath or '.'
     errors = []
-    for error in run(
-        path, ignore=options.ignore, select=options.select,
-        linters=options.linters, complexity=options.complexity,
-            config=config, code=code,  **meta):
+    for error in run(path, code, options):
         try:
             error['rel'] = op.relpath(error['filename'], rootpath)
             error['col'] = error.get('col', 1)

@@ -1,28 +1,47 @@
-""" Setup pylama installation. """
 #!/usr/bin/env python
+
+""" Setup pylama installation. """
+
 from os import path as op
-from sys import version_info
+import sys
 
 from setuptools import setup, find_packages
+from setuptools.command.test import test as TestCommand
 
 from pylama import version, __project__, __license__
 
 
-read = lambda f: open(
+__read = lambda f: open(
     op.join(op.dirname(__file__), f)).read() if op.exists(f) else ''
 
 
 install_requires = []
-if version_info < (2, 7):
+if sys.version_info < (2, 7):
     install_requires += ['argparse']
+
+
+class __PyTest(TestCommand):
+
+    test_args = []
+    test_suite = True
+
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        import pytest
+        errno = pytest.main(self.test_args)
+        sys.exit(errno)
 
 
 meta = dict(
     name=__project__,
     version=version,
     license=__license__,
-    description=read('DESCRIPTION'),
-    long_description=read('README.rst'),
+    description=__read('DESCRIPTION'),
+    long_description=__read('README.rst'),
     platforms=('Any'),
     keywords='pylint pep8 pyflakes mccabe linter qa pep257'.split(),
 
@@ -30,7 +49,7 @@ meta = dict(
     author_email='horneds@gmail.com',
     url=' http://github.com/klen/pylama',
 
-    package_data = {"pylama": ['pylint.rc']},
+    package_data={"pylama": ['pylint.rc']},
     packages=find_packages(),
 
     entry_points={
@@ -56,7 +75,8 @@ meta = dict(
     ],
 
     install_requires=install_requires,
-    test_suite = 'tests',
+    tests_require=['pytest'],
+    cmdclass={'test': __PyTest},
 )
 
 
