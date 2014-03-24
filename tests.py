@@ -52,8 +52,13 @@ def test_mccabe():
 def test_pyflakes():
     options = parse_options(linters=['pyflakes'])
     assert options.linters
-    errors = run('dummy.py', options=options)
-    assert not errors
+    errors = run('dummy.py', code="""
+import sys
+
+def test():
+    unused = 1
+""", options=options)
+    assert len(errors) == 2
 
 
 def test_pep8():

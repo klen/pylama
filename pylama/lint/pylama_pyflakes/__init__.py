@@ -9,7 +9,7 @@ from .. import Linter as BaseLinter
 path = op.dirname(op.abspath(__file__))
 sys.path.insert(0, path)
 
-from pyflakes import messages, checker
+from pyflakes import checker
 
 
 class Linter(BaseLinter):
@@ -17,8 +17,8 @@ class Linter(BaseLinter):
     """ Pyflakes code check. """
 
     def __init__(self):
-        if messages.UndefinedName.message != "E0602 undefined name %r":
-            monkey_patch_messages(messages)
+        if checker.messages.UndefinedName.message != "E0602 undefined name %r":
+            monkey_patch_messages(checker.messages)
 
     @staticmethod
     def run(path, code=None, builtins="", **meta):
