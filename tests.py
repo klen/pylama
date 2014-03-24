@@ -51,6 +51,7 @@ def test_mccabe():
 
 def test_pyflakes():
     options = parse_options(linters=['pyflakes'])
+    assert options.linters
     errors = run('dummy.py', options=options)
     assert not errors
 

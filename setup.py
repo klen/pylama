@@ -11,7 +11,7 @@ from setuptools.command.test import test as TestCommand
 from pylama import version, __project__, __license__
 
 
-read = lambda f: open(
+__read = lambda f: open(
     op.join(op.dirname(__file__), f)).read() if op.exists(f) else ''
 
 
@@ -20,7 +20,7 @@ if sys.version_info < (2, 7):
     install_requires += ['argparse']
 
 
-class PyTest(TestCommand):
+class __PyTest(TestCommand):
 
     test_args = []
     test_suite = True
@@ -40,8 +40,8 @@ meta = dict(
     name=__project__,
     version=version,
     license=__license__,
-    description=read('DESCRIPTION'),
-    long_description=read('README.rst'),
+    description=__read('DESCRIPTION'),
+    long_description=__read('README.rst'),
     platforms=('Any'),
     keywords='pylint pep8 pyflakes mccabe linter qa pep257'.split(),
 
@@ -76,7 +76,7 @@ meta = dict(
 
     install_requires=install_requires,
     tests_require=['pytest'],
-    cmdclass={'test': PyTest},
+    cmdclass={'test': __PyTest},
 )
 
 
