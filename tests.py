@@ -155,9 +155,3 @@ def test_config():
     linters, _ = zip(*options.linters)
     assert set(linters) == set(['pep8', 'mccabe', 'pyflakes'])
     assert options.skip == []
-
-
-def test_frosted():
-    options = parse_options(linters=['frosted'])
-    errors = run('dummy.py', options=options)
-    assert not errors
