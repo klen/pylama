@@ -38,8 +38,7 @@ def test_prepare_params():
 
 
 def test_lama():
-    options = parse_options()
-    options.ignore = ['M234', 'D']
+    options = parse_options(ignore=['M234', 'D'])
     errors = run('dummy.py', options=options)
     assert len(errors) == 3
 
@@ -51,23 +50,30 @@ def test_mccabe():
 
 
 def test_pyflakes():
-    options = parse_options()
-    options.linters = ['pyflakes']
+    options = parse_options(linters=['pyflakes'])
     errors = run('dummy.py', options=options)
     assert not errors
 
 
+def test_pep8():
+    options = parse_options(linters=['pep8'])
+    errors = run('dummy.py', options=options)
+    assert len(errors) == 3
+
+    options.linter_params['pep8'] = dict(max_line_length=60)
+    errors = run('dummy.py', options=options)
+    assert len(errors) == 12
+
+
 def test_pep257():
-    options = parse_options()
-    options.linters = ['pep257']
+    options = parse_options(linters=['pep257'])
     errors = run('dummy.py', options=options)
     assert errors
 
 
 def test_linters_params():
-    options = parse_options()
+    options = parse_options(linters='mccabe')
     options.linter_params['mccabe'] = dict(complexity=2)
-    options.linters = ['mccabe']
     errors = run('dummy.py', options=options)
     assert len(errors) == 13
 
@@ -77,8 +83,7 @@ def test_linters_params():
 
 
 def test_ignore_select():
-    options = parse_options()
-    options.ignore = ['E301', 'D102']
+    options = parse_options(ignore=['E301', 'D102'])
     errors = run('dummy.py', options=options)
     assert len(errors) == 17
 
@@ -138,6 +143,7 @@ def test_config():
     options = parse_options()
     assert options
     assert options.skip
+    assert not options.verbose
     assert options.path == 'pylama'
 
     options = parse_options(['-l', 'pep257,pep8', '-i', 'E'])
@@ -152,7 +158,6 @@ def test_config():
 
 
 def test_frosted():
-    options = parse_options()
-    options.linters = ['frosted']
+    options = parse_options(linters=['frosted'])
     errors = run('dummy.py', options=options)
     assert not errors
