@@ -1,19 +1,21 @@
 #!/usr/bin/env python
 
 """ Setup pylama installation. """
-
-from os import path as op
+import re
 import sys
+from os import path as op
 
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
-from pylama import version, __project__, __license__
 
-
-__read = lambda f: open(
+_read = lambda f: open(
     op.join(op.dirname(__file__), f)).read() if op.exists(f) else ''
 
+_meta = _read('pylama/__init__.py')
+_license = re.search(r'^__license__\s*=\s*"(.*)"', _meta, re.M).group(1)
+_project = re.search(r'^__project__\s*=\s*"(.*)"', _meta, re.M).group(1)
+_version = re.search(r'^__version__\s*=\s*"(.*)"', _meta, re.M).group(1)
 
 install_requires = []
 if sys.version_info < (2, 7):
@@ -37,11 +39,11 @@ class __PyTest(TestCommand):
 
 
 meta = dict(
-    name=__project__,
-    version=version,
-    license=__license__,
-    description=__read('DESCRIPTION'),
-    long_description=__read('README.rst'),
+    name=_project,
+    version=_version,
+    license=_license,
+    description=_read('DESCRIPTION'),
+    long_description=_read('README.rst'),
     platforms=('Any'),
     keywords='pylint pep8 pyflakes mccabe linter qa pep257'.split(),
 

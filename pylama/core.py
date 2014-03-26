@@ -180,7 +180,7 @@ class CodeContext(object):
 
     def __exit__(self, t, value, traceback):
         """ Close opened file. """
-        if not self._file is None:
+        if self._file is not None:
             self._file.close()
 
         if t and LOGGER.level == logging.DEBUG:
