@@ -30,17 +30,11 @@ def test_prepare_params():
 
     p1 = dict(ignore='W', select='R01', skip='0')
     p2 = dict(ignore='E34,R45', select='E')
-    options = parse_options(ignore=['D'])
+    options = parse_options(ignore=['D'], config=False)
     params = prepare_params(p1, p2, options)
     assert params == {
         'ignore': set(['R45', 'E34', 'W', 'D']), 'select': set(['R01', 'E']),
         'skip': False}
-
-
-def test_lama():
-    options = parse_options(ignore=['M234', 'D'])
-    errors = run('dummy.py', options=options)
-    assert len(errors) == 3
 
 
 def test_mccabe():
@@ -50,7 +44,7 @@ def test_mccabe():
 
 
 def test_pyflakes():
-    options = parse_options(linters=['pyflakes'])
+    options = parse_options(linters=['pyflakes'], config=False)
     assert options.linters
     errors = run('dummy.py', code="""
 import sys
@@ -62,7 +56,7 @@ def test():
 
 
 def test_pep8():
-    options = parse_options(linters=['pep8'])
+    options = parse_options(linters=['pep8'], config=False)
     errors = run('dummy.py', options=options)
     assert len(errors) == 3
 
@@ -78,7 +72,7 @@ def test_pep257():
 
 
 def test_linters_params():
-    options = parse_options(linters='mccabe')
+    options = parse_options(linters='mccabe', config=False)
     options.linter_params['mccabe'] = dict(complexity=2)
     errors = run('dummy.py', options=options)
     assert len(errors) == 13
@@ -89,7 +83,8 @@ def test_linters_params():
 
 
 def test_ignore_select():
-    options = parse_options(ignore=['E301', 'D102'])
+    options = parse_options()
+    options.ignore = ['E301', 'D102']
     errors = run('dummy.py', options=options)
     assert len(errors) == 17
 
