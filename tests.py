@@ -68,7 +68,7 @@ def test_pep8():
 
     options.linter_params['pep8'] = dict(max_line_length=60)
     errors = run('dummy.py', options=options)
-    assert len(errors) == 12
+    assert len(errors) == 11
 
 
 def test_pep257():

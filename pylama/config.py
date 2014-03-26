@@ -7,7 +7,7 @@ from re import compile as re
 import logging
 from argparse import ArgumentParser
 
-from . import version
+from . import __version__
 from .libs.inirama import Namespace
 from .lint.extensions import LINTERS
 
@@ -72,7 +72,7 @@ PARSER.add_argument(
     "--verbose", "-v", action='store_true', help="Verbose mode.")
 
 PARSER.add_argument('--version', action='version',
-                    version='%(prog)s ' + version)
+                    version='%(prog)s ' + __version__)
 
 PARSER.add_argument(
     "--format", "-f", default=_Default('pep8'), choices=['pep8', 'pylint'],
