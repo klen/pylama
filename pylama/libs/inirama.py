@@ -193,7 +193,10 @@ class Section(MutableMapping):
         self.__storage__ = dict()
 
     def __setitem__(self, name, value):
-        self.__storage__[name] = str(value)
+        value = str(value)
+        if value.isdigit():
+            value = int(value)
+        self.__storage__[name] = value
 
     def __getitem__(self, name):
         return self.__storage__[name]
