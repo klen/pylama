@@ -41,7 +41,7 @@ $(LIBSDIR)/pep8:
 
 $(LIBSDIR)/pyflakes:
 	mkdir -p $(LIBSDIR)
-	@git clone https://github.com/kevinw/pyflakes $(LIBSDIR)/pyflakes
+	@git clone https://github.com/pyflakes/pyflakes $(LIBSDIR)/pyflakes
 
 $(LIBSDIR)/pep257:
 	mkdir -p $(LIBSDIR)
@@ -74,4 +74,4 @@ pyflakes: $(LIBSDIR)/pyflakes
 
 # .PHONY: frosted
 # frosted: $(LIBSDIR)/frosted
-	cd $(LIBSDIR)/frosted && git pull --rebase
+	# cd $(LIBSDIR)/frosted && git pull --rebase
