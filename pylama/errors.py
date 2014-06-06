@@ -23,6 +23,9 @@ DUPLICATES = (
     # long lines
     [('pylint', 'C0301'), ('pep8', 'E501')],
 
+    # whitespace before '('
+    [('pylint', 'C0326'), ('pep8', 'E211')],
+
 )
 
 DUPLICATES = dict((key, values) for values in DUPLICATES for key in values)
