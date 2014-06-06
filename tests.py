@@ -1,7 +1,9 @@
 import pytest
 
 from pylama.config import parse_options, get_config
-from pylama.core import filter_errors, parse_modeline, prepare_params, run
+from pylama.core import (
+    filter_errors, parse_modeline, prepare_params, run, remove_duplicates)
+from pylama.errors import Error
 from pylama.hook import git_hook, hg_hook
 from pylama.lint.extensions import LINTERS
 from pylama.main import shell, check_files
@@ -9,9 +11,18 @@ from pylama.tasks import check_path, async_check_files
 
 
 def test_filters():
+    assert list(
+        filter_errors([Error(text='E')], select=['E'], ignore=['E101']))
+    assert not list(
+        filter_errors([Error(text='W')], select=['W100'], ignore=['W']))
 
-    assert filter_errors(dict(text='E'), select=['E'], ignore=['E101'])
-    assert not filter_errors(dict(text='W'), select=['W100'], ignore=['W'])
+
+def test_duplicates():
+    errors = [
+        Error(linter='pep8', text='E701'),
+        Error(linter='pylint', text='C0321')]
+    errors = list(remove_duplicates(errors))
+    assert len(errors) == 1
 
 
 def test_modeline():

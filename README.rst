@@ -156,7 +156,7 @@ You can set :ref:`options` for **Pylama** inside a source files.
 Disable code checking for current file: ::
 
      .. Somethere in code
-     # lint=0
+     # skip=1
 
 
 .. _skiplines:
