@@ -5,7 +5,7 @@
 
 """
 
-__version__ = "3.3.0"
+__version__ = "3.3.1"
 __project__ = "pylama"
 __author__ = "Kirill Klenov <horneds@gmail.com>"
 __license__ = "GNU LGPL"
