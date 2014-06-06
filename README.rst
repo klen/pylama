@@ -203,7 +203,7 @@ Writing a linter
 ================
 
 You can write a custom extension for Pylama.
-Custom linter should be a python module. Name should be starts from 'pylama_'.
+Custom linter should be a python module. Name should be like 'pylama_<name>'.
 
 In 'setup.py' should be defined 'pylama.linter' entry point. ::
 
