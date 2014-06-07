@@ -26,6 +26,12 @@ DUPLICATES = (
     # whitespace before '('
     [('pylint', 'C0326'), ('pep8', 'E211')],
 
+    # statement ends with a semicolon
+    [('pylint', 'W0301'), ('pep8', 'E703')],
+
+    # multiple statements on one line
+    [('pylint', 'C0321'), ('pep8', 'E702')],
+
 )
 
 DUPLICATES = dict((key, values) for values in DUPLICATES for key in values)
