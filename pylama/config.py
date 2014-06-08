@@ -207,10 +207,9 @@ def get_config(ini_path=None):
     if not ini_path:
         for path in CONFIG_FILES:
             if os.path.isfile(path) and os.access(path, os.R_OK):
-                ini_path = path
-                break
-
-    config.read(ini_path)
+                config.read(path)
+    else:
+        config.read(ini_path)
 
     return config
 
