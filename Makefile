@@ -18,7 +18,8 @@ clean:
 
 .PHONY: upload
 upload:
-	python setup.py sdist upload || echo 'Upload already'
+	@python setup.py sdist upload || echo 'Already uploaded'
+	@python setup.py bdist_wheel upload || echo 'Already uploaded'
 
 .PHONY: t
 t: audit
