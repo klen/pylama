@@ -1,3 +1,9 @@
+2014-06-08  horneds
+
+	* WARNING: Change format INI-options. See README for details.
+	* INI configurations could be read from `pylama.ini`, `setup.cfg`,
+	`pytest.ini`, `tox.ini` files.
+
 2014-06-07  horneds
 
 	* Reduce duplicate messages #3
