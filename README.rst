@@ -46,7 +46,6 @@ Docs are available at https://pylama.readthedocs.org/. Pull requests with docume
 
 .. contents::
 
-
 .. _requirements:
 
 Requirements:
@@ -62,7 +61,7 @@ Requirements:
 
 Instalation:
 ============
-**Pylama** should be installed using pip: ::
+**Pylama** could be installed using pip: ::
 ::
 
     $ pip install pylama
@@ -84,68 +83,79 @@ Recursive check a path. ::
 
     $ pylama <path_to_directory_or_file>
 
-Ignore some errors ::
+Ignore errors ::
 
     $ pylama -i W,E501
 
-Customize linters ::
+.. note:: You could choose a group erros `D`,`E1` and etc or special errors `C0312`
+
+Choose code checkers ::
 
     $ pylama -l "pep8,mccabe"
 
-Customize linters for JavaScript::
+Choose code chekers for JavaScript::
 
     $ pylama --linters=gjslint --ignore=E:0010 <path_to_directory_or_file>
 
 .. _options:
 
+Set Pylama (checkers) options
+=============================
+
 Command line options
-====================
+--------------------
+
 ::
 
     $ pylama --help
 
-    usage: main.py [-h] [--verbose] [--format {pep8,pylint}] [--select SELECT]
-                [--linters LINTERS] [--ignore IGNORE] [--skip SKIP]
-                [--complexity COMPLEXITY] [--report REPORT] [--hook]
-                [--options OPTIONS]
+    usage: pylama [-h] [--verbose] [--version] [--format {pep8,pylint}]
+                [--select SELECT] [--linters LINTERS] [--ignore IGNORE]
+                [--skip SKIP] [--report REPORT] [--hook] [--async]
+                [--options OPTIONS] [--force]
                 [path]
 
     Code audit tool for python.
 
     positional arguments:
-    path                  Path on file or directory.
+    path                  Path on file or directory for code check.
 
     optional arguments:
     -h, --help            show this help message and exit
     --verbose, -v         Verbose mode.
     --version             show program's version number and exit
     --format {pep8,pylint}, -f {pep8,pylint}
-                            Error format.
+                            Choose errors format (pep8, pylint).
     --select SELECT, -s SELECT
-                            Select errors and warnings. (comma-separated)
+                            Select errors and warnings. (comma-separated list)
     --linters LINTERS, -l LINTERS
-                            Select linters. (comma-separated). Choices are
-                            pep8,pep257,mccabe,pyflakes,pylint,gjslint.
+                            Select linters. (comma-separated).
     --ignore IGNORE, -i IGNORE
-                            Ignore errors and warnings. (comma-separated)
+                            Ignore errors and warnings. (comma-separated list)
     --skip SKIP           Skip files by masks (comma-separated, Ex.
-                            */messages.py*)
-    --complexity COMPLEXITY, -c COMPLEXITY
-                            Set mccabe complexity.
+                            */messages.py)
     --report REPORT, -r REPORT
-                            Filename for report.
+                            Send report to file [REPORT]
     --hook                Install Git (Mercurial) hook.
+    --async               Enable async mode. Usefull for checking a lot of
+                            files. Dont supported with pylint.
     --options OPTIONS, -o OPTIONS
                             Select configuration file. By default is
                             '<CURDIR>/pylama.ini'
-
+    --force, -F           Force code checking (if linter doesnt allow)
 
 .. _modeline:
 
-File modeline
-=============
+File modelines
+--------------
 
-You can set :ref:`options` for **Pylama** inside a source files.
+You can set options for **Pylama** inside a source files. Use
+pylama *modeline* for this.
+
+Format: ::
+
+    # pylama:{name1}={value1}:{name2}={value2}:...
+
 
 ::
 
@@ -156,48 +166,87 @@ You can set :ref:`options` for **Pylama** inside a source files.
 Disable code checking for current file: ::
 
      .. Somethere in code
-     # skip=1
+     # pylama:skip=1
 
+The options have a must higher priority.
 
 .. _skiplines:
 
-Skip lines
-==========
+Skip lines (noqa)
+-----------------
 
-Just add `# noqa` in end of line for ignore. ::
+Just add `# noqa` in end of line for ignore.
 
-     .. Somethere in code
-     x=d+34  # noqa
+::
+
+    def urgent_fuction():
+        unused_var = 'No errors here' # noqa
 
 
 .. _config:
 
-Configuration file
-==================
+Configuration files
+-------------------
 
-When starting **Pylama** try loading configuration file. By default: `<CURDIR>/pylama.ini`,
-but you set it with "-o" option.
+When starting **Pylama** try loading configuration file.
 
-Section `main` contains a global options (see :ref:`options`), like `linters` and `skip`.
+The programm searches for the first matching ini-style configuration file in
+the directories of command line argument. Pylama looks for the configuration
+in this order: ::
 
-Other sections could set :ref:`modeline` for a custom files by filepath mask.
+    pylama.ini
+    pytest.ini
+    tox.ini
+    setup.ini
 
-Example: `pylama.ini` ::
+You could set configuration file manually by "-o" option.
 
-    [main]
+Pylama search sections with name starts `pylama`.
+
+Section `pylama` contains a global options, like `linters` and `skip`.
+
+::
+
+    [pylama]
     format = pylint
     skip = */.tox/*,*/.env/*
     linters = pylint,mccabe
+    ignore = F0401,C0111,E731
 
-    [*/pylama/main.py]
+Code checker related options
+----------------------------
+
+You could set options for special code checker with pylama configurations.
+
+::
+
+    [pylama:pyflakes]
+    builtins = _
+
+    [pylama:pep8]
+    max_line_length = 100
+
+
+Set options for file (group of files)
+-------------------------------------
+
+You could set options for special file (group of files)
+with sections:
+
+The options have a higher priority than in the `pylama` section.
+
+::
+
+    [pylama:*/pylama/main.py]
     ignore = C901,R0914,W0212
     select = R
 
-    [*/tests.py]
+    [pylama:*/tests.py]
     ignore = C0110
 
-    [*/setup.py]
+    [pylama:*/setup.py]
     skip = 1
+
 
 Writing a linter
 ================
