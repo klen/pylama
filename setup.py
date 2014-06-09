@@ -5,7 +5,7 @@ import re
 import sys
 from os import path as op
 
-from setuptools import setup
+from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
 
@@ -51,7 +51,7 @@ meta = dict(
     author_email='horneds@gmail.com',
     url=' http://github.com/klen/pylama',
 
-    packages=['pylama'],
+    packages=find_packages(exclude=['plugins']),
 
     entry_points={
         'console_scripts': [
