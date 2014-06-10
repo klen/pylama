@@ -1,3 +1,7 @@
+2014-06-10  horneds
+
+	*  Pytest support (as plugin)
+
 2014-06-08  horneds
 
 	* WARNING: Change format INI-options. See README for details.

@@ -29,7 +29,7 @@ class __PyTest(TestCommand):
 
     def finalize_options(self):
         TestCommand.finalize_options(self)
-        self.test_args = []
+        self.test_args = ['tests.py']
         self.test_suite = True
 
     def run_tests(self):
@@ -56,7 +56,8 @@ meta = dict(
     entry_points={
         'console_scripts': [
             'pylama = pylama.main:shell',
-        ]
+        ],
+        'pytest11': ['pylama = pylama.pytest'],
     },
 
     classifiers=[

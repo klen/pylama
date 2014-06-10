@@ -32,6 +32,9 @@ DUPLICATES = (
     # multiple statements on one line
     [('pylint', 'C0321'), ('pep8', 'E702')],
 
+    # bad indentation
+    [('pylint', 'W0311'), ('pep8', 'E111')],
+
 )
 
 DUPLICATES = dict((key, values) for values in DUPLICATES for key in values)

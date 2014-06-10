@@ -39,3 +39,4 @@ docs/_build
 /libs
 plugins
 todo.txt
+/.cache

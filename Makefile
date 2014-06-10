@@ -8,7 +8,7 @@ LIBSDIR=$(CURDIR)/libs
 
 .PHONY: clean
 clean:
-	@rm -rf build dist docs/_build
+	@rm -rf build dist docs/_build *.egg
 	@find . -name "*.pyc" -delete
 	@find . -name "*.orig" -delete
 	@rm -rf $(CURDIR)/libs

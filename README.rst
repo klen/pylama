@@ -248,6 +248,20 @@ The options have a higher priority than in the `pylama` section.
     skip = 1
 
 
+Pytest integration
+==================
+
+Pylama have Pytest_ support. The package automatically register self as pytest
+plugin when during installation. Also pylama suports `pytest_cache` plugin.
+
+Check files with pylama ::
+
+    pytest --pylama ...
+
+Recomended way to settings pyalam options when using pytest — configuration
+files (see below).
+
+
 Writing a linter
 ================
 
@@ -347,6 +361,7 @@ Licensed under a `BSD license`_.
 .. _PEP8: https://github.com/jcrocholl/pep8
 .. _PyFlakes: https://github.com/kevinw/pyflakes 
 .. _Pylint: http://pylint.org
+.. _Pytest: http://pytest.org
 .. _gjslint: https://developers.google.com/closure/utilities
 .. _klen: http://klen.github.io/
 .. |logo| image:: https://raw.github.com/klen/pylama/develop/docs/_static/logo.png
