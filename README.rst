@@ -252,7 +252,7 @@ Pytest integration
 ==================
 
 Pylama have Pytest_ support. The package automatically register self as pytest
-plugin when during installation. Pylama suports `pytest_cache` plugin.
+plugin when during installation. Also pylama suports `pytest_cache` plugin.
 
 Check files with pylama ::
 
