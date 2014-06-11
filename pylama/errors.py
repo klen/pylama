@@ -60,6 +60,10 @@ class Error(object):
     def __getitem__(self, name):
         return self._info[name]
 
+    def get(self, name, default=None):
+        """ Implement dictionary `get` method. """
+        return self._info.get(name, default)
+
     def __repr__(self):
         return "<Error: %s %s>" % (self.number, self.linter)
 
