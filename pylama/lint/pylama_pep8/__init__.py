@@ -13,7 +13,7 @@ class Linter(BaseLinter):
     """ PEP8 code check. """
 
     @staticmethod
-    def run(path, code=None, ignore=None, select=None, **params):
+    def run(path, code=None, params=None, **meta):
         """ PEP8 code checking.
 
         :return list: List of errors.

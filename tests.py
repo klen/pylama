@@ -50,7 +50,7 @@ def test_prepare_params():
 
 def test_mccabe():
     mccabe = LINTERS.get('mccabe')
-    errors = mccabe.run('dummy.py', '')
+    errors = mccabe.run('dummy.py', '', params={})
     assert errors == []
 
 

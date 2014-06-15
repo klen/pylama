@@ -21,13 +21,15 @@ class Linter(BaseLinter):
             monkey_patch_messages(checker.messages)
 
     @staticmethod
-    def run(path, code=None, builtins="", **params):
+    def run(path, code=None, params=None, **meta):
         """ Pyflake code checking.
 
         :return list: List of errors.
 
         """
         import _ast
+
+        builtins = params.get("builtins", "")
 
         if builtins:
             builtins = builtins.split(",")

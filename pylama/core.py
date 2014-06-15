@@ -65,7 +65,7 @@ def run(path='', code=None, options=None):
 
                 for er in linter.run(
                         path, code=code, ignore=params.get("ignore", set()),
-                        select=params.get("select", set()), **lparams):
+                        select=params.get("select", set()), params=lparams):
                     errors.append(Error(filename=path, linter=lname, **er))
 
     except IOError as e:
