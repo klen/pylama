@@ -13,13 +13,13 @@ class Linter(BaseLinter):
     """ PEP8 code check. """
 
     @staticmethod
-    def run(path, code=None, **options):
+    def run(path, code=None, ignore=None, select=None, **params):
         """ PEP8 code checking.
 
         :return list: List of errors.
 
         """
-        P8Style = StyleGuide(reporter=_PEP8Report, **options)
+        P8Style = StyleGuide(reporter=_PEP8Report, **params)
         buf = StringIO(code)
         return P8Style.input_file(path, lines=buf.readlines())
 

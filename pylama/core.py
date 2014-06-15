@@ -32,11 +32,11 @@ def run(path='', code=None, options=None):
     fileconfig = dict()
     params = dict()
     linters = LINTERS
-    linter_params = dict()
+    linters_params = dict()
 
     if options:
         linters = options.linters
-        linter_params = options.linter_params
+        linters_params = options.linters_params
         for mask in options.file_params:
             if mask.match(path):
                 fileconfig.update(options.file_params[mask])
@@ -60,9 +60,12 @@ def run(path='', code=None, options=None):
                     continue
 
                 LOGGER.info("Run %s", lname)
-                meta = linter_params.get(lname, dict())
-                errors += [Error(filename=path, linter=lname, **e)
-                           for e in linter.run(path, code=code, **meta)]
+                lparams = linters_params.get(lname, dict())
+                errors += [
+                    Error(filename=path, linter=lname, **e) for e in
+                    linter.run(
+                        path, code=code, ignore=params.get("ignore", set()),
+                        select=params.get("select", set()), **lparams)]
 
     except IOError as e:
         LOGGER.debug("IOError %s", e)

@@ -213,8 +213,8 @@ Section `pylama` contains a global options, like `linters` and `skip`.
     linters = pylint,mccabe
     ignore = F0401,C0111,E731
 
-Code checker related options
-----------------------------
+Set Code-checkers' options
+--------------------------
 
 You could set options for special code checker with pylama configurations.
 
@@ -225,6 +225,12 @@ You could set options for special code checker with pylama configurations.
 
     [pylama:pep8]
     max_line_length = 100
+
+    [pylama:pylint]
+    max_line_length = 100
+    disable = R
+
+See code checkers documentation for more info.
 
 
 Set options for file (group of files)
