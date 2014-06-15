@@ -35,6 +35,9 @@ DUPLICATES = (
     # bad indentation
     [('pylint', 'W0311'), ('pep8', 'E111')],
 
+    # wildcart import
+    [('pylint', 'W00401'), ('pyflakes', 'W0401')],
+
 )
 
 DUPLICATES = dict((key, values) for values in DUPLICATES for key in values)
