@@ -71,7 +71,7 @@ def test_pep8():
     errors = run('dummy.py', options=options)
     assert len(errors) == 3
 
-    options.linter_params['pep8'] = dict(max_line_length=60)
+    options.linters_params['pep8'] = dict(max_line_length=60)
     errors = run('dummy.py', options=options)
     assert len(errors) == 11
 
@@ -84,11 +84,11 @@ def test_pep257():
 
 def test_linters_params():
     options = parse_options(linters='mccabe', config=False)
-    options.linter_params['mccabe'] = dict(complexity=2)
+    options.linters_params['mccabe'] = dict(complexity=2)
     errors = run('dummy.py', options=options)
     assert len(errors) == 13
 
-    options.linter_params['mccabe'] = dict(complexity=20)
+    options.linters_params['mccabe'] = dict(complexity=20)
     errors = run('dummy.py', options=options)
     assert not errors
 
@@ -103,7 +103,6 @@ def test_ignore_select():
     errors = run('dummy.py', options=options)
     assert len(errors) == 2
 
-    options.ignore = ['E3', 'D']
     options.select = ['E301']
     errors = run('dummy.py', options=options)
     assert len(errors) == 3

@@ -8,7 +8,7 @@ class Linter(BaseLinter):
     """ Mccabe code complexity. """
 
     @staticmethod
-    def run(path, code=None, **meta):
+    def run(path, code=None, **params):
         """ PEP257 code checking.
 
         :return list: List of errors.
