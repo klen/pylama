@@ -45,6 +45,7 @@ def run(path='', code=None, options=None):
         with CodeContext(code, path) as ctx:
             code = ctx.code
             params = prepare_params(parse_modeline(code), fileconfig, options)
+            LOGGER.debug('Checking params: %s', params)
 
             if params.get('skip'):
                 return errors
@@ -59,13 +60,13 @@ def run(path='', code=None, options=None):
                 if not linter:
                     continue
 
-                LOGGER.info("Run %s", lname)
                 lparams = linters_params.get(lname, dict())
-                errors += [
-                    Error(filename=path, linter=lname, **e) for e in
-                    linter.run(
+                LOGGER.info("Run %s %s", lname, lparams)
+
+                for er in linter.run(
                         path, code=code, ignore=params.get("ignore", set()),
-                        select=params.get("select", set()), **lparams)]
+                        select=params.get("select", set()), **lparams):
+                    errors.append(Error(filename=path, linter=lname, **er))
 
     except IOError as e:
         LOGGER.debug("IOError %s", e)
