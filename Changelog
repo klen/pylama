@@ -1,3 +1,7 @@
+2014-06-15  horneds
+
+	* Better handling pylint properties
+
 2014-06-11  horneds
 
 	*  Pytest support (as plugin)
