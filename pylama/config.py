@@ -86,6 +86,9 @@ PARSER.add_argument(
     "--select", "-s", default=_Default(''), type=split_csp_str,
     help="Select errors and warnings. (comma-separated list)")
 
+PARSER.add_argument(
+    "--sort", default=_Default(''), type=split_csp_str,
+    help="Sort result by error types. Ex. E,W,D")
 
 PARSER.add_argument(
     "--linters", "-l", default=_Default(','.join(DEFAULT_LINTERS)),

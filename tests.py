@@ -93,6 +93,13 @@ def test_linters_params():
     assert not errors
 
 
+# def test_sort():
+    # options = parse_options()
+    # options.sort = ['C', 'D']
+    # errors = run('dummy.py', options=options)
+    # assert errors[0].type == 'C'
+
+
 def test_ignore_select():
     options = parse_options()
     options.ignore = ['E301', 'D102']

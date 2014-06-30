@@ -5,9 +5,6 @@ DUPLICATES = (
     # multiple statements on one line
     [('pep8', 'E701'), ('pylint', 'C0321')],
 
-    # missing whitespace around operator
-    [('pep8', 'E225'), ('pylint', 'C0326')],
-
     # unused variable
     [('pylint', 'W0612'), ('pyflakes', 'W0612')],
 
@@ -17,14 +14,23 @@ DUPLICATES = (
     # unused import
     [('pylint', 'W0611'), ('pyflakes', 'W0611')],
 
+    # whitespace before ')'
+    [('pylint', 'C0326'), ('pep8', 'E202')],
+
+    # whitespace before '('
+    [('pylint', 'C0326'), ('pep8', 'E211')],
+
+    # multiple spaces after operator
+    [('pylint', 'C0326'), ('pep8', 'E222')],
+
+    # missing whitespace around operator
+    [('pylint', 'C0326'), ('pep8', 'E225')],
+
     # unexpected spaces
     [('pylint', 'C0326'), ('pep8', 'E251')],
 
     # long lines
     [('pylint', 'C0301'), ('pep8', 'E501')],
-
-    # whitespace before '('
-    [('pylint', 'C0326'), ('pep8', 'E211')],
 
     # statement ends with a semicolon
     [('pylint', 'W0301'), ('pep8', 'E703')],
@@ -37,6 +43,9 @@ DUPLICATES = (
 
     # wildcart import
     [('pylint', 'W00401'), ('pyflakes', 'W0401')],
+
+    # module docstring
+    [('pep257', 'D100'), ('pylint', 'C0111')],
 
 )
 
