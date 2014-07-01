@@ -1,3 +1,8 @@
+2014-07-01  horneds
+
+	* Add sorting (--sort)
+	* Version 6.0.0
+
 2014-06-15  horneds
 
 	* Better handling pylint properties
