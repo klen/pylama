@@ -89,7 +89,11 @@ def run(path='', code=None, options=None):
     if code and errors:
         errors = filter_skiplines(code, errors)
 
-    return sorted(errors, key=lambda e: e.lnum)
+    key = lambda e: e.lnum
+    if options and options.sort:
+        sort = dict((v, n) for n, v in enumerate(options.sort, 1))
+        key = lambda e: (sort.get(e.type, 999), e.lnum)
+    return sorted(errors, key=key)
 
 
 def parse_modeline(code):
@@ -206,3 +210,5 @@ class CodeContext(object):
 
         if t and LOGGER.level == logging.DEBUG:
             LOGGER.debug(traceback)
+
+# pylama:ignore=R0912
