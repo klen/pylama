@@ -93,11 +93,11 @@ def test_linters_params():
     assert not errors
 
 
-# def test_sort():
-    # options = parse_options()
-    # options.sort = ['C', 'D']
-    # errors = run('dummy.py', options=options)
-    # assert errors[0].type == 'C'
+def test_sort():
+    options = parse_options()
+    options.sort = ['C', 'D']
+    errors = run('dummy.py', options=options)
+    assert errors[0].type == 'C'
 
 
 def test_ignore_select():
@@ -105,15 +105,15 @@ def test_ignore_select():
     options.ignore = ['E301', 'D102']
     options.linters = ['pep8', 'pep257', 'pyflakes', 'mccabe']
     errors = run('dummy.py', options=options)
-    assert len(errors) == 17
+    assert len(errors) == 16
 
     options.ignore = ['E3', 'D']
     errors = run('dummy.py', options=options)
-    assert len(errors) == 2
+    assert len(errors) == 1
 
     options.select = ['E301']
     errors = run('dummy.py', options=options)
-    assert len(errors) == 3
+    assert len(errors) == 2
     assert errors[0]['col']
 
 

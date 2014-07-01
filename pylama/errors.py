@@ -63,7 +63,7 @@ class Error(object):
         if linter:
             text = "%s [%s]" % (text, linter)
         number = text.split(' ', 1)[0]
-        self._info = dict(linter=linter, col=col, lnum=lnum, type=type,
+        self._info = dict(linter=linter, col=col, lnum=lnum, type=type[:1],
                           text=text, filename=filename, number=number)
 
     def __getattr__(self, name):
