@@ -1,3 +1,8 @@
+2014-07-23  horneds
+
+	* Fix mercurial hook installation (c) MrShark
+	* Version 6.0.1
+
 2014-07-01  horneds
 
 	* Add sorting (--sort)

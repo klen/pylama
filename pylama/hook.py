@@ -79,7 +79,7 @@ def install_hg(path):
         open(hook, 'w+').close()
 
     c = ConfigParser()
-    c.readfp(open(path, 'r'))
+    c.readfp(open(hook, 'r'))
     if not c.has_section('hooks'):
         c.add_section('hooks')
 
@@ -89,7 +89,7 @@ def install_hg(path):
     if not c.has_option('hooks', 'qrefresh'):
         c.set('hooks', 'qrefresh', 'python:pylama.hooks.hg_hook')
 
-    c.write(open(path, 'w+'))
+    c.write(open(hook, 'w+'))
 
 
 def install_hook(path):
@@ -101,7 +101,7 @@ def install_hook(path):
         LOGGER.warn('Git hook has been installed.')
 
     elif op.exists(hg):
-        install_hg(git)
+        install_hg(hg)
         LOGGER.warn('Mercurial hook has been installed.')
 
     else:
