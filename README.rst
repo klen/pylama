@@ -195,9 +195,9 @@ the directories of command line argument. Pylama looks for the configuration
 in this order: ::
 
     pylama.ini
-    pytest.ini
+    setup.cfg
     tox.ini
-    setup.ini
+    pytest.ini
 
 You could set configuration file manually by "-o" option.
 
