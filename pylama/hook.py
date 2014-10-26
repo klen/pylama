@@ -6,7 +6,7 @@ import sys
 from os import path as op, chmod
 from subprocess import Popen, PIPE
 
-from .main import LOGGER
+from .main import LOGGER, process_paths
 from .config import parse_options, setup_logger
 
 
@@ -30,18 +30,15 @@ def run(command):
 
 def git_hook():
     """ Run pylama after git commit. """
-    from .main import check_files
-
     _, files_modified, _ = run("git diff-index --cached --name-only HEAD")
 
     options = parse_options()
     setup_logger(options)
-    check_files([f for f in map(str, files_modified)], options)
+    process_paths(options, candidates=[f for f in map(str, files_modified)])
 
 
 def hg_hook(ui, repo, node=None, **kwargs):
     """ Run pylama after mercurial commit. """
-    from .main import check_files
     seen = set()
     paths = []
     if len(repo):
@@ -55,7 +52,7 @@ def hg_hook(ui, repo, node=None, **kwargs):
 
     options = parse_options()
     setup_logger(options)
-    check_files(paths, options)
+    process_paths(options, candidates=paths)
 
 
 def install_git(path):

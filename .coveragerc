@@ -1,4 +1,4 @@
 [run]
 omit =
-    pylama/checkers/*
-    pylama/inirama.py
+    pylama/lint/*
+    pylama/libs/*

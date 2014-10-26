@@ -16,24 +16,20 @@ Code audit tool for Python and JavaScript. Pylama wraps these tools:
 
 .. _badges:
 
-.. image:: https://secure.travis-ci.org/klen/pylama.png?branch=develop
+.. image:: http://img.shields.io/travis/klen/pylama.svg?style=flat-square
     :target: http://travis-ci.org/klen/pylama
     :alt: Build Status
 
-.. image:: https://coveralls.io/repos/klen/pylama/badge.png
+.. image:: http://img.shields.io/coveralls/klen/pylama.svg?style=flat-square
     :target: https://coveralls.io/r/klen/pylama
     :alt: Coverals
 
-.. image:: https://pypip.in/v/pylama/badge.png
+.. image:: http://img.shields.io/pypi/v/pylama.svg?style=flat-square
     :target: https://crate.io/packages/pylama
     :alt: Version
 
-.. image:: https://pypip.in/d/pylama/badge.png
-    :target: https://crate.io/packages/pylama
-    :alt: Downloads
-
-.. image:: https://dl.dropboxusercontent.com/u/487440/reformal/donate.png
-    :target: https://www.gittip.com/klen/
+.. image:: http://img.shields.io/gratipay/klen.svg?style=flat-square
+    :target: https://www.gratipay.com/klen/
     :alt: Donate
 
 
@@ -195,9 +191,9 @@ the directories of command line argument. Pylama looks for the configuration
 in this order: ::
 
     pylama.ini
-    pytest.ini
+    setup.cfg
     tox.ini
-    setup.ini
+    pytest.ini
 
 You could set configuration file manually by "-o" option.
 
@@ -324,6 +320,18 @@ pylama_wow.py: ::
                         text: 'Wow has been finded.',
                         type: 'WOW'
                     }]
+
+
+Run pylama from python code
+---------------------------
+::
+
+    from pylama.main import check_path, parse_options
+
+    my_redefined_options = {...}
+    my_path = '...'
+    options = parse_options([my_path], **my_redefined_options)
+    errors = check_path(options)
 
 
 .. _bagtracker:

@@ -1,14 +1,15 @@
-""" Support for asyncronious code checking. """
+""" Support for asyncronious checking. """
 
 import logging
 import threading
-from os import path as op
+
+from .core import run
+
+
 try:
     import Queue
 except ImportError:
     import queue as Queue
-
-from .core import run
 
 
 try:
@@ -36,41 +37,33 @@ class Worker(threading.Thread):
         """ Run tasks from queue. """
         while True:
             path, params = self.path_queue.get()
-            errors = check_path(path, **params)
+            errors = run(path, **params)
             self.result_queue.put(errors)
             self.path_queue.task_done()
 
 
-def async_check_files(paths, options, rootpath=None):
-    """ Check paths.
+def check_async(paths, options, rootdir=None):
+    """ Check given paths asynchronously.
 
     :return list: list of errors
 
     """
-    errors = []
-
-    # Disable async if pylint enabled
-    async = options.async and 'pylint' not in options.linters
-
-    if not async:
-        for path in paths:
-            errors += check_path(path, options=options, rootpath=rootpath)
-        return errors
-
     LOGGER.info('Async code checking is enabled.')
     path_queue = Queue.Queue()
     result_queue = Queue.Queue()
 
-    for _ in range(CPU_COUNT):
+    for num in range(CPU_COUNT):
         worker = Worker(path_queue, result_queue)
         worker.setDaemon(True)
+        LOGGER.info('Start worker #%s', (num + 1))
         worker.start()
 
     for path in paths:
-        path_queue.put((path, dict(options=options, rootpath=rootpath)))
+        path_queue.put((path, dict(options=options, rootdir=rootdir)))
 
     path_queue.join()
 
+    errors = []
     while True:
         try:
             errors += result_queue.get(False)
@@ -79,24 +72,5 @@ def async_check_files(paths, options, rootpath=None):
 
     return errors
 
-
-def check_path(path, options=None, rootpath=None, code=None):
-    """ Check path.
-
-    :return list: list of errors
-
-    """
-    LOGGER.info("Parse file: %s", path)
-
-    rootpath = rootpath or '.'
-    errors = []
-    for error in run(path, code, options):
-        try:
-            error._info['rel'] = op.relpath(error.filename, rootpath)
-            errors.append(error)
-        except KeyError:
-            continue
-
-    return errors
 
 # pylama:ignore=W0212

@@ -6,7 +6,6 @@ import sys
 from os import path as op
 
 from setuptools import setup, find_packages
-from setuptools.command.test import test as TestCommand
 
 
 _read = lambda f: open(
@@ -20,22 +19,6 @@ _version = re.search(r'^__version__\s*=\s*"(.*)"', _meta, re.M).group(1)
 install_requires = []
 if sys.version_info < (2, 7):
     install_requires += ['argparse']
-
-
-class __PyTest(TestCommand):
-
-    test_args = []
-    test_suite = True
-
-    def finalize_options(self):
-        TestCommand.finalize_options(self)
-        self.test_args = ['tests.py']
-        self.test_suite = True
-
-    def run_tests(self):
-        import pytest
-        errno = pytest.main(self.test_args)
-        sys.exit(errno)
 
 
 meta = dict(
@@ -77,8 +60,6 @@ meta = dict(
     ],
 
     install_requires=install_requires,
-    tests_require=['pytest'],
-    cmdclass={'test': __PyTest},
 )
 
 

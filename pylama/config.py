@@ -1,8 +1,8 @@
 """ Parse arguments from command line and configuration files. """
 import fnmatch
-import sys
 import os
-from re import compile as re
+import sys
+import re
 
 import logging
 from argparse import ArgumentParser
@@ -10,13 +10,6 @@ from argparse import ArgumentParser
 from . import __version__
 from .libs.inirama import Namespace
 from .lint.extensions import LINTERS
-
-
-# Setup a logger
-LOGGER = logging.getLogger('pylama')
-LOGGER.propagate = False
-STREAM = logging.StreamHandler(sys.stdout)
-LOGGER.addHandler(STREAM)
 
 #: A default checkers
 DEFAULT_LINTERS = 'pep8', 'pyflakes', 'mccabe'
@@ -26,6 +19,18 @@ CONFIG_FILES = [
     os.path.join(CURDIR, basename) for basename in
     ('pylama.ini', 'setup.cfg', 'tox.ini', 'pytest.ini')
 ]
+
+#: The skip pattern
+SKIP_PATTERN = re.compile(r'# *noqa\b', re.I).search
+
+# Parse a modelines
+MODELINE_RE = re.compile(r'^\s*#\s+(?:pylama:)\s*((?:[\w_]*=[^:\n\s]+:?)+)', re.I | re.M)
+
+# Setup a logger
+LOGGER = logging.getLogger('pylama')
+LOGGER.propagate = False
+STREAM = logging.StreamHandler(sys.stdout)
+LOGGER.addHandler(STREAM)
 
 
 class _Default(object):
@@ -103,7 +108,7 @@ PARSER.add_argument(
 
 PARSER.add_argument(
     "--skip", default=_Default(''),
-    type=lambda s: [re(fnmatch.translate(p)) for p in s.split(',') if p],
+    type=lambda s: [re.compile(fnmatch.translate(p)) for p in s.split(',') if p],
     help="Skip files by masks (comma-separated, Ex. */messages.py)")
 
 PARSER.add_argument("--report", "-r", help="Send report to file [REPORT]")
@@ -171,7 +176,7 @@ def parse_options(args=None, config=True, **overrides): # noqa
                 options.linters_params[name] = dict(opts)
                 continue
 
-            mask = re(fnmatch.translate(name))
+            mask = re.compile(fnmatch.translate(name))
             options.file_params[mask] = dict(opts)
 
     # Postprocess options
@@ -179,6 +184,10 @@ def parse_options(args=None, config=True, **overrides): # noqa
     for name, value in opts.items():
         if isinstance(value, _Default):
             setattr(options, name, process_value(name, value.value))
+
+    if options.async and 'pylint' in options.linters:
+        LOGGER.warn('Cant parse code asynchronously while pylint is enabled.')
+        options.async = False
 
     return options
 
