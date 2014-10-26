@@ -76,11 +76,11 @@ class PylamaItem(pytest.Item, pytest.File):
 
 
 def check_file(path):
-    from pylama.main import parse_options, check_files
+    from pylama.main import parse_options, process_paths
     from pylama.config import CURDIR
 
     options = parse_options()
     path = op.relpath(str(path), CURDIR)
-    return check_files([path], options, error=False)
+    return process_paths(options, candidates=[path], error=False)
 
 # pylama:ignore=D,E1002,W0212

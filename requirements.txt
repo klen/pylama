@@ -1,4 +1,9 @@
-pyflakes
+# Test requirements
+
+ipdb
 pep8
-pylint
+pyflakes
 pylama
+pylint
+pytest
+-e .

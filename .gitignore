@@ -38,5 +38,6 @@ nosetests.xml
 docs/_build
 /libs
 plugins
-todo.txt
+/todo.txt
+/todo.rst
 /.cache

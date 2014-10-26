@@ -18,12 +18,14 @@ clean:
 
 .PHONY: upload
 upload:
+	@git push --all
+	@git push --tags
 	@python setup.py sdist upload || echo 'Already uploaded'
 	@python setup.py bdist_wheel upload || echo 'Already uploaded'
 
 .PHONY: t
-t: audit
-	python setup.py test
+t:
+	@py.test -sx tests.py
 
 .PHONY: audit
 audit:

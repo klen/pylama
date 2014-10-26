@@ -1,51 +1,51 @@
 import pytest
 
+import os.path as op
 from pylama.config import parse_options, get_config
 from pylama.core import (
-    filter_errors, parse_modeline, prepare_params, run, remove_duplicates)
-from pylama.errors import Error
+    filter_errors, parse_modeline, prepare_params, run)
+from pylama.errors import Error, remove_duplicates
 from pylama.hook import git_hook, hg_hook
 from pylama.lint.extensions import LINTERS
-from pylama.main import shell, check_files
-from pylama.tasks import check_path, async_check_files
+from pylama.main import shell, check_path
+from pylama.async import check_async
 
 
-def test_filters():
-    assert list(
-        filter_errors([Error(text='E')], select=['E'], ignore=['E101']))
-    assert not list(
-        filter_errors([Error(text='W')], select=['W100'], ignore=['W']))
+def test_filter_errors():
+    assert list(filter_errors([Error(text='E')], select=['E'], ignore=['E101']))
+    assert not list(filter_errors([Error(text='W')], select=['W100'], ignore=['W']))
 
 
-def test_duplicates():
-    errors = [
-        Error(linter='pep8', text='E701'),
-        Error(linter='pylint', text='C0321')]
+def test_remove_duplicates():
+    errors = [Error(linter='pep8', text='E701'), Error(linter='pylint', text='C0321')]
     errors = list(remove_duplicates(errors))
     assert len(errors) == 1
 
 
-def test_modeline():
-
+def test_parser_modeline():
     code = """
         bla bla bla
-
         # pylama: ignore=W12,E14:select=R:skip=0
     """
-
     params = parse_modeline(code)
     assert params == dict(ignore='W12,E14', select='R', skip='0')
 
 
 def test_prepare_params():
-
     p1 = dict(ignore='W', select='R01', skip='0')
     p2 = dict(ignore='E34,R45', select='E')
     options = parse_options(ignore=['D'], config=False)
     params = prepare_params(p1, p2, options)
     assert params == {
-        'ignore': set(['R45', 'E34', 'W', 'D']), 'select': set(['R01', 'E']),
-        'skip': False}
+        'ignore': set(['R45', 'E34', 'W', 'D']), 'select': set(['R01', 'E']), 'skip': False}
+
+
+def test_checkpath():
+    path = op.abspath('dummy.py')
+    options = parse_options([path])
+    result = check_path(options)
+    assert result
+    assert result[0].filename == 'dummy.py'
 
 
 def test_mccabe():
@@ -57,12 +57,11 @@ def test_mccabe():
 def test_pyflakes():
     options = parse_options(linters=['pyflakes'], config=False)
     assert options.linters
-    errors = run('dummy.py', code="""
-import sys
-
-def test():
-    unused = 1
-""", options=options)
+    errors = run('dummy.py', code="\n".join([
+        "import sys",
+        "def test():",
+        "    unused = 1"
+    ]), options=options)
     assert len(errors) == 2
 
 
@@ -117,25 +116,8 @@ def test_ignore_select():
     assert errors[0]['col']
 
 
-def test_checkpath():
-    options = parse_options(linters=['pep8'])
-    errors = check_path('dummy.py', options)
-    assert errors
-    assert errors[0]['rel'] == 'dummy.py'
-
-
-def test_async():
-    options = parse_options(async=True, linters=['pep8'])
-    errors = async_check_files(['dummy.py'], options)
-    assert errors
-
-
 def test_shell():
     errors = shell('-o dummy dummy.py'.split(), error=False)
-    assert errors
-
-    options = parse_options()
-    errors = check_files(['dummy.py'], options=options, error=False)
     assert errors
 
     errors = shell(['unknown.py'], error=False)
@@ -171,3 +153,9 @@ def test_config():
     linters, _ = zip(*options.linters)
     assert set(linters) == set(['pep8', 'mccabe', 'pyflakes'])
     assert options.skip == []
+
+
+def test_async():
+    options = parse_options(config=False)
+    errors = check_async(['dummy.py'], options=options, rootdir='.')
+    assert errors

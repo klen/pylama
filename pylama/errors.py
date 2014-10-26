@@ -1,4 +1,7 @@
-""" Dont duplicate errors same type. """
+""" Don't duplicate same errors from different linters. """
+
+from collections import defaultdict
+
 
 DUPLICATES = (
 
@@ -52,9 +55,21 @@ DUPLICATES = (
 DUPLICATES = dict((key, values) for values in DUPLICATES for key in values)
 
 
+def remove_duplicates(errors):
+    """ Filter duplicates from given error's list. """
+    passed = defaultdict(list)
+    for error in errors:
+        key = error.linter, error.number
+        if key in DUPLICATES:
+            if key in passed[error.lnum]:
+                continue
+            passed[error.lnum] = DUPLICATES[key]
+        yield error
+
+
 class Error(object):
 
-    """ Store error information. """
+    """ Store an error's information. """
 
     def __init__(self, linter="", col=1, lnum=1, type="E",
                  text="unknown error", filename="", **kwargs):
