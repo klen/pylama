@@ -15,10 +15,7 @@ from .lint.extensions import LINTERS
 DEFAULT_LINTERS = 'pep8', 'pyflakes', 'mccabe'
 
 CURDIR = os.getcwd()
-CONFIG_FILES = [
-    os.path.join(CURDIR, basename) for basename in
-    ('pylama.ini', 'setup.cfg', 'tox.ini', 'pytest.ini')
-]
+CONFIG_FILES = 'pylama.ini', 'setup.cfg', 'tox.ini', 'pytest.ini'
 
 #: The skip pattern
 SKIP_PATTERN = re.compile(r'# *noqa\b', re.I).search
@@ -132,7 +129,7 @@ PARSER.add_argument(
 ACTIONS = dict((a.dest, a) for a in PARSER._actions)
 
 
-def parse_options(args=None, config=True, **overrides): # noqa
+def parse_options(args=None, config=True, rootdir=CURDIR, **overrides): # noqa
     """ Parse options from command line and configuration files.
 
     :return argparse.Namespace:
@@ -154,7 +151,7 @@ def parse_options(args=None, config=True, **overrides): # noqa
 
     # Compile options from ini
     if config:
-        cfg = get_config(str(options.options))
+        cfg = get_config(str(options.options), rootdir=rootdir)
         for k, v in cfg.default.items():
             LOGGER.info('Find option %s (%s)', k, v)
             passed_value = getattr(options, k, _Default())
@@ -207,7 +204,7 @@ def process_value(name, value):
     return value
 
 
-def get_config(ini_path=None):
+def get_config(ini_path=None, rootdir=CURDIR):
     """ Load configuration from INI.
 
     :return Namespace:
@@ -218,6 +215,7 @@ def get_config(ini_path=None):
 
     if not ini_path:
         for path in CONFIG_FILES:
+            path = os.path.join(rootdir, path)
             if os.path.isfile(path) and os.access(path, os.R_OK):
                 config.read(path)
     else:
