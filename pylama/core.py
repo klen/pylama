@@ -111,8 +111,8 @@ def prepare_params(modeline, fileconfig, options):
     """
     params = dict(skip=False, ignore=[], select=[])
     if options:
-        params['ignore'] = options.ignore
-        params['select'] = options.select
+        params['ignore'] = options.ignore[:]
+        params['select'] = options.select[:]
 
     for config in filter(None, [modeline, fileconfig]):
         for key in ('ignore', 'select'):
