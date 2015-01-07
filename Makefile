@@ -55,6 +55,7 @@ register:
 upload: clean
 	@git push --all
 	@git push --tags
+	@pip install wheel
 	@python setup.py sdist upload || echo 'Already uploaded'
 	@python setup.py bdist_wheel upload || echo 'Already uploaded'
 
