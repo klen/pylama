@@ -43,7 +43,7 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
             if params.get('skip'):
                 return errors
 
-            for item in linters:
+            for item in params.get('linters') or linters:
 
                 if not isinstance(item, tuple):
                     item = (item, LINTERS.get(item))
@@ -109,13 +109,13 @@ def prepare_params(modeline, fileconfig, options):
     :return dict:
 
     """
-    params = dict(skip=False, ignore=[], select=[])
+    params = dict(skip=False, ignore=[], select=[], linters=[])
     if options:
         params['ignore'] = options.ignore[:]
         params['select'] = options.select[:]
 
     for config in filter(None, [modeline, fileconfig]):
-        for key in ('ignore', 'select'):
+        for key in ('ignore', 'select', 'linters'):
             params[key] += process_value(key, config.get(key, []))
         params['skip'] = bool(int(config.get('skip', False)))
 
