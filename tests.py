@@ -37,7 +37,7 @@ def test_prepare_params():
     options = parse_options(ignore=['D'], config=False)
     params = prepare_params(p1, p2, options)
     assert params == {
-        'ignore': set(['R45', 'E34', 'W', 'D']), 'select': set(['R01', 'E']), 'skip': False}
+        'ignore': set(['R45', 'E34', 'W', 'D']), 'select': set(['R01', 'E']), 'skip': False, 'linters': []}
 
 
 def test_checkpath():
