@@ -531,9 +531,27 @@ class Checker(object):
         self.addBinding(node, binding)
 
     def handleNodeDelete(self, node):
+
+        def on_conditional_branch():
+            """
+            Return `True` if node is part of a conditional body.
+            """
+            current = getattr(node, 'parent', None)
+            while current:
+                if isinstance(current, (ast.If, ast.While, ast.IfExp)):
+                    return True
+                current = getattr(current, 'parent', None)
+            return False
+
         name = getNodeName(node)
         if not name:
             return
+
+        if on_conditional_branch():
+            # We can not predict if this conditional branch is going to
+            # be executed.
+            return
+
         if isinstance(self.scope, FunctionScope) and name in self.scope.globals:
             self.scope.globals.remove(name)
         else:
@@ -654,7 +672,7 @@ class Checker(object):
         EQ = NOTEQ = LT = LTE = GT = GTE = IS = ISNOT = IN = NOTIN = ignore
 
     # additional node types
-    LISTCOMP = COMPREHENSION = KEYWORD = handleChildren
+    COMPREHENSION = KEYWORD = handleChildren
 
     def GLOBAL(self, node):
         """
@@ -669,6 +687,8 @@ class Checker(object):
         self.pushScope(GeneratorScope)
         self.handleChildren(node)
         self.popScope()
+
+    LISTCOMP = handleChildren if PY2 else GENERATOREXP
 
     DICTCOMP = SETCOMP = GENERATOREXP
 
@@ -693,6 +713,10 @@ class Checker(object):
             raise RuntimeError("Got impossible expression context: %r" % (node.ctx,))
 
     def RETURN(self, node):
+        if isinstance(self.scope, ClassScope):
+            self.report(messages.ReturnOutsideFunction, node)
+            return
+
         if (
             node.value and
             hasattr(self.scope, 'returnValue') and
