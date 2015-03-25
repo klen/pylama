@@ -37,7 +37,9 @@ def test_prepare_params():
     options = parse_options(ignore=['D'], config=False)
     params = prepare_params(p1, p2, options)
     assert params == {
-        'ignore': set(['R45', 'E34', 'W', 'D']), 'select': set(['R01', 'E']), 'skip': False, 'linters': []}
+        'ignore': set(['R45', 'E34', 'W', 'D']),
+        'select': set(['R01', 'E']),
+        'skip': False, 'linters': []}
 
 
 def test_checkpath():
@@ -68,7 +70,7 @@ def test_pyflakes():
 def test_pep8():
     options = parse_options(linters=['pep8'], config=False)
     errors = run('dummy.py', options=options)
-    assert len(errors) == 3
+    assert len(errors) == 2
 
     options.linters_params['pep8'] = dict(max_line_length=60)
     errors = run('dummy.py', options=options)
@@ -104,15 +106,15 @@ def test_ignore_select():
     options.ignore = ['E301', 'D102']
     options.linters = ['pep8', 'pep257', 'pyflakes', 'mccabe']
     errors = run('dummy.py', options=options)
-    assert len(errors) == 16
+    assert len(errors) == 15
 
     options.ignore = ['E3', 'D']
     errors = run('dummy.py', options=options)
-    assert len(errors) == 1
+    assert len(errors) == 0
 
     options.select = ['E301']
     errors = run('dummy.py', options=options)
-    assert len(errors) == 2
+    assert len(errors) == 1
     assert errors[0]['col']
 
 

@@ -1,8 +1,8 @@
-""" Code audit tool for python.
+"""
+Code audit tool for python.
 
 :copyright: 2013 by Kirill Klenov.
 :license: BSD, see LICENSE for more details.
-
 """
 
 __version__ = "6.2.0"

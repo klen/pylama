@@ -1,3 +1,10 @@
+2015-03-25  horneds
+
+	* Version 6.2.0
+	* Pep257 0.5.0
+	* PEP8 1.6.3a0
+	* Pyflakes 0.8.2a0
+
 2014-10-26  horneds
 
 	* Version 6.1.0
