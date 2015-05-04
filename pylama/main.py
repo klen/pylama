@@ -35,7 +35,9 @@ def check_path(options, rootdir=None, candidates=None):
     paths = []
     for path in candidates:
 
-        if not options.force and not any(l.allow(path) for _, l in options.linters): # noqa
+        if (not options.force and
+                not len(candidates) == 1 and
+                not any(l.allow(path) for _, l in options.linters)):
             continue
 
         if not op.exists(path):
