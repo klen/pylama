@@ -194,4 +194,4 @@ class CodeContext(object):
         if t and LOGGER.level == logging.DEBUG:
             LOGGER.debug(traceback)
 
-# pylama:ignore=R0912
+# pylama:ignore=R0912,D210,F0001

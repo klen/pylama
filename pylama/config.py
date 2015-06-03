@@ -232,4 +232,4 @@ def setup_logger(options):
         LOGGER.addHandler(logging.FileHandler(options.report, mode='w'))
     LOGGER.info('Try to read configuration from: ' + options.options)
 
-# pylama:ignore=W0212
+# pylama:ignore=W0212,D210,F0001
