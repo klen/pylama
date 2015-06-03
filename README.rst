@@ -12,8 +12,6 @@ Code audit tool for Python and JavaScript. Pylama wraps these tools:
 * Pylint_ © 2013, Logilab (should be installed 'pylama_pylint' module);
 * gjslint_ © The Closure Linter Authors (should be installed 'pylama_gjslint' module);
 
- | `Pylint isn't supported in Python 3.`
-
 .. _badges:
 
 .. image:: http://img.shields.io/travis/klen/pylama.svg?style=flat-square
