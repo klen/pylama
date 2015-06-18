@@ -53,8 +53,8 @@ Requirements:
 
 .. _installation:
 
-Instalation:
-============
+Installation:
+=============
 **Pylama** could be installed using pip: ::
 ::
 
