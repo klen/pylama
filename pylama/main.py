@@ -1,4 +1,4 @@
-""" Pylama's shell support. """
+"""Pylama's shell support."""
 
 from __future__ import absolute_import, with_statement
 
@@ -10,10 +10,9 @@ from .core import LOGGER, run
 from .async import check_async
 
 
-def check_path(options, rootdir=None, candidates=None):
-    """ Check path.
+def check_path(options, rootdir=None, candidates=None, code=None):
+    """Check path.
 
-    :param path: Path to file or directory for code checking.
     :param rootdir: Root directory (for making relative file paths)
     :param options: Parsed pylama options (from pylama.config.parse_options)
 
@@ -35,7 +34,7 @@ def check_path(options, rootdir=None, candidates=None):
     paths = []
     for path in candidates:
 
-        if not options.force and not any(l.allow(path) for _, l in options.linters): # noqa
+        if (not options.force and not any(l.allow(path) for _, l in options.linters)):
             continue
 
         if not op.exists(path):
@@ -52,12 +51,12 @@ def check_path(options, rootdir=None, candidates=None):
 
     errors = []
     for path in paths:
-        errors += run(path=path, rootdir=rootdir, options=options)
+        errors += run(path=path, code=code, rootdir=rootdir, options=options)
     return errors
 
 
 def shell(args=None, error=True):
-    """ Endpoint for console.
+    """Endpoint for console.
 
     Parse a command arguments, configuration files and run a checkers.
 
@@ -81,7 +80,7 @@ def shell(args=None, error=True):
 
 
 def process_paths(options, candidates=None, error=True):
-    """ Process files and log errors. """
+    """Process files and log errors."""
     errors = check_path(options, rootdir=CURDIR, candidates=candidates)
     pattern = "%(filename)s:%(lnum)s:%(col)s: %(text)s"
     if options.format == 'pylint':
@@ -98,3 +97,5 @@ def process_paths(options, candidates=None, error=True):
 
 if __name__ == '__main__':
     shell()
+
+# pylama:ignore=F0001

@@ -1,6 +1,6 @@
 """ Check PEP8. """
 from .. import Linter as BaseLinter
-from .pep8 import BaseReport, StyleGuide
+from .pep8 import BaseReport, StyleGuide, get_parser
 
 try:
     from StringIO import StringIO
@@ -19,6 +19,13 @@ class Linter(BaseLinter):
         :return list: List of errors.
 
         """
+        parser = get_parser()
+        for option in parser.option_list:
+            if option.dest and option.dest in params:
+                value = params[option.dest]
+                if not isinstance(value, str):
+                    continue
+                params[option.dest] = option.convert_value(option, params[option.dest])
         P8Style = StyleGuide(reporter=_PEP8Report, **params)
         buf = StringIO(code)
         return P8Style.input_file(path, lines=buf.readlines())

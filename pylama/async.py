@@ -73,4 +73,4 @@ def check_async(paths, options, rootdir=None):
     return errors
 
 
-# pylama:ignore=W0212
+# pylama:ignore=W0212,D210,F0001

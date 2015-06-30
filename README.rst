@@ -12,8 +12,6 @@ Code audit tool for Python and JavaScript. Pylama wraps these tools:
 * Pylint_ © 2013, Logilab (should be installed 'pylama_pylint' module);
 * gjslint_ © The Closure Linter Authors (should be installed 'pylama_gjslint' module);
 
- | `Pylint isn't supported in Python 3.`
-
 .. _badges:
 
 .. image:: http://img.shields.io/travis/klen/pylama.svg?style=flat-square
@@ -55,8 +53,8 @@ Requirements:
 
 .. _installation:
 
-Instalation:
-============
+Installation:
+=============
 **Pylama** could be installed using pip: ::
 ::
 
@@ -106,39 +104,41 @@ Command line options
     $ pylama --help
 
     usage: pylama [-h] [--verbose] [--version] [--format {pep8,pylint}]
-                [--select SELECT] [--linters LINTERS] [--ignore IGNORE]
-                [--skip SKIP] [--report REPORT] [--hook] [--async]
-                [--options OPTIONS] [--force]
-                [path]
-
+                  [--select SELECT] [--sort SORT] [--linters LINTERS]
+                  [--ignore IGNORE] [--skip SKIP] [--report REPORT] [--hook]
+                  [--async] [--options OPTIONS] [--force]
+                  [path]
+    
     Code audit tool for python.
-
+    
     positional arguments:
-    path                  Path on file or directory for code check.
-
+      path                  Path on file or directory for code check.
+    
     optional arguments:
-    -h, --help            show this help message and exit
-    --verbose, -v         Verbose mode.
-    --version             show program's version number and exit
-    --format {pep8,pylint}, -f {pep8,pylint}
+      -h, --help            show this help message and exit
+      --verbose, -v         Verbose mode.
+      --version             show program's version number and exit
+      --format {pep8,pylint}, -f {pep8,pylint}
                             Choose errors format (pep8, pylint).
-    --select SELECT, -s SELECT
+      --select SELECT, -s SELECT
                             Select errors and warnings. (comma-separated list)
-    --linters LINTERS, -l LINTERS
-                            Select linters. (comma-separated).
-    --ignore IGNORE, -i IGNORE
-                            Ignore errors and warnings. (comma-separated list)
-    --skip SKIP           Skip files by masks (comma-separated, Ex.
+      --sort SORT           Sort result by error types. Ex. E,W,D
+      --linters LINTERS, -l LINTERS
+                            Select linters. (comma-separated). Choices are
+                            pep257,mccabe,pep8,pyflakes.
+      --ignore IGNORE, -i IGNORE
+                            Ignore errors and warnings. (comma-separated)
+      --skip SKIP           Skip files by masks (comma-separated, Ex.
                             */messages.py)
-    --report REPORT, -r REPORT
+      --report REPORT, -r REPORT
                             Send report to file [REPORT]
-    --hook                Install Git (Mercurial) hook.
-    --async               Enable async mode. Usefull for checking a lot of
+      --hook                Install Git (Mercurial) hook.
+      --async               Enable async mode. Usefull for checking a lot of
                             files. Dont supported with pylint.
-    --options OPTIONS, -o OPTIONS
+      --options OPTIONS, -o OPTIONS
                             Select configuration file. By default is
                             '<CURDIR>/pylama.ini'
-    --force, -F           Force code checking (if linter doesnt allow)
+      --force, -F           Force code checking (if linter doesnt allow)
 
 .. _modeline:
 
