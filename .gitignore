@@ -1,43 +1,31 @@
-*.py[cod]
-
-# C extensions
-*.so
-
-# Packages
 *.egg
 *.egg-info
-dist
-build
-eggs
-parts
-bin
-var
-sdist
-develop-eggs
-.installed.cfg
-lib
-lib64
-
-# Installer logs
-pip-log.txt
-
-# Unit test / coverage reports
-.coverage
-.tox
-nosetests.xml
-
-# Translations
 *.mo
-
-# Mr Developer
+*.py[cod]
+*.so
+.coverage
+.installed.cfg
 .mr.developer.cfg
 .project
 .pydevproject
-
+.tox
 .vimrc
-docs/_build
-/libs
-plugins
-/todo.txt
-/todo.rst
 /.cache
+/.ropeproject
+/libs
+/todo.rst
+/todo.txt
+bin
+build
+develop-eggs
+dist
+docs/_build
+eggs
+lib
+lib64
+nosetests.xml
+parts
+pip-log.txt
+plugins
+sdist
+var
