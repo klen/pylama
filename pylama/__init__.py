@@ -5,7 +5,7 @@ Code audit tool for python.
 :license: BSD, see LICENSE for more details.
 """
 
-__version__ = "6.3.3"
+__version__ = "6.3.4"
 __project__ = "pylama"
 __author__ = "Kirill Klenov <horneds@gmail.com>"
 __license__ = "GNU LGPL"
