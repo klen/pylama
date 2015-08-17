@@ -125,6 +125,10 @@ PARSER.add_argument(
     "--force", "-F", action='store_true', default=_Default(False),
     help="Force code checking (if linter doesnt allow)")
 
+PARSER.add_argument(
+    "--abspath", "-a", action='store_true', default=_Default(False),
+    help="Use absolute paths in output.")
+
 
 ACTIONS = dict((a.dest, a) for a in PARSER._actions)
 
