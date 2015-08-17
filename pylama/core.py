@@ -59,8 +59,7 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
                 for er in linter.run(
                         path, code=code, ignore=params.get("ignore", set()),
                         select=params.get("select", set()), params=lparams):
-                    errors.append(Error(
-                        filename=path, linter=lname, **er))
+                    errors.append(Error(filename=path, linter=lname, **er))
 
     except IOError as e:
         LOGGER.debug("IOError %s", e)
