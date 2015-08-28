@@ -10,6 +10,15 @@ class Message(object):
         self.filename = filename
         self.lineno = loc.lineno
         self.col = getattr(loc, 'col_offset', None) if use_column else None
+        test = 1
+        if test == 1:
+            if test == 1:
+                return 28
+            elif test == 2:
+                return 28
+            return 28
+        elif test == 2:
+            return 28
 
     def __str__(self):
         return '%s:%s: %s' % (self.filename, self.lineno, self.message % self.message_args)

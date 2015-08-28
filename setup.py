@@ -16,7 +16,7 @@ _license = re.search(r'^__license__\s*=\s*"(.*)"', _meta, re.M).group(1)
 _project = re.search(r'^__project__\s*=\s*"(.*)"', _meta, re.M).group(1)
 _version = re.search(r'^__version__\s*=\s*"(.*)"', _meta, re.M).group(1)
 
-install_requires = []
+install_requires = ['mccabe', 'pep8', 'pep257', 'pyflakes']
 if sys.version_info < (2, 7):
     install_requires += ['argparse']
 

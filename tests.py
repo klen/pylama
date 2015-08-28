@@ -85,9 +85,9 @@ def test_pep257():
 
 def test_linters_params():
     options = parse_options(linters='mccabe', config=False)
-    options.linters_params['mccabe'] = dict(complexity=2)
+    options.linters_params['mccabe'] = dict(complexity=1)
     errors = run('dummy.py', options=options)
-    assert len(errors) == 13
+    assert len(errors) == 1
 
     options.linters_params['mccabe'] = dict(complexity=20)
     errors = run('dummy.py', options=options)
