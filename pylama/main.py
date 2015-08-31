@@ -21,12 +21,13 @@ def check_path(options, rootdir=None, candidates=None, code=None):
     """
     if not candidates:
         candidates = []
-        path = op.abspath(options.path)
-        if op.isdir(options.path):
-            for root, _, files in walk(options.path):
-                candidates += [op.relpath(op.join(root, f), CURDIR) for f in files]
-        else:
-            candidates.append(options.path)
+        for path_ in options.paths:
+            path = op.abspath(path_)
+            if op.isdir(path):
+                for root, _, files in walk(path):
+                    candidates += [op.relpath(op.join(root, f), CURDIR) for f in files]
+            else:
+                candidates.append(path)
 
     if rootdir is None:
         rootdir = path if op.isdir(path) else op.dirname(path)

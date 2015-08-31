@@ -34,7 +34,9 @@ def git_hook():
 
     options = parse_options()
     setup_logger(options)
-    process_paths(options, candidates=[f for f in map(str, files_modified)])
+    candidates = list(map(str, files_modified))
+    if candidates:
+        process_paths(options, candidates=candidates)
 
 
 def hg_hook(ui, repo, node=None, **kwargs):
@@ -52,7 +54,8 @@ def hg_hook(ui, repo, node=None, **kwargs):
 
     options = parse_options()
     setup_logger(options)
-    process_paths(options, candidates=paths)
+    if paths:
+        process_paths(options, candidates=paths)
 
 
 def install_git(path):

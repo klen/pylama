@@ -1,6 +1,8 @@
-""" Check PEP8. """
-from .. import Linter as BaseLinter
-from .pep8 import BaseReport, StyleGuide, get_parser
+"""PEP8 support."""
+from pep8 import BaseReport, StyleGuide, get_parser
+
+from pylama.lint import Linter as Abstract
+
 
 try:
     from StringIO import StringIO
@@ -8,16 +10,15 @@ except ImportError:
     from io import StringIO
 
 
-class Linter(BaseLinter):
+class Linter(Abstract):
 
-    """ PEP8 code check. """
+    """PEP8 runner. """
 
     @staticmethod
     def run(path, code=None, params=None, **meta):
-        """ PEP8 code checking.
+        """Check code with PEP8.
 
         :return list: List of errors.
-
         """
         parser = get_parser()
         for option in parser.option_list:

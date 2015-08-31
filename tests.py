@@ -1,5 +1,3 @@
-import pytest
-
 import os.path as op
 from pylama.config import parse_options, get_config
 from pylama.core import (
@@ -85,9 +83,9 @@ def test_pep257():
 
 def test_linters_params():
     options = parse_options(linters='mccabe', config=False)
-    options.linters_params['mccabe'] = dict(complexity=2)
+    options.linters_params['mccabe'] = dict(complexity=1)
     errors = run('dummy.py', options=options)
-    assert len(errors) == 13
+    assert len(errors) == 1
 
     options.linters_params['mccabe'] = dict(complexity=20)
     errors = run('dummy.py', options=options)
@@ -127,13 +125,11 @@ def test_shell():
 
 
 def test_git_hook():
-    with pytest.raises(SystemExit):
-        git_hook()
+    assert not git_hook()
 
 
 def test_hg_hook():
-    with pytest.raises(SystemExit):
-        hg_hook(None, dict())
+    assert not hg_hook(None, dict())
 
 
 def test_config():
