@@ -71,8 +71,8 @@ def parse_linters(linters):
 
 PARSER = ArgumentParser(description="Code audit tool for python.")
 PARSER.add_argument(
-    "path", nargs='?', default=_Default(CURDIR),
-    help="Path on file or directory for code check.")
+    "paths", nargs='*', default=_Default([CURDIR]),
+    help="Paths to files or directories for code check.")
 
 PARSER.add_argument(
     "--verbose", "-v", action='store_true', help="Verbose mode.")

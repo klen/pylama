@@ -1,5 +1,3 @@
-import pytest
-
 import os.path as op
 from pylama.config import parse_options, get_config
 from pylama.core import (
@@ -127,13 +125,11 @@ def test_shell():
 
 
 def test_git_hook():
-    with pytest.raises(SystemExit):
-        git_hook()
+    assert not git_hook()
 
 
 def test_hg_hook():
-    with pytest.raises(SystemExit):
-        hg_hook(None, dict())
+    assert not hg_hook(None, dict())
 
 
 def test_config():
