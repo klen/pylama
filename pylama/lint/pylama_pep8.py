@@ -12,7 +12,7 @@ except ImportError:
 
 class Linter(Abstract):
 
-    """PEP8 runner. """
+    """PEP8 runner."""
 
     @staticmethod
     def run(path, code=None, params=None, **meta):
@@ -39,13 +39,13 @@ class _PEP8Report(BaseReport):
         self.errors = []
 
     def init_file(self, filename, lines, expected, line_offset):
-        """ Prepare storage for errors. """
+        """Prepare storage for errors."""
         super(_PEP8Report, self).init_file(
             filename, lines, expected, line_offset)
         self.errors = []
 
     def error(self, line_number, offset, text, check):
-        """ Save errors. """
+        """Save errors."""
         code = super(_PEP8Report, self).error(
             line_number, offset, text, check)
 
@@ -58,7 +58,7 @@ class _PEP8Report(BaseReport):
             ))
 
     def get_file_results(self):
-        """ Get errors.
+        """Get errors.
 
         :return list: List of errors.
 

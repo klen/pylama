@@ -1,4 +1,4 @@
-""" Load extensions. """
+"""Load extensions."""
 
 LINTERS = {}
 
