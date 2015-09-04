@@ -28,6 +28,7 @@ meta = dict(
     description=_read('DESCRIPTION'),
     long_description=_read('README.rst'),
     platforms=('Any'),
+    zip_safe=False,
     keywords='pylint pep8 pyflakes mccabe linter qa pep257'.split(),
 
     author='Kirill Klenov',
