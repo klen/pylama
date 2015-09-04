@@ -3,7 +3,6 @@
 ipdb
 pep8
 pyflakes
-pylama
 pylint
 pytest
 -e .
