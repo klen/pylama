@@ -106,13 +106,13 @@ Command line options
     usage: pylama [-h] [--verbose] [--version] [--format {pep8,pylint}]
                   [--select SELECT] [--sort SORT] [--linters LINTERS]
                   [--ignore IGNORE] [--skip SKIP] [--report REPORT] [--hook]
-                  [--async] [--options OPTIONS] [--force]
-                  [path]
+                  [--async] [--options OPTIONS] [--force] [--abspath]
+                  [paths [paths ...]]
     
     Code audit tool for python.
     
     positional arguments:
-      path                  Path on file or directory for code check.
+      paths                 Paths to files or directories for code check.
     
     optional arguments:
       -h, --help            show this help message and exit
@@ -125,7 +125,7 @@ Command line options
       --sort SORT           Sort result by error types. Ex. E,W,D
       --linters LINTERS, -l LINTERS
                             Select linters. (comma-separated). Choices are
-                            pep257,mccabe,pep8,pyflakes.
+                            mccabe,pep8,pyflakes,pep257.
       --ignore IGNORE, -i IGNORE
                             Ignore errors and warnings. (comma-separated)
       --skip SKIP           Skip files by masks (comma-separated, Ex.
@@ -139,6 +139,8 @@ Command line options
                             Select configuration file. By default is
                             '<CURDIR>/pylama.ini'
       --force, -F           Force code checking (if linter doesnt allow)
+      --abspath, -a         Use absolute paths in output.
+
 
 .. _modeline:
 

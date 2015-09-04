@@ -160,6 +160,8 @@ def parse_options(args=None, config=True, rootdir=CURDIR, **overrides): # noqa
             LOGGER.info('Find option %s (%s)', k, v)
             passed_value = getattr(options, k, _Default())
             if isinstance(passed_value, _Default):
+                if k == 'paths':
+                    v = v.split()
                 setattr(options, k, _Default(v))
 
         # Parse file related options
