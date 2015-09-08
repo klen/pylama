@@ -140,7 +140,7 @@ def test_config():
     assert options
     assert options.skip
     assert not options.verbose
-    assert options.path == 'pylama'
+    assert options.paths == ['pylama']
 
     options = parse_options(['-l', 'pep257,pep8', '-i', 'E'])
     linters, _ = zip(*options.linters)
