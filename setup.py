@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-""" Setup pylama installation. """
+"""Setup pylama installation."""
+
 import re
 import sys
 from os import path as op
