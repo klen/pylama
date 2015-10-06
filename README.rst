@@ -349,7 +349,7 @@ If you have any suggestions, bug reports or annoyances please report them to the
 Contributing
 ------------
 
-Development of adrest happens at github: https://github.com/klen/pylama
+Development of Pylama happens at github: https://github.com/klen/pylama
 
 
 .. _contributors:
