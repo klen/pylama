@@ -1,8 +1,6 @@
 # Test requirements
 
-ipdb
-pep8
-pyflakes
-pylint
-pytest
--e .
+mccabe      == 0.4.0
+pep257      == 0.7.0
+pep8        == 1.7.0
+pyflakes    == 1.0.0
