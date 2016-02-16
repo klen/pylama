@@ -8,6 +8,7 @@
 .mr.developer.cfg
 .project
 .pydevproject
+.idea/
 .tox
 .vimrc
 /.cache

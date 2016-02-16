@@ -71,7 +71,8 @@ def shell(args=None, error=True):
     # Install VSC hook
     if options.hook:
         from .hook import install_hook
-        return install_hook(options.path)
+        for path in options.paths:
+            return install_hook(path)
 
     return process_paths(options, error=error)
 
