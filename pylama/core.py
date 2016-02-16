@@ -60,10 +60,12 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
                 lparams = linters_params.get(lname, dict())
                 LOGGER.info("Run %s %s", lname, lparams)
 
-                for er in linter.run(
+                linter_errors = linter.run(
                         path, code=code, ignore=params.get("ignore", set()),
-                        select=params.get("select", set()), params=lparams):
-                    errors.append(Error(filename=path, linter=lname, **er))
+                        select=params.get("select", set()), params=lparams)
+                if linter_errors:
+                    for er in linter_errors:
+                        errors.append(Error(filename=path, linter=lname, **er))
 
     except IOError as e:
         LOGGER.debug("IOError %s", e)

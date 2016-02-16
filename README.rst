@@ -375,7 +375,7 @@ Licensed under a `BSD license`_.
 .. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
 .. _PEP257: https://github.com/GreenSteam/pep257
 .. _PEP8: https://github.com/jcrocholl/pep8
-.. _PyFlakes: https://github.com/kevinw/pyflakes 
+.. _PyFlakes: https://github.com/pyflakes/pyflakes
 .. _Pylint: http://pylint.org
 .. _Pytest: http://pytest.org
 .. _gjslint: https://developers.google.com/closure/utilities
