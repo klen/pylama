@@ -66,7 +66,7 @@ Installation:
 Quickstart
 ==========
 
-**Pylama** is easy to use and realy fun for checking code quality.
+**Pylama** is easy to use and really fun for checking code quality.
 Just run `pylama` and get common output from all pylama plugins (PEP8_, PyFlakes_ and etc)
 
 Recursive check the current directory. ::
@@ -87,7 +87,7 @@ Choose code checkers ::
 
     $ pylama -l "pep8,mccabe"
 
-Choose code chekers for JavaScript::
+Choose code checkers for JavaScript::
 
     $ pylama --linters=gjslint --ignore=E:0010 <path_to_directory_or_file>
 
@@ -349,7 +349,7 @@ If you have any suggestions, bug reports or annoyances please report them to the
 Contributing
 ------------
 
-Development of adrest happens at github: https://github.com/klen/pylama
+Development of adrest happens at GitHub: https://github.com/klen/pylama
 
 
 .. _contributors:
