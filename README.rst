@@ -66,7 +66,7 @@ Installation:
 Quickstart
 ==========
 
-**Pylama** is easy to use and realy fun for checking code quality.
+**Pylama** is easy to use and really fun for checking code quality.
 Just run `pylama` and get common output from all pylama plugins (PEP8_, PyFlakes_ and etc)
 
 Recursive check the current directory. ::
