@@ -18,7 +18,7 @@ _project = re.search(r'^__project__\s*=\s*"(.*)"', _meta, re.M).group(1)
 _version = re.search(r'^__version__\s*=\s*"(.*)"', _meta, re.M).group(1)
 
 install_requires = [
-    l for l in _read('requirements.txt').split('\n')
+    l.split()[0] for l in _read('requirements.txt').split('\n')
     if l and not l.startswith('#') and not l.startswith('-')]
 if sys.version_info < (2, 7):
     install_requires += ['argparse']
