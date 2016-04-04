@@ -1,4 +1,4 @@
-""" Parse arguments from command line and configuration files. """
+"""Parse arguments from command line and configuration files."""
 import fnmatch
 import os
 import sys

@@ -1,7 +1,6 @@
-""" Pylama's core functionality.
+"""Pylama's core functionality.
 
 Prepare params, check a modeline and run the checkers.
-
 """
 import logging
 
@@ -12,7 +11,7 @@ from .lint.extensions import LINTERS
 
 
 def run(path='', code=None, rootdir=CURDIR, options=None):
-    """ Run code checkers with given params.
+    """Run code checkers with given params.
 
     :param path: (str) A file's path.
     :param code: (str) A code source
@@ -61,8 +60,8 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
                 LOGGER.info("Run %s %s", lname, lparams)
 
                 linter_errors = linter.run(
-                        path, code=code, ignore=params.get("ignore", set()),
-                        select=params.get("select", set()), params=lparams)
+                    path, code=code, ignore=params.get("ignore", set()),
+                    select=params.get("select", set()), params=lparams)
                 if linter_errors:
                     for er in linter_errors:
                         errors.append(Error(filename=path, linter=lname, **er))
@@ -96,7 +95,7 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
 
 
 def parse_modeline(code):
-    """ Parse params from file's modeline.
+    """Parse params from file's modeline.
 
     :return dict: Linter params.
 
@@ -109,7 +108,7 @@ def parse_modeline(code):
 
 
 def prepare_params(modeline, fileconfig, options):
-    """ Prepare and merge a params from modelines and configs.
+    """Prepare and merge a params from modelines and configs.
 
     :return dict:
 
@@ -131,7 +130,7 @@ def prepare_params(modeline, fileconfig, options):
 
 
 def filter_errors(errors, select=None, ignore=None, **params):
-    """ Filter a erros by select and ignore options.
+    """Filter a erros by select and ignore options.
 
     :return bool:
 
@@ -153,7 +152,7 @@ def filter_errors(errors, select=None, ignore=None, **params):
 
 
 def filter_skiplines(code, errors):
-    """ Filter lines by `noqa`.
+    """Filter lines by `noqa`.
 
     :return list: A filtered errors
 
@@ -174,8 +173,7 @@ def filter_skiplines(code, errors):
 
 
 class CodeContext(object):
-
-    """ Read file if code is None. """
+    """Read file if code is None. """
 
     def __init__(self, code, path):
         """ Init context. """
