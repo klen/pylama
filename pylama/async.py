@@ -3,9 +3,6 @@
 import logging
 import threading
 
-from .core import run
-
-
 try:
     import Queue
 except ImportError:
@@ -20,11 +17,13 @@ try:
 except (ImportError, NotImplementedError):
     CPU_COUNT = 1
 
+from .core import run
+
+
 LOGGER = logging.getLogger('pylama')
 
 
 class Worker(threading.Thread):
-
     """Get tasks from queue and run."""
 
     def __init__(self, path_queue, result_queue):

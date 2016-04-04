@@ -17,7 +17,7 @@ except ImportError:   # Python 2
 
 
 def run(command):
-    """ Run a shell command.
+    """Run a shell command.
 
     :return str: Stdout
 
@@ -29,7 +29,7 @@ def run(command):
 
 
 def git_hook():
-    """ Run pylama after git commit. """
+    """Run pylama after git commit. """
     _, files_modified, _ = run("git diff-index --cached --name-only HEAD")
 
     options = parse_options()

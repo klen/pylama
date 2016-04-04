@@ -173,7 +173,6 @@ def filter_skiplines(code, errors):
 
 
 class CodeContext(object):
-
     """Read file if code is None. """
 
     def __init__(self, code, path):
