@@ -262,7 +262,7 @@ Check files with pylama ::
 
     pytest --pylama ...
 
-Recomended way to settings pyalam options when using pytest — configuration
+Recomended way to settings pylama options when using pytest — configuration
 files (see below).
 
 
