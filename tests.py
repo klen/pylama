@@ -15,7 +15,7 @@ def test_filter_errors():
 
 
 def test_remove_duplicates():
-    errors = [Error(linter='pep8', text='E701'), Error(linter='pylint', text='C0321')]
+    errors = [Error(linter='pycodestyle', text='E701'), Error(linter='pylint', text='C0321')]
     errors = list(remove_duplicates(errors))
     assert len(errors) == 1
 
@@ -65,12 +65,12 @@ def test_pyflakes():
     assert len(errors) == 2
 
 
-def test_pep8():
-    options = parse_options(linters=['pep8'], config=False)
+def test_pycodestyle():
+    options = parse_options(linters=['pycodestyle'], config=False)
     errors = run('dummy.py', options=options)
     assert len(errors) == 2
 
-    options.linters_params['pep8'] = dict(max_line_length=60)
+    options.linters_params['pycodestyle'] = dict(max_line_length=60)
     errors = run('dummy.py', options=options)
     assert len(errors) == 11
 
@@ -102,9 +102,9 @@ def test_sort():
 def test_ignore_select():
     options = parse_options()
     options.ignore = ['E301', 'D102']
-    options.linters = ['pep8', 'pydocstyle', 'pyflakes', 'mccabe']
+    options.linters = ['pycodestyle', 'pydocstyle', 'pyflakes', 'mccabe']
     errors = run('dummy.py', options=options)
-    assert len(errors) == 16
+    assert len(errors) == 17
 
     options.ignore = ['E3', 'D']
     errors = run('dummy.py', options=options)
@@ -142,14 +142,14 @@ def test_config():
     assert not options.verbose
     assert options.paths == ['pylama']
 
-    options = parse_options(['-l', 'pydocstyle,pep8', '-i', 'E'])
+    options = parse_options(['-l', 'pydocstyle,pycodestyle', '-i', 'E'])
     linters, _ = zip(*options.linters)
-    assert set(linters) == set(['pydocstyle', 'pep8'])
+    assert set(linters) == set(['pydocstyle', 'pycodestyle'])
     assert options.ignore == ['E']
 
     options = parse_options('-o dummy dummy.py'.split())
     linters, _ = zip(*options.linters)
-    assert set(linters) == set(['pep8', 'mccabe', 'pyflakes'])
+    assert set(linters) == set(['pycodestyle', 'mccabe', 'pyflakes'])
     assert options.skip == []
 
 
