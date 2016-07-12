@@ -1,17 +1,17 @@
-"""PEP257 support."""
+"""pydocstyle support."""
 
-from pep257 import PEP257Checker
+from pydocstyle import PEP257Checker
 
 from pylama.lint import Linter as Abstract
 
 
 class Linter(Abstract):
 
-    """Check PEP257 errors."""
+    """Check pydocstyle errors."""
 
     @staticmethod
     def run(path, code=None, **meta):
-        """PEP257 code checking.
+        """pydocstyle code checking.
 
         :return list: List of errors.
         """

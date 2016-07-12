@@ -9,8 +9,9 @@ except ImportError:
     pass
 
 try:
-    from pylama.lint.pylama_pep257 import Linter
-    LINTERS['pep257'] = Linter()
+    from pylama.lint.pylama_pydocstyle import Linter
+    LINTERS['pep257'] = Linter()  # for compatibility
+    LINTERS['pydocstyle'] = Linter()
 except ImportError:
     pass
 
