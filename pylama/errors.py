@@ -1,6 +1,9 @@
 """ Don't duplicate same errors from different linters. """
 
+import re
 from collections import defaultdict
+
+PATTERN_NUMBER = re.compile('^[A-Z]\d+$')
 
 
 DUPLICATES = (
@@ -78,6 +81,9 @@ class Error(object):
         if linter:
             text = "%s [%s]" % (text, linter)
         number = text.split(' ', 1)[0]
+        if not PATTERN_NUMBER.match(number):
+            number = ''
+
         self._info = dict(linter=linter, col=col, lnum=lnum, type=type[:1],
                           text=text, filename=filename, number=number)
 
