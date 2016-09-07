@@ -43,14 +43,15 @@ class _Default(object):
 
 
 def split_csp_str(s):
-    """ Split commaseparated string.
+    """ Split comma separated string into unique values, keeping their order.
 
     :returns: list of splitted values
 
     """
-    if isinstance(s, (list, tuple)):
-        return s
-    return list(set(i for i in s.strip().split(',') if i))
+    seen = set()
+    seen_add = seen.add
+    l = s if isinstance(s, (list, tuple)) else s.strip().split(',')
+    return [x for x in l if not (x in seen or seen_add(x))]
 
 
 def parse_linters(linters):
