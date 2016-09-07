@@ -75,8 +75,8 @@ def test_pep8():
     assert len(errors) == 11
 
 
-def test_pep257():
-    options = parse_options(linters=['pep257'])
+def test_pydocstyle():
+    options = parse_options(linters=['pydocstyle'])
     errors = run('dummy.py', options=options)
     assert errors
 
@@ -102,7 +102,7 @@ def test_sort():
 def test_ignore_select():
     options = parse_options()
     options.ignore = ['E301', 'D102']
-    options.linters = ['pep8', 'pep257', 'pyflakes', 'mccabe']
+    options.linters = ['pep8', 'pydocstyle', 'pyflakes', 'mccabe']
     errors = run('dummy.py', options=options)
     assert len(errors) == 16
 
@@ -142,9 +142,9 @@ def test_config():
     assert not options.verbose
     assert options.paths == ['pylama']
 
-    options = parse_options(['-l', 'pep257,pep8', '-i', 'E'])
+    options = parse_options(['-l', 'pydocstyle,pep8', '-i', 'E'])
     linters, _ = zip(*options.linters)
-    assert set(linters) == set(['pep257', 'pep8'])
+    assert set(linters) == set(['pydocstyle', 'pep8'])
     assert options.ignore == ['E']
 
     options = parse_options('-o dummy dummy.py'.split())

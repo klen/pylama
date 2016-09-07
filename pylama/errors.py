@@ -48,6 +48,7 @@ DUPLICATES = (
     [('pylint', 'W00401'), ('pyflakes', 'W0401')],
 
     # module docstring
+    [('pydocstyle', 'D100'), ('pylint', 'C0111')],
     [('pep257', 'D100'), ('pylint', 'C0111')],
 
 )
