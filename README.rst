@@ -6,7 +6,7 @@
 Code audit tool for Python and JavaScript. Pylama wraps these tools:
 
 * PEP8_ © 2012-2013, Florent Xicluna;
-* PEP257_  © 2012, GreenSteam, <http://greensteam.dk/>
+* pydocstyle_ (formerly pep257 by Vladimir Keleshev) © 2014, Amir Rachum;
 * PyFlakes_ © 2005-2013, Kevin Watters;
 * Mccabe_ © Ned Batchelder;
 * Pylint_ © 2013, Logilab (should be installed 'pylama_pylint' module);
@@ -108,12 +108,12 @@ Command line options
                   [--ignore IGNORE] [--skip SKIP] [--report REPORT] [--hook]
                   [--async] [--options OPTIONS] [--force] [--abspath]
                   [paths [paths ...]]
-    
+
     Code audit tool for python.
-    
+
     positional arguments:
       paths                 Paths to files or directories for code check.
-    
+
     optional arguments:
       -h, --help            show this help message and exit
       --verbose, -v         Verbose mode.
@@ -125,7 +125,7 @@ Command line options
       --sort SORT           Sort result by error types. Ex. E,W,D
       --linters LINTERS, -l LINTERS
                             Select linters. (comma-separated). Choices are
-                            mccabe,pep8,pyflakes,pep257.
+                            mccabe,pep8,pyflakes,pydocstyle.
       --ignore IGNORE, -i IGNORE
                             Ignore errors and warnings. (comma-separated)
       --skip SKIP           Skip files by masks (comma-separated, Ex.
@@ -262,7 +262,7 @@ Check files with pylama ::
 
     pytest --pylama ...
 
-Recomended way to settings pyalam options when using pytest — configuration
+Recomended way to settings pylama options when using pytest — configuration
 files (see below).
 
 
@@ -280,7 +280,7 @@ In 'setup.py' should be defined 'pylama.linter' entry point. ::
             'pylama.linter': ['lintername = pylama_lintername.main:Linter'],
         }
         # ...
-    ) 
+    )
 
 'Linter' should be instance of 'pylama.lint.Linter' class.
 Must implemented two methods:
@@ -302,7 +302,7 @@ setup.py: ::
             'pylama.linter': ['wow = pylama_wow.main:Linter'],
         }
         # ...
-    ) 
+    )
 
 pylama_wow.py: ::
 
@@ -370,10 +370,10 @@ Licensed under a `BSD license`_.
 
 .. _links:
 
-.. _AUTHORS: https://github.com/klen/pylama/blob/develop/AUTHORS 
+.. _AUTHORS: https://github.com/klen/pylama/blob/develop/AUTHORS
 .. _BSD license: http://www.linfo.org/bsdlicense.html
 .. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
-.. _PEP257: https://github.com/GreenSteam/pep257
+.. _pydocstyle: https://github.com/PyCQA/pydocstyle/
 .. _PEP8: https://github.com/jcrocholl/pep8
 .. _PyFlakes: https://github.com/pyflakes/pyflakes
 .. _Pylint: http://pylint.org

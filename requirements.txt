@@ -1,6 +1,6 @@
 # Test requirements
 
-mccabe      == 0.4.0
-pep257      == 0.7.0
-pep8        == 1.7.0
-pyflakes    == 1.0.0
+mccabe      >= 0.5.2
+pydocstyle  >= 1.0.0
+pep8        >= 1.7.0
+pyflakes    >= 1.3.0

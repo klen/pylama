@@ -7,6 +7,7 @@ env:
     - TOXENV=py26
     - TOXENV=py27
     - TOXENV=py33
+    - TOXENV=py35
     - TOXENV=cov
 
 branches:
@@ -14,12 +15,12 @@ branches:
         - master
         - develop
 
-install: pip install --quiet --use-mirrors tox
+install: pip install tox
 
 script: tox
 
 after_script:
     - if [ $TOXENV == "cov" ]; then
-        pip install --quiet --use-mirrors coveralls;
+        pip install coveralls;
         coveralls;
       fi

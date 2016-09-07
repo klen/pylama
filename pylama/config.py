@@ -43,14 +43,14 @@ class _Default(object):
 
 
 def split_csp_str(s):
-    """ Split commaseparated string.
+    """ Split comma separated string into unique values, keeping their order.
 
     :returns: list of splitted values
 
     """
-    if isinstance(s, (list, tuple)):
-        return s
-    return list(set(i for i in s.strip().split(',') if i))
+    seen = set()
+    l = s if isinstance(s, (list, tuple)) else s.strip().split(',')
+    return [x for x in l if x and not (x in seen or seen.add(x))]
 
 
 def parse_linters(linters):
@@ -81,8 +81,9 @@ PARSER.add_argument('--version', action='version',
                     version='%(prog)s ' + __version__)
 
 PARSER.add_argument(
-    "--format", "-f", default=_Default('pep8'), choices=['pep8', 'pylint'],
-    help="Choose errors format (pep8, pylint).")
+    "--format", "-f", default=_Default('pep8'),
+    choices=['pep8', 'pylint', 'parsable'],
+    help="Choose errors format (pep8, pylint, parsable).")
 
 PARSER.add_argument(
     "--select", "-s", default=_Default(''), type=split_csp_str,
@@ -183,8 +184,8 @@ def parse_options(args=None, config=True, rootdir=CURDIR, **overrides): # noqa
             options.file_params[mask] = dict(opts)
 
     # Postprocess options
-    opts = dict(options.__dict__.items())
-    for name, value in opts.items():
+    for name in options.__dict__:
+        value = getattr(options, name)
         if isinstance(value, _Default):
             setattr(options, name, process_value(name, value.value))
 
