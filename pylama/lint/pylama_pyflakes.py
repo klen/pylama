@@ -10,6 +10,7 @@ checker.messages.RedefinedWhileUnused.message = "W0404 redefinition of unused %r
 checker.messages.RedefinedInListComp.message = "W0621 list comprehension redefines %r from line %r"
 checker.messages.ImportShadowedByLoopVar.message = "W0621 import %r from line %r shadowed by loop variable"
 checker.messages.ImportStarUsed.message = "W0401 'from %s import *' used; unable to detect undefined names"
+checker.messages.ImportStarUsage.message = "W0401 '%s may be undefined, or defined from star imports: %s'"
 checker.messages.UndefinedName.message = "E0602 undefined name %r"
 checker.messages.DoctestSyntaxError.message = "W0511 syntax error in doctest"
 checker.messages.UndefinedExport.message = "E0603 undefined name %r in __all__"
