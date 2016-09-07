@@ -64,13 +64,13 @@ upload: clean
 # =============
 
 .PHONY: t
-t:
+t test:
 	@py.test -sx tests.py
 
 .PHONY: audit
 audit:
-	python -m "pylama.main"
+	@python -m "pylama.main"
 
 .PHONY: docs
 docs: docs
-	python setup.py build_sphinx --source-dir=docs/ --build-dir=docs/_build --all-files
+	@python setup.py build_sphinx --source-dir=docs/ --build-dir=docs/_build --all-files

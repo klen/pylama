@@ -49,9 +49,8 @@ def split_csp_str(s):
 
     """
     seen = set()
-    seen_add = seen.add
     l = s if isinstance(s, (list, tuple)) else s.strip().split(',')
-    return [x for x in l if not (x in seen or seen_add(x))]
+    return [x for x in l if x and not (x in seen or seen.add(x))]
 
 
 def parse_linters(linters):
@@ -185,8 +184,8 @@ def parse_options(args=None, config=True, rootdir=CURDIR, **overrides): # noqa
             options.file_params[mask] = dict(opts)
 
     # Postprocess options
-    opts = dict(options.__dict__.items())
-    for name, value in opts.items():
+    for name in options.__dict__:
+        value = getattr(options, name)
         if isinstance(value, _Default):
             setattr(options, name, process_value(name, value.value))
 

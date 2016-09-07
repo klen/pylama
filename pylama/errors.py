@@ -1,9 +1,9 @@
 """ Don't duplicate same errors from different linters. """
-
 import re
 from collections import defaultdict
 
-PATTERN_NUMBER = re.compile('^[A-Z]\d+$')
+
+PATTERN_NUMBER = re.compile(r'^[A-Z]\d+$')
 
 
 DUPLICATES = (
@@ -76,14 +76,14 @@ class Error(object):
     """ Store an error's information. """
 
     def __init__(self, linter="", col=1, lnum=1, type="E",
-                 text="unknown error", filename="", **kwargs):
+                 text="unknown error", filename="", number="", **kwargs):
         """ Init error information with default values. """
         text = ' '.join(str(text).strip().split('\n'))
         if linter:
             text = "%s [%s]" % (text, linter)
-        number = text.split(' ', 1)[0]
+        number = number or text.split(' ', 1)[0]
         if not PATTERN_NUMBER.match(number):
-            number = ''
+            number = ""
 
         self._info = dict(linter=linter, col=col, lnum=lnum, type=type[:1],
                           text=text, filename=filename, number=number)

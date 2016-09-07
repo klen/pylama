@@ -1,17 +1,17 @@
 import os.path as op
+
+from pylama.async import check_async
 from pylama.config import parse_options, get_config
-from pylama.core import (
-    filter_errors, parse_modeline, prepare_params, run)
+from pylama.core import filter_errors, parse_modeline, prepare_params, run
 from pylama.errors import Error, remove_duplicates
 from pylama.hook import git_hook, hg_hook
 from pylama.lint.extensions import LINTERS
 from pylama.main import shell, check_path
-from pylama.async import check_async
 
 
 def test_filter_errors():
-    assert list(filter_errors([Error(text='E')], select=['E'], ignore=['E101']))
-    assert not list(filter_errors([Error(text='W')], select=['W100'], ignore=['W']))
+    assert list(filter_errors([Error(text='E1')], select=['E'], ignore=['E101']))
+    assert not list(filter_errors([Error(text='W1')], select=['W100'], ignore=['W']))
 
 
 def test_remove_duplicates():

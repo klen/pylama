@@ -16,6 +16,6 @@ class Linter(Abstract):
         :return list: List of errors.
         """
         return [
-            {'lnum': e.line, 'text': e.message, 'type': 'D'}
+            {'lnum': e.line, 'text': e.message, 'type': 'D', 'number': e.code}
             for e in PEP257Checker().check_source(code, path)
         ]
