@@ -73,7 +73,8 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
     except SyntaxError as e:
         LOGGER.debug("SyntaxError %s", e)
         errors.append(
-            Error(linter=lname, lnum=e.lineno, col=e.offset, text=e.args[0],
+            Error(linter='pylama', lnum=e.lineno, col=e.offset,
+                  text='E0100 SyntaxError: {}'.format(e.args[0]),
                   filename=path))
 
     except Exception as e: # noqa
