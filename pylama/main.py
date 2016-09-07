@@ -81,9 +81,12 @@ def process_paths(options, candidates=None, error=True):
     """Process files and log errors."""
     errors = check_path(options, rootdir=CURDIR, candidates=candidates)
 
-    pattern = "%(filename)s:%(lnum)s:%(col)s: %(text)s"
-    if options.format == 'pylint':
+    if options.format == 'pep8':
+        pattern = "%(filename)s:%(lnum)s:%(col)s: %(text)s"
+    elif options.format == 'pylint':
         pattern = "%(filename)s:%(lnum)s: [%(type)s] %(text)s"
+    else:  # 'parsable'
+        pattern = "%(filename)s:%(lnum)s:%(col)s: [%(type)s] %(text)s"
 
     for er in errors:
         if options.abspath:

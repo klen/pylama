@@ -81,8 +81,9 @@ PARSER.add_argument('--version', action='version',
                     version='%(prog)s ' + __version__)
 
 PARSER.add_argument(
-    "--format", "-f", default=_Default('pep8'), choices=['pep8', 'pylint'],
-    help="Choose errors format (pep8, pylint).")
+    "--format", "-f", default=_Default('pep8'),
+    choices=['pep8', 'pylint', 'parsable'],
+    help="Choose errors format (pep8, pylint, parsable).")
 
 PARSER.add_argument(
     "--select", "-s", default=_Default(''), type=split_csp_str,
