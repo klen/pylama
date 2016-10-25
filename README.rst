@@ -10,6 +10,7 @@ Code audit tool for Python and JavaScript. Pylama wraps these tools:
 * PyFlakes_ © 2005-2013, Kevin Watters;
 * Mccabe_ © Ned Batchelder;
 * Pylint_ © 2013, Logilab (should be installed 'pylama_pylint' module);
+* Radon_ © Michele Lacchia
 * gjslint_ © The Closure Linter Authors (should be installed 'pylama_gjslint' module);
 
 .. _badges:
@@ -380,5 +381,6 @@ Licensed under a `BSD license`_.
 .. _Pytest: http://pytest.org
 .. _gjslint: https://developers.google.com/closure/utilities
 .. _klen: http://klen.github.io/
+.. _Radon: https://github.com/rubik/radon
 .. |logo| image:: https://raw.github.com/klen/pylama/develop/docs/_static/logo.png
                   :width: 100

@@ -28,6 +28,12 @@ try:
 except ImportError:
     pass
 
+try:
+    from pylama.lint.pylama_radon import Linter
+    LINTERS['radon'] = Linter()
+except ImportError:
+    pass
+
 
 from pkg_resources import iter_entry_points
 
