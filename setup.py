@@ -32,7 +32,7 @@ meta = dict(
     long_description=_read('README.rst'),
     platforms=('Any'),
     zip_safe=False,
-    keywords='pylint pep8 pyflakes mccabe linter qa pep257 pydocstyle'.split(),
+    keywords='pylint pep8 pycodestyle pyflakes mccabe linter qa pep257 pydocstyle'.split(),
 
     author='Kirill Klenov',
     author_email='horneds@gmail.com',

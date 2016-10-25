@@ -5,7 +5,7 @@
 
 Code audit tool for Python and JavaScript. Pylama wraps these tools:
 
-* PEP8_ © 2012-2013, Florent Xicluna;
+* pycodestyle_ (formerly pep8) © 2012-2013, Florent Xicluna;
 * pydocstyle_ (formerly pep257 by Vladimir Keleshev) © 2014, Amir Rachum;
 * PyFlakes_ © 2005-2013, Kevin Watters;
 * Mccabe_ © Ned Batchelder;
@@ -67,7 +67,7 @@ Quickstart
 ==========
 
 **Pylama** is easy to use and really fun for checking code quality.
-Just run `pylama` and get common output from all pylama plugins (PEP8_, PyFlakes_ and etc)
+Just run `pylama` and get common output from all pylama plugins (pycodestyle_, PyFlakes_ and etc)
 
 Recursive check the current directory. ::
 
@@ -85,7 +85,7 @@ Ignore errors ::
 
 Choose code checkers ::
 
-    $ pylama -l "pep8,mccabe"
+    $ pylama -l "pycodestyle,mccabe"
 
 Choose code checkers for JavaScript::
 
@@ -103,7 +103,7 @@ Command line options
 
     $ pylama --help
 
-    usage: pylama [-h] [--verbose] [--version] [--format {pep8,pylint}]
+    usage: pylama [-h] [--verbose] [--version] [--format {pycodestyle,pylint}]
                   [--select SELECT] [--sort SORT] [--linters LINTERS]
                   [--ignore IGNORE] [--skip SKIP] [--report REPORT] [--hook]
                   [--async] [--options OPTIONS] [--force] [--abspath]
@@ -118,14 +118,14 @@ Command line options
       -h, --help            show this help message and exit
       --verbose, -v         Verbose mode.
       --version             show program's version number and exit
-      --format {pep8,pylint}, -f {pep8,pylint}
-                            Choose errors format (pep8, pylint).
+      --format {pycodestyle,pylint}, -f {pycodestyle,pylint}
+                            Choose errors format (pycodestyle, pylint).
       --select SELECT, -s SELECT
                             Select errors and warnings. (comma-separated list)
       --sort SORT           Sort result by error types. Ex. E,W,D
       --linters LINTERS, -l LINTERS
                             Select linters. (comma-separated). Choices are
-                            mccabe,pep8,pyflakes,pydocstyle.
+                            mccabe,pycodestyle,pyflakes,pydocstyle.
       --ignore IGNORE, -i IGNORE
                             Ignore errors and warnings. (comma-separated)
       --skip SKIP           Skip files by masks (comma-separated, Ex.
@@ -221,7 +221,7 @@ You could set options for special code checker with pylama configurations.
     [pylama:pyflakes]
     builtins = _
 
-    [pylama:pep8]
+    [pylama:pycodestyle]
     max_line_length = 100
 
     [pylama:pylint]
@@ -374,7 +374,7 @@ Licensed under a `BSD license`_.
 .. _BSD license: http://www.linfo.org/bsdlicense.html
 .. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
 .. _pydocstyle: https://github.com/PyCQA/pydocstyle/
-.. _PEP8: https://github.com/jcrocholl/pep8
+.. _pycodestyle: https://github.com/PyCQA/pycodestyle
 .. _PyFlakes: https://github.com/pyflakes/pyflakes
 .. _Pylint: http://pylint.org
 .. _Pytest: http://pytest.org

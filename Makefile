@@ -65,7 +65,7 @@ upload: clean
 
 .PHONY: t
 t test:
-	@py.test -sx tests.py
+	@py.test -sx test_pylama.py
 
 .PHONY: audit
 audit:
