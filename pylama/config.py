@@ -82,7 +82,7 @@ PARSER.add_argument('--version', action='version',
 
 PARSER.add_argument(
     "--format", "-f", default=_Default('pycodestyle'),
-    choices=['pycodestyle', 'pylint', 'parsable'],
+    choices=['pep8', 'pycodestyle', 'pylint', 'parsable'],
     help="Choose errors format (pycodestyle, pylint, parsable).")
 
 PARSER.add_argument(
