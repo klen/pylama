@@ -152,7 +152,7 @@ def parse_options(args=None, config=True, rootdir=CURDIR, **overrides): # noqa
     for k, v in overrides.items():
         passed_value = getattr(options, k, _Default())
         if isinstance(passed_value, _Default):
-            setattr(options, k, _Default(v))
+            setattr(options, k, process_value(k, v))
 
     # Compile options from ini
     if config:

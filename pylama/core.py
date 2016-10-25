@@ -81,7 +81,7 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
         import traceback
         LOGGER.info(traceback.format_exc())
 
-    errors = filter_errors(errors, **params)
+    errors = filter_errors(errors, **params)  # noqa
 
     errors = list(remove_duplicates(errors))
 

@@ -28,7 +28,7 @@ def run(command):
             [line.strip() for line in stderr.splitlines()])
 
 
-def git_hook():
+def git_hook(error=True):
     """Run pylama after git commit. """
     _, files_modified, _ = run("git diff-index --cached --name-only HEAD")
 
@@ -36,7 +36,7 @@ def git_hook():
     setup_logger(options)
     candidates = list(map(str, files_modified))
     if candidates:
-        process_paths(options, candidates=candidates)
+        process_paths(options, candidates=candidates, error=error)
 
 
 def hg_hook(ui, repo, node=None, **kwargs):

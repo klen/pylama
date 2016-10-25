@@ -67,6 +67,7 @@ def test_pyflakes():
 
 def test_pycodestyle():
     options = parse_options(linters=['pycodestyle'], config=False)
+    assert len(options.linters) == 1
     errors = run('dummy.py', options=options)
     assert len(errors) == 2
 
@@ -77,8 +78,17 @@ def test_pycodestyle():
 
 def test_pydocstyle():
     options = parse_options(linters=['pydocstyle'])
+    assert len(options.linters) == 1
     errors = run('dummy.py', options=options)
     assert errors
+
+
+#  def test_radon():
+    #  options = parse_options(linters=['radon'])
+    #  options.linters_params['radon'] = dict(complexity=1)
+    #  assert len(options.linters) == 1
+    #  errors = run('dummy.py', options=options)
+    #  assert errors
 
 
 def test_linters_params():
@@ -125,7 +135,7 @@ def test_shell():
 
 
 def test_git_hook():
-    assert not git_hook()
+    assert not git_hook(False)
 
 
 def test_hg_hook():
