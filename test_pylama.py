@@ -104,7 +104,7 @@ def test_ignore_select():
     options.ignore = ['E301', 'D102']
     options.linters = ['pycodestyle', 'pydocstyle', 'pyflakes', 'mccabe']
     errors = run('dummy.py', options=options)
-    assert len(errors) == 17
+    assert len(errors) == 16
 
     options.ignore = ['E3', 'D']
     errors = run('dummy.py', options=options)
