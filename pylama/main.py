@@ -81,7 +81,7 @@ def process_paths(options, candidates=None, error=True):
     """Process files and log errors."""
     errors = check_path(options, rootdir=CURDIR, candidates=candidates)
 
-    if options.format == 'pep8':
+    if options.format == 'pycodestyle':
         pattern = "%(filename)s:%(lnum)s:%(col)s: %(text)s"
     elif options.format == 'pylint':
         pattern = "%(filename)s:%(lnum)s: [%(type)s] %(text)s"
