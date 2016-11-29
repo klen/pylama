@@ -17,7 +17,7 @@ class Linter(Abstract):
         """
         return [{
             'lnum': e.line,
-            # Remove colon after error code ("D403: …" => "D403 …").
+            # Remove colon after error code ("D403: ..." => "D403 ...").
             'text': (e.message[0:4] + e.message[5:]
                      if e.message[4] == ':' else e.message),
             'type': 'D',
