@@ -22,8 +22,8 @@ checker.messages.ReturnWithArgsInsideGenerator.message = "E0106 'return' with ar
 checker.messages.ReturnOutsideFunction.message = "E0104 'return' outside function"
 
 
-class Linter(Abstract):
 
+class Linter(Abstract):
     """Pyflakes runner."""
 
     @staticmethod
@@ -42,9 +42,10 @@ class Linter(Abstract):
         tree = compile(code, path, "exec", _ast.PyCF_ONLY_AST)
         w = checker.Checker(tree, path, builtins=builtins)
         w.messages = sorted(w.messages, key=lambda m: m.lineno)
-        return [
-            {'lnum': m.lineno, 'text': m.message % m.message_args}
-            for m in sorted(w.messages, key=lambda m: m.lineno)
-        ]
+        return [{
+            'lnum': m.lineno,
+            'text': m.message % m.message_args,
+            'type': m.message[0]
+        } for m in w.messages]
 
 #  pylama:ignore=E501,C0301
