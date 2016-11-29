@@ -49,8 +49,8 @@ def split_csp_str(s):
 
     """
     seen = set()
-    l = s if isinstance(s, (list, tuple)) else s.strip().split(',')
-    return [x for x in l if x and not (x in seen or seen.add(x))]
+    values = s if isinstance(s, (list, tuple)) else s.strip().split(',')
+    return [x for x in values if x and not (x in seen or seen.add(x))]
 
 
 def parse_linters(linters):
