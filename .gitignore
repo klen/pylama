@@ -4,11 +4,11 @@
 *.py[cod]
 *.so
 .coverage
+.idea/
 .installed.cfg
 .mr.developer.cfg
 .project
 .pydevproject
-.idea/
 .tox
 .vimrc
 /.cache
@@ -22,6 +22,7 @@ develop-eggs
 dist
 docs/_build
 eggs
+env
 lib
 lib64
 nosetests.xml
