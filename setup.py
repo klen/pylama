@@ -36,7 +36,7 @@ meta = dict(
 
     author='Kirill Klenov',
     author_email='horneds@gmail.com',
-    url=' http://github.com/klen/pylama',
+    url=' https://github.com/klen/pylama',
 
     packages=find_packages(exclude=['plugins']),
 
