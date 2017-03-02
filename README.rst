@@ -189,7 +189,7 @@ Configuration files
 
 When starting **Pylama** try loading configuration file.
 
-The programm searches for the first matching ini-style configuration file in
+The program searches for the first matching ini-style configuration file in
 the directories of command line argument. Pylama looks for the configuration
 in this order: ::
 
@@ -350,7 +350,7 @@ If you have any suggestions, bug reports or annoyances please report them to the
 Contributing
 ------------
 
-Development of adrest happens at GitHub: https://github.com/klen/pylama
+Development of pylama happens at GitHub: https://github.com/klen/pylama
 
 
 .. _contributors:
