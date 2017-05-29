@@ -134,8 +134,8 @@ Command line options
       --report REPORT, -r REPORT
                             Send report to file [REPORT]
       --hook                Install Git (Mercurial) hook.
-      --async               Enable async mode. Usefull for checking a lot of
-                            files. Dont supported with pylint.
+      --async               Enable async mode. Useful for checking a lot of
+                            files. Not supported by pylint.
       --options OPTIONS, -o OPTIONS
                             Select configuration file. By default is
                             '<CURDIR>/pylama.ini'
@@ -148,7 +148,7 @@ Command line options
 File modelines
 --------------
 
-You can set options for **Pylama** inside a source files. Use
+You can set options for **Pylama** inside a source file. Use
 pylama *modeline* for this.
 
 Format: ::
@@ -167,14 +167,14 @@ Disable code checking for current file: ::
      .. Somethere in code
      # pylama:skip=1
 
-The options have a must higher priority.
+Those options have a higher priority.
 
 .. _skiplines:
 
 Skip lines (noqa)
 -----------------
 
-Just add `# noqa` in end of line for ignore.
+Just add `# noqa` in end of line to ignore.
 
 ::
 
@@ -187,9 +187,9 @@ Just add `# noqa` in end of line for ignore.
 Configuration files
 -------------------
 
-When starting **Pylama** try loading configuration file.
+When starting **Pylama**, try loading configuration file.
 
-The programm searches for the first matching ini-style configuration file in
+The program searches for the first matching ini-style configuration file in
 the directories of command line argument. Pylama looks for the configuration
 in this order: ::
 
@@ -198,11 +198,11 @@ in this order: ::
     tox.ini
     pytest.ini
 
-You could set configuration file manually by "-o" option.
+You can set configuration file manually by "-o" option.
 
-Pylama search sections with name starts `pylama`.
+Pylama searches for sections whose names start with `pylama`.
 
-Section `pylama` contains a global options, like `linters` and `skip`.
+Section `pylama` contains global options, like `linters` and `skip`.
 
 ::
 
@@ -229,7 +229,7 @@ You could set options for special code checker with pylama configurations.
     max_line_length = 100
     disable = R
 
-See code checkers documentation for more info.
+See code-checkers' documentation for more info.
 
 
 Set options for file (group of files)
@@ -256,14 +256,14 @@ The options have a higher priority than in the `pylama` section.
 Pytest integration
 ==================
 
-Pylama have Pytest_ support. The package automatically register self as pytest
-plugin when during installation. Also pylama suports `pytest_cache` plugin.
+Pylama has Pytest_ support. The package automatically registers itself as a pytest
+plugin during installation. Pylama also supports `pytest_cache` plugin.
 
 Check files with pylama ::
 
     pytest --pylama ...
 
-Recomended way to settings pylama options when using pytest — configuration
+Recommended way to set pylama options when using pytest — configuration
 files (see below).
 
 
@@ -273,7 +273,7 @@ Writing a linter
 You can write a custom extension for Pylama.
 Custom linter should be a python module. Name should be like 'pylama_<name>'.
 
-In 'setup.py' should be defined 'pylama.linter' entry point. ::
+In 'setup.py', 'pylama.linter' entry point should be defined. ::
 
     setup(
         # ...
@@ -284,10 +284,10 @@ In 'setup.py' should be defined 'pylama.linter' entry point. ::
     )
 
 'Linter' should be instance of 'pylama.lint.Linter' class.
-Must implemented two methods:
+Must implement two methods:
 
-'allow' take a path and returned true if linter could check this file for errors.
-'run' take a path and meta keywords params and return list of errors.
+'allow' takes a path and returns true if linter can check this file for errors.
+'run' takes a path and meta keywords params and returns a list of errors.
 
 Example:
 --------
