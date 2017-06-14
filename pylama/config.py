@@ -69,6 +69,19 @@ def parse_linters(linters):
     return result
 
 
+def get_default_config_file(rootdir=None):
+    if rootdir is None:
+        return DEFAULT_CONFIG_FILE
+
+    for path in CONFIG_FILES:
+        path = os.path.join(rootdir, path)
+        if os.path.isfile(path) and os.access(path, os.R_OK):
+            return path
+
+
+DEFAULT_CONFIG_FILE = get_default_config_file(CURDIR)
+
+
 PARSER = ArgumentParser(description="Code audit tool for python.")
 PARSER.add_argument(
     "paths", nargs='*', default=_Default([CURDIR]),
@@ -119,8 +132,11 @@ PARSER.add_argument(
     "Dont supported with pylint.")
 
 PARSER.add_argument(
-    "--options", "-o", default="",
-    help="Select configuration file. By default is '<CURDIR>/pylama.ini'")
+    "--options", "-o", default=DEFAULT_CONFIG_FILE, metavar='FILE',
+    help="Specify configuration file. "
+    "Looks for {}, or {} in the current directory (default: {}).".format(
+        ", ".join(CONFIG_FILES[:-1]), CONFIG_FILES[-1],
+        DEFAULT_CONFIG_FILE))
 
 PARSER.add_argument(
     "--force", "-F", action='store_true', default=_Default(False),
@@ -213,7 +229,7 @@ def process_value(name, value):
     return value
 
 
-def get_config(ini_path=None, rootdir=CURDIR):
+def get_config(ini_path=None, rootdir=None):
     """ Load configuration from INI.
 
     :return Namespace:
@@ -223,10 +239,9 @@ def get_config(ini_path=None, rootdir=CURDIR):
     config.default_section = 'pylama'
 
     if not ini_path:
-        for path in CONFIG_FILES:
-            path = os.path.join(rootdir, path)
-            if os.path.isfile(path) and os.access(path, os.R_OK):
-                config.read(path)
+        path = get_default_config_file(rootdir)
+        if path:
+            config.read(path)
     else:
         config.read(ini_path)
 

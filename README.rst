@@ -136,9 +136,10 @@ Command line options
       --hook                Install Git (Mercurial) hook.
       --async               Enable async mode. Usefull for checking a lot of
                             files. Dont supported with pylint.
-      --options OPTIONS, -o OPTIONS
-                            Select configuration file. By default is
-                            '<CURDIR>/pylama.ini'
+      --options FILE, -o FILE
+                            Specify configuration file. Looks for pylama.ini,
+                            setup.cfg, tox.ini, or pytest.ini in the current
+                            directory.
       --force, -F           Force code checking (if linter doesnt allow)
       --abspath, -a         Use absolute paths in output.
 
