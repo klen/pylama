@@ -185,25 +185,22 @@ Just add `# noqa` in end of line for ignore.
 
 .. _config:
 
-Configuration files
--------------------
+Configuration file
+------------------
 
-When starting **Pylama** try loading configuration file.
-
-The programm searches for the first matching ini-style configuration file in
-the directories of command line argument. Pylama looks for the configuration
-in this order: ::
+Pylama looks for a configuration file in the current directory, using the
+following names by default: ::
 
     pylama.ini
     setup.cfg
     tox.ini
     pytest.ini
 
-You could set configuration file manually by "-o" option.
+The "--option" / "-o" argument can be used to specify a configuration file.
 
-Pylama search sections with name starts `pylama`.
+From the configuration file sections starting with `pylama` are read.
 
-Section `pylama` contains a global options, like `linters` and `skip`.
+The "pylama" section configures global options like `linters` and `skip`.
 
 ::
 
