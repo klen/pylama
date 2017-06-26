@@ -46,7 +46,7 @@ Docs are available at https://pylama.readthedocs.org/. Pull requests with docume
 Requirements:
 =============
 
-- Python (2.6, 2.7, 3.2, 3.3)
+- Python (2.7, 3.2, 3.3)
 - To use JavaScript checker (``gjslint``) you need to install ``python-gflags`` with ``pip install python-gflags``.
 - If your tests are failing on Win platform you are missing: ``curses`` - http://www.lfd.uci.edu/~gohlke/pythonlibs/
   (The curses library supplies a terminal-independent screen-painting and keyboard-handling facility for text-based terminals)
@@ -134,11 +134,12 @@ Command line options
       --report REPORT, -r REPORT
                             Send report to file [REPORT]
       --hook                Install Git (Mercurial) hook.
-      --async               Enable async mode. Usefull for checking a lot of
-                            files. Dont supported with pylint.
-      --options OPTIONS, -o OPTIONS
-                            Select configuration file. By default is
-                            '<CURDIR>/pylama.ini'
+      --async               Enable async mode. Useful for checking a lot of
+                            files. Unsupported with pylint.
+      --options FILE, -o FILE
+                            Specify configuration file. Looks for pylama.ini,
+                            setup.cfg, tox.ini, or pytest.ini in the current
+                            directory.
       --force, -F           Force code checking (if linter doesnt allow)
       --abspath, -a         Use absolute paths in output.
 
@@ -184,25 +185,22 @@ Just add `# noqa` in end of line for ignore.
 
 .. _config:
 
-Configuration files
--------------------
+Configuration file
+------------------
 
-When starting **Pylama** try loading configuration file.
-
-The programm searches for the first matching ini-style configuration file in
-the directories of command line argument. Pylama looks for the configuration
-in this order: ::
+Pylama looks for a configuration file in the current directory, using the
+following names by default: ::
 
     pylama.ini
     setup.cfg
     tox.ini
     pytest.ini
 
-You could set configuration file manually by "-o" option.
+The "--option" / "-o" argument can be used to specify a configuration file.
 
-Pylama search sections with name starts `pylama`.
+From the configuration file sections starting with `pylama` are read.
 
-Section `pylama` contains a global options, like `linters` and `skip`.
+The "pylama" section configures global options like `linters` and `skip`.
 
 ::
 
@@ -257,13 +255,13 @@ Pytest integration
 ==================
 
 Pylama have Pytest_ support. The package automatically register self as pytest
-plugin when during installation. Also pylama suports `pytest_cache` plugin.
+plugin during installation. Pylama also supports `pytest_cache` plugin.
 
 Check files with pylama ::
 
     pytest --pylama ...
 
-Recomended way to settings pylama options when using pytest — configuration
+Recommended way to set pylama options when using pytest — configuration
 files (see below).
 
 
@@ -292,7 +290,7 @@ Must implemented two methods:
 Example:
 --------
 
-Just virtual 'WOW' checker.
+Just a virtual 'WOW' checker.
 
 setup.py: ::
 
@@ -350,7 +348,7 @@ If you have any suggestions, bug reports or annoyances please report them to the
 Contributing
 ------------
 
-Development of adrest happens at GitHub: https://github.com/klen/pylama
+Development of `pylama` happens at GitHub: https://github.com/klen/pylama
 
 
 .. _contributors:
