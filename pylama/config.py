@@ -115,8 +115,8 @@ PARSER.add_argument(
 
 PARSER.add_argument(
     "--async", action="store_true",
-    help="Enable async mode. Usefull for checking a lot of files. "
-    "Dont supported with pylint.")
+    help="Enable async mode. Useful for checking a lot of files. "
+    "Unsupported with pylint.")
 
 PARSER.add_argument(
     "--options", "-o", default="",
@@ -124,7 +124,7 @@ PARSER.add_argument(
 
 PARSER.add_argument(
     "--force", "-F", action='store_true', default=_Default(False),
-    help="Force code checking (if linter doesnt allow)")
+    help="Force code checking (if linter doesn't allow)")
 
 PARSER.add_argument(
     "--abspath", "-a", action='store_true', default=_Default(False),

@@ -131,7 +131,7 @@ def prepare_params(modeline, fileconfig, options):
 
 
 def filter_errors(errors, select=None, ignore=None, **params):
-    """Filter a erros by select and ignore options.
+    """Filter errors by select and ignore options.
 
     :return bool:
 

@@ -134,8 +134,8 @@ Command line options
       --report REPORT, -r REPORT
                             Send report to file [REPORT]
       --hook                Install Git (Mercurial) hook.
-      --async               Enable async mode. Usefull for checking a lot of
-                            files. Dont supported with pylint.
+      --async               Enable async mode. Useful for checking a lot of
+                            files. Unsupported with pylint.
       --options OPTIONS, -o OPTIONS
                             Select configuration file. By default is
                             '<CURDIR>/pylama.ini'
@@ -189,7 +189,7 @@ Configuration files
 
 When starting **Pylama** try loading configuration file.
 
-The programm searches for the first matching ini-style configuration file in
+The program searches for the first matching ini-style configuration file in
 the directories of command line argument. Pylama looks for the configuration
 in this order: ::
 
@@ -257,13 +257,13 @@ Pytest integration
 ==================
 
 Pylama have Pytest_ support. The package automatically register self as pytest
-plugin when during installation. Also pylama suports `pytest_cache` plugin.
+plugin during installation. Pylama also supports `pytest_cache` plugin.
 
 Check files with pylama ::
 
     pytest --pylama ...
 
-Recomended way to settings pylama options when using pytest — configuration
+Recommended way to set pylama options when using pytest — configuration
 files (see below).
 
 
@@ -292,7 +292,7 @@ Must implemented two methods:
 Example:
 --------
 
-Just virtual 'WOW' checker.
+Just a virtual 'WOW' checker.
 
 setup.py: ::
 
@@ -350,7 +350,7 @@ If you have any suggestions, bug reports or annoyances please report them to the
 Contributing
 ------------
 
-Development of adrest happens at GitHub: https://github.com/klen/pylama
+Development of `pylama` happens at GitHub: https://github.com/klen/pylama
 
 
 .. _contributors:
