@@ -70,6 +70,7 @@ def parse_linters(linters):
 
 
 def get_default_config_file(rootdir=None):
+    """Search for configuration file."""
     if rootdir is None:
         return DEFAULT_CONFIG_FILE
 
