@@ -20,9 +20,6 @@ _version = re.search(r'^__version__\s*=\s*"(.*)"', _meta, re.M).group(1)
 install_requires = [
     l.replace('==', '>=') for l in _read('requirements.txt').split('\n')
     if l and not l.startswith('#') and not l.startswith('-')]
-if sys.version_info < (2, 7):
-    install_requires += ['argparse']
-
 
 meta = dict(
     name=_project,
