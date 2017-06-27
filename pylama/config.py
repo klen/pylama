@@ -258,6 +258,8 @@ def setup_logger(options):
     if options.report:
         LOGGER.removeHandler(STREAM)
         LOGGER.addHandler(logging.FileHandler(options.report, mode='w'))
-    LOGGER.info('Try to read configuration from: ' + options.options)
+
+    if options.options:
+        LOGGER.info('Try to read configuration from: ' + options.options)
 
 # pylama:ignore=W0212,D210,F0001
