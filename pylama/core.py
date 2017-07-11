@@ -78,7 +78,7 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
                   text='E0100 SyntaxError: {}'.format(e.args[0]),
                   filename=path))
 
-    except Exception as e: # noqa
+    except Exception as e:  # noqa
         import traceback
         LOGGER.info(traceback.format_exc())
 
@@ -89,10 +89,11 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
     if code and errors:
         errors = filter_skiplines(code, errors)
 
-    key = lambda e: e.lnum
+    def key(e): return e.lnum
     if options and options.sort:
         sort = dict((v, n) for n, v in enumerate(options.sort, 1))
-        key = lambda e: (sort.get(e.type, 999), e.lnum)
+
+        def key(e): return (sort.get(e.type, 999), e.lnum)
     return sorted(errors, key=key)
 
 
@@ -123,7 +124,9 @@ def prepare_params(modeline, fileconfig, options):
     for config in filter(None, [modeline, fileconfig]):
         for key in ('ignore', 'select', 'linters'):
             params[key] += process_value(key, config.get(key, []))
-        params['skip'] = bool(int(config.get('skip', False)))
+    params['skip'] = bool(int(config.get('skip', False)))
+    # TODO: skip what? This is causing erratic behavior for linters.
+    params['skip'] = False
 
     params['ignore'] = set(params['ignore'])
     params['select'] = set(params['select'])
