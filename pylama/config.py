@@ -242,7 +242,7 @@ def get_config(ini_path=None, rootdir=None):
     config = Namespace()
     config.default_section = 'pylama'
 
-    if not ini_path:
+    if not ini_path or ini_path == 'None':
         path = get_default_config_file(rootdir)
         if path:
             config.read(path)
