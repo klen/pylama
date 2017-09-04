@@ -17,12 +17,16 @@ class Linter(Abstract):
     """Check pydocstyle errors."""
 
     @staticmethod
-    def run(path, code=None, **meta):
+    def run(path, code=None, params=None, **meta):
         """pydocstyle code checking.
 
         :return list: List of errors.
         """
-        check_source_args = (code, path, None) if THIRD_ARG else (code, path)
+        if 'ignore_decorators' in params:
+            ignore_decorators = params['ignore_decorators']
+        else:
+            ignore_decorators = None
+        check_source_args = (code, path, ignore_decorators) if THIRD_ARG else (code, path)
         return [{
             'lnum': e.line,
             # Remove colon after error code ("D403: ..." => "D403 ...").
