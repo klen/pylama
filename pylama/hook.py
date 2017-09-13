@@ -33,7 +33,11 @@ def git_hook(error=True):
 
     options = parse_options()
     setup_logger(options)
-    candidates = list(map(str, files_modified))
+    if sys.version_info >= (3,):
+        candidates = [f.decode('utf-8') for f in files_modified]
+    else:
+        candidates = [str(f) for f in files_modified]
+
     if candidates:
         process_paths(options, candidates=candidates, error=error)
 
