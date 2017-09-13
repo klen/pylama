@@ -10,6 +10,14 @@ import pytest
 HISTKEY = "pylama/mtimes"
 
 
+def pytest_load_initial_conftests(early_config, parser, args):
+    # Marks have to be registered before usage
+    # to not fail with --strict command line argument
+    early_config.addinivalue_line(
+        'markers',
+        'pycodestyle: Mark test as using pylama code audit tool.')
+
+
 def pytest_addoption(parser):
     group = parser.getgroup("general")
     group.addoption(
