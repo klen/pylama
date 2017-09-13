@@ -188,12 +188,12 @@ class CodeContext(object):
         if self.code is None:
             LOGGER.info("File is reading: %s", self.path)
             if sys.version_info >= (3, ):
-                # 'U' mode is deprecated in python 3
-                mode = 'r'
+                self._file = open(self.path, encoding='utf-8')
             else:
-                mode = 'rU'
-            self._file = open(self.path, mode)
+                self._file = open(self.path, 'rU')
+
             self.code = self._file.read()
+
         return self
 
     def __exit__(self, t, value, traceback):

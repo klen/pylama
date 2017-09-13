@@ -1,3 +1,7 @@
+2017-09-04  horneds
+	* Version 7.4.1
+	* Fix Windows encoding problem #108
+
 2016-10-25  horneds
 
 	* Version 7.2.0
