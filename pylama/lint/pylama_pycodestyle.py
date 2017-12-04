@@ -1,5 +1,5 @@
 """pycodestyle support."""
-from pycodestyle import BaseReport, StyleGuide, get_parser
+from pycodestyle import BaseReport, StyleGuide, get_parser, _parse_multi_options
 
 from pylama.lint import Linter as Abstract
 
@@ -24,9 +24,13 @@ class Linter(Abstract):
         for option in parser.option_list:
             if option.dest and option.dest in params:
                 value = params[option.dest]
-                if not isinstance(value, str):
-                    continue
-                params[option.dest] = option.convert_value(option, params[option.dest])
+                if isinstance(value, str):
+                    params[option.dest] = option.convert_value(option, value)
+
+        for key in ["filename", "exclude", "select", "ignore"]:
+            if key in params and isinstance(params[key], str):
+                params[key] = _parse_multi_options(params[key])
+
         P8Style = StyleGuide(reporter=_PycodestyleReport, **params)
         buf = StringIO(code)
         return P8Style.input_file(path, lines=buf.readlines())
