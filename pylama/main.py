@@ -25,7 +25,8 @@ def check_path(options, rootdir=None, candidates=None, code=None):
             path = op.abspath(path_)
             if op.isdir(path):
                 for root, _, files in walk(path):
-                    candidates += [op.relpath(op.join(root, f), CURDIR) for f in files]
+                    candidates += [op.relpath(op.join(root, f), CURDIR)
+                                   for f in files]
             else:
                 candidates.append(path)
 
@@ -35,7 +36,8 @@ def check_path(options, rootdir=None, candidates=None, code=None):
     paths = []
     for path in candidates:
 
-        if not options.force and not any(l.allow(path) for _, l in options.linters):
+        if not options.force and not any(l.allow(path)
+                                         for _, l in options.linters):
             continue
 
         if not op.exists(path):
