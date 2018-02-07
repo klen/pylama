@@ -124,7 +124,7 @@ def prepare_params(modeline, fileconfig, options):
     for config in filter(None, [modeline, fileconfig]):
         for key in ('ignore', 'select', 'linters'):
             params[key] += process_value(key, config.get(key, []))
-    params['skip'] = bool(int(config.get('skip', False)))
+        params['skip'] = bool(int(config.get('skip', False)))
     # TODO: skip what? This is causing erratic behavior for linters.
     params['skip'] = False
 
