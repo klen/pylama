@@ -48,7 +48,6 @@ def split_csp_str(val):
     """ Split comma separated string into unique values, keeping their order.
 
     :returns: list of splitted values
-
     """
     seen = set()
     values = val if isinstance(val, (list, tuple)) else val.strip().split(',')
