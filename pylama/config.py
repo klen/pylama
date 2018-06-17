@@ -173,6 +173,8 @@ def parse_options(args=None, config=True, rootdir=CURDIR, **overrides): # noqa
             if isinstance(passed_value, _Default):
                 if opt == 'paths':
                     val = val.split()
+                if opt == 'skip':
+                    val = fix_pathname_sep(val)
                 setattr(options, opt, _Default(val))
 
         # Parse file related options
@@ -187,7 +189,7 @@ def parse_options(args=None, config=True, rootdir=CURDIR, **overrides): # noqa
                 options.linters_params[name] = dict(opts)
                 continue
 
-            mask = re.compile(fnmatch.translate(name))
+            mask = re.compile(fnmatch.translate(fix_pathname_sep(name)))
             options.file_params[mask] = dict(opts)
 
     # Override options
@@ -261,5 +263,9 @@ def setup_logger(options):
 
     if options.options:
         LOGGER.info('Try to read configuration from: ' + options.options)
+
+
+def fix_pathname_sep(val):
+    return val.replace(os.altsep or "\\", os.sep)
 
 # pylama:ignore=W0212,D210,F0001
