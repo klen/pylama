@@ -89,11 +89,13 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
     if code and errors:
         errors = filter_skiplines(code, errors)
 
-    def key(e): return e.lnum
     if options and options.sort:
         sort = dict((v, n) for n, v in enumerate(options.sort, 1))
 
         def key(e): return (sort.get(e.type, 999), e.lnum)
+    else:
+        def key(e): return e.lnum
+
     return sorted(errors, key=key)
 
 
