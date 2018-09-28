@@ -1,20 +1,17 @@
 language: python
 
-python:
-    - "2.7"
+sudo: false
 
-env:
-    - TOXENV=py27
-    - TOXENV=py33
-    - TOXENV=py35
-    - TOXENV=cov
+python:
+  - "2.7"
+  - "3.5"
 
 branches:
     only:
         - master
         - develop
 
-install: pip install tox
+install: pip install tox-travis
 
 script: tox
 
