@@ -1,20 +1,9 @@
 language: python
-
-sudo: false
-
 python:
   - "2.7"
   - "3.5"
-
-branches:
-    only:
-        - master
-        - develop
-
 install: pip install tox-travis
-
 script: tox
-
 after_script:
     - if [ $TOXENV == "cov" ]; then
         pip install coveralls;
