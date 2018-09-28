@@ -54,6 +54,18 @@ def test_mccabe():
     assert errors == []
 
 
+def test_eradicate():
+    eradicate = LINTERS.get('eradicate')
+    errors = eradicate.run('', code="\n".join([
+        "#import os",
+        "# from foo import junk",
+        "#a = 3",
+        "a = 4",
+        "#foo(1, 2, 3)",
+    ]))
+    assert len(errors) == 4
+
+
 def test_pyflakes():
     options = parse_options(linters=['pyflakes'], config=False)
     assert options.linters
@@ -69,11 +81,15 @@ def test_pycodestyle():
     options = parse_options(linters=['pycodestyle'], config=False)
     assert len(options.linters) == 1
     errors = run('dummy.py', options=options)
-    assert len(errors) == 2
+    numbers = [error.number for error in errors]
+    assert len(errors) == 4
+    assert 'E265' in numbers
+    assert 'E301' in numbers
+    assert 'E501' in numbers
 
     options.linters_params['pycodestyle'] = dict(max_line_length=60)
     errors = run('dummy.py', options=options)
-    assert len(errors) == 11
+    assert len(errors) == 13
 
 
 def test_pydocstyle():
@@ -120,7 +136,7 @@ def test_ignore_select():
     assert 'E301' not in numbers
     assert 'D102' not in numbers
 
-    options.ignore = ['E3', 'D']
+    options.ignore = ['E3', 'D', 'E2']
     errors = run('dummy.py', options=options)
     assert len(errors) == 0
 
@@ -163,7 +179,7 @@ def test_config():
 
     options = parse_options('-o dummy dummy.py'.split())
     linters, _ = zip(*options.linters)
-    assert set(linters) == set(['pycodestyle', 'mccabe', 'pyflakes'])
+    assert set(linters) == set(['pycodestyle', 'mccabe', 'pyflakes', 'eradicate'])
     assert options.skip == []
 
 
