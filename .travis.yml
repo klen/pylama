@@ -19,12 +19,21 @@ matrix:
       after_script:
         - pip install coveralls;
         - coveralls;
+||||||| merged common ancestors
+python:
+    - "2.7"
+
+env:
+    - TOXENV=py27
+    - TOXENV=py33
+    - TOXENV=py35
+    - TOXENV=cov
 
 branches:
     only:
         - master
         - develop
 
-install: pip install tox
+install: pip install tox-travis
 
 script: tox
