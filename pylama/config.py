@@ -12,7 +12,7 @@ from .libs.inirama import Namespace
 from .lint.extensions import LINTERS
 
 #: A default checkers
-DEFAULT_LINTERS = 'pycodestyle', 'pyflakes', 'mccabe'
+DEFAULT_LINTERS = 'pycodestyle', 'pyflakes', 'mccabe', 'eradicate'
 
 CURDIR = os.getcwd()
 CONFIG_FILES = 'pylama.ini', 'setup.cfg', 'tox.ini', 'pytest.ini'

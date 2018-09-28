@@ -9,6 +9,12 @@ except ImportError:
     pass
 
 try:
+    from pylama.lint.pylama_eradicate import Linter
+    LINTERS['eradicate'] = Linter()
+except ImportError:
+    pass
+
+try:
     from pylama.lint.pylama_pydocstyle import Linter
     LINTERS['pep257'] = Linter()  # for compatibility
     LINTERS['pydocstyle'] = Linter()
