@@ -7,7 +7,7 @@ from os import walk, path as op
 
 from .config import parse_options, CURDIR, setup_logger
 from .core import LOGGER, run
-from .async import check_async
+from .check_async import check_async
 
 
 def check_path(options, rootdir=None, candidates=None, code=None):
@@ -43,7 +43,7 @@ def check_path(options, rootdir=None, candidates=None, code=None):
 
         paths.append(path)
 
-    if options.async:
+    if options.concurrent:
         return check_async(paths, options, rootdir)
 
     errors = []
