@@ -1,6 +1,6 @@
 import os.path as op
 
-from pylama.async import check_async
+from pylama.async_mode import check_async
 from pylama.config import parse_options, get_config
 from pylama.core import filter_errors, parse_modeline, prepare_params, run
 from pylama.errors import Error, remove_duplicates
@@ -114,7 +114,7 @@ def test_ignore_select():
     options.ignore = ['E301', 'D102']
     options.linters = ['pycodestyle', 'pydocstyle', 'pyflakes', 'mccabe']
     errors = run('dummy.py', options=options)
-    assert len(errors) == 17
+    assert len(errors) == 29
 
     options.ignore = ['E3', 'D']
     errors = run('dummy.py', options=options)
