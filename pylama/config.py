@@ -12,7 +12,7 @@ from .libs.inirama import Namespace
 from .lint.extensions import LINTERS
 
 #: A default checkers
-DEFAULT_LINTERS = 'pycodestyle', 'pyflakes', 'mccabe'
+DEFAULT_LINTERS = 'pycodestyle', 'pyflakes', 'mccabe', 'eradicate'
 
 CURDIR = os.getcwd()
 CONFIG_FILES = 'pylama.ini', 'setup.cfg', 'tox.ini', 'pytest.ini'
@@ -128,7 +128,7 @@ PARSER.add_argument(
     "--hook", action="store_true", help="Install Git (Mercurial) hook.")
 
 PARSER.add_argument(
-    "--async", action="store_true",
+    "--concurrent", "--async", action="store_true",
     help="Enable async mode. Useful for checking a lot of files. "
     "Unsupported with pylint.")
 
@@ -201,9 +201,9 @@ def parse_options(args=None, config=True, rootdir=CURDIR, **overrides): # noqa
         if isinstance(value, _Default):
             setattr(options, name, process_value(name, value.value))
 
-    if options.async and 'pylint' in options.linters:
+    if options.concurrent and 'pylint' in options.linters:
         LOGGER.warning('Can\'t parse code asynchronously with pylint enabled.')
-        options.async = False
+        options.concurrent = False
 
     return options
 
@@ -266,6 +266,7 @@ def setup_logger(options):
 
 
 def fix_pathname_sep(val):
+    """Fix pathnames for Win."""
     return val.replace(os.altsep or "\\", os.sep)
 
 # pylama:ignore=W0212,D210,F0001

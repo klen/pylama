@@ -3,6 +3,14 @@
 # (c) 2005 Divmod, Inc.  See LICENSE file for details
 
 
+# commented code
+#import os
+# from foo import junk
+# a = 3
+a = 4
+#foo(1, 2, 3)
+
+
 class Message(object):
     message = ''
     message_args = ()
