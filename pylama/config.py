@@ -266,6 +266,7 @@ def setup_logger(options):
 
 
 def fix_pathname_sep(val):
+    """Fix pathnames for Win."""
     return val.replace(os.altsep or "\\", os.sep)
 
 # pylama:ignore=W0212,D210,F0001
