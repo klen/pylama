@@ -134,8 +134,9 @@ Command line options
       --report REPORT, -r REPORT
                             Send report to file [REPORT]
       --hook                Install Git (Mercurial) hook.
-      --async               Enable async mode. Useful for checking a lot of
-                            files. Not supported by pylint.
+      --concurrent, --async
+                            Enable async mode. Useful for checking a lot of files.
+                            Unsupported with pylint.
       --options FILE, -o FILE
                             Specify configuration file. Looks for pylama.ini,
                             setup.cfg, tox.ini, or pytest.ini in the current
@@ -332,10 +333,23 @@ Run pylama from python code
 
     from pylama.main import check_path, parse_options
 
-    my_redefined_options = {...}
+    # Use and/or modify 0 or more of the options defined as keys in the variable my_redefined_options below.
+    # To use defaults for any option, remove that key completely.
+    my_redefined_options = {
+        'linters': ['pep257', 'pydocstyle', 'pycodestyle', 'pyflakes' ...],
+        'ignore': ['D203', 'D213', 'D406', 'D407', 'D413' ...],
+        'select': ['R1705' ...],
+        'sort': 'F,E,W,C,D,...',
+        'skip': '*__init__.py,*/test/*.py,...',
+        'async': True,
+        'force': True
+        ...
+    }
+    # relative path of the directory in which pylama should check
     my_path = '...'
+
     options = parse_options([my_path], **my_redefined_options)
-    errors = check_path(options)
+    errors = check_path(options, rootdir='.')
 
 
 .. _bagtracker:
