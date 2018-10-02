@@ -130,6 +130,7 @@ def test_ignore_select():
     options.ignore = ['E301', 'D102']
     options.linters = ['pycodestyle', 'pydocstyle', 'pyflakes', 'mccabe']
     errors = run('dummy.py', options=options)
+    assert len(errors) == 31
     numbers = [error.number for error in errors]
     assert 'D100' in numbers
     assert 'E301' not in numbers
