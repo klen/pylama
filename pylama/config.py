@@ -180,10 +180,11 @@ def parse_options(args=None, config=True, rootdir=CURDIR, **overrides): # noqa
         # Parse file related options
         for name, opts in cfg.sections.items():
 
-            if not name.startswith('pylama') or name == cfg.default_section:
+            if name == cfg.default_section:
                 continue
 
-            name = name[7:]
+            if name.startswith('pylama'):
+                name = name[7:]
 
             if name in LINTERS:
                 options.linters_params[name] = dict(opts)
