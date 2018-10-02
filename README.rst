@@ -134,8 +134,9 @@ Command line options
       --report REPORT, -r REPORT
                             Send report to file [REPORT]
       --hook                Install Git (Mercurial) hook.
-      --async               Enable async mode. Useful for checking a lot of
-                            files. Not supported by pylint.
+      --concurrent, --async
+                            Enable async mode. Useful for checking a lot of files.
+                            Unsupported with pylint.
       --options FILE, -o FILE
                             Specify configuration file. Looks for pylama.ini,
                             setup.cfg, tox.ini, or pytest.ini in the current
