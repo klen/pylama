@@ -68,11 +68,11 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
                         errors.append(Error(filename=path, linter=lname, **er))
 
     except IOError as e:
-        LOGGER.debug("IOError %s", e)
+        LOGGER.error("IOError %s", e)
         errors.append(Error(text=str(e), filename=path, linter=lname))
 
     except SyntaxError as e:
-        LOGGER.debug("SyntaxError %s", e)
+        LOGGER.error("SyntaxError %s", e)
         errors.append(
             Error(linter='pylama', lnum=e.lineno, col=e.offset,
                   text='E0100 SyntaxError: {}'.format(e.args[0]),
@@ -80,7 +80,7 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
 
     except Exception as e: # noqa
         import traceback
-        LOGGER.info(traceback.format_exc())
+        LOGGER.error(traceback.format_exc())
 
     errors = filter_errors(errors, **params)  # noqa
 
