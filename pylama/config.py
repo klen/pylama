@@ -21,7 +21,9 @@ CONFIG_FILES = 'pylama.ini', 'setup.cfg', 'tox.ini', 'pytest.ini'
 SKIP_PATTERN = re.compile(r'# *noqa\b', re.I).search
 
 # Parse a modelines
-MODELINE_RE = re.compile(r'^\s*#\s+(?:pylama:)\s*((?:[\w_]*=[^:\n\s]+:?)+)', re.I | re.M)
+MODELINE_RE = re.compile(
+    r'^\s*#\s+(?:pylama:)\s*((?:[\w_]*=[^:\n\s]+:?)+)',
+    re.I | re.M)
 
 # Setup a logger
 LOGGER = logging.getLogger('pylama')
@@ -46,7 +48,6 @@ def split_csp_str(val):
     """ Split comma separated string into unique values, keeping their order.
 
     :returns: list of splitted values
-
     """
     seen = set()
     values = val if isinstance(val, (list, tuple)) else val.strip().split(',')
@@ -120,7 +121,8 @@ PARSER.add_argument(
 
 PARSER.add_argument(
     "--skip", default=_Default(''),
-    type=lambda s: [re.compile(fnmatch.translate(p)) for p in s.split(',') if p],
+    type=lambda s: [re.compile(fnmatch.translate(p))
+                    for p in s.split(',') if p],
     help="Skip files by masks (comma-separated, Ex. */messages.py)")
 
 PARSER.add_argument("--report", "-r", help="Send report to file [REPORT]")
@@ -148,10 +150,11 @@ PARSER.add_argument(
     help="Use absolute paths in output.")
 
 
-ACTIONS = dict((a.dest, a) for a in PARSER._actions)  # pylint: disable=protected-access
+ACTIONS = dict((a.dest, a)
+               for a in PARSER._actions)  # pylint: disable=protected-access
 
 
-def parse_options(args=None, config=True, rootdir=CURDIR, **overrides): # noqa
+def parse_options(args=None, config=True, rootdir=CURDIR, **overrides):  # noqa
     """ Parse options from command line and configuration files.
 
     :return argparse.Namespace:
@@ -245,7 +248,7 @@ def get_config(ini_path=None, rootdir=None):
     config = Namespace()
     config.default_section = 'pylama'
 
-    if not ini_path or ini_path == 'None':
+    if not ini_path:
         path = get_default_config_file(rootdir)
         if path:
             config.read(path)
