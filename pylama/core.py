@@ -60,12 +60,22 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
                 lparams = linters_params.get(lname, dict())
                 LOGGER.info("Run %s %s", lname, lparams)
 
+                ignore = params.get('ignore', set())
+                if 'ignore' in lparams:
+                    ignore |= set(lparams['ignore'].split(','))
+
+                select = params.get('select', set())
+                if 'select' in lparams:
+                    select |= set(lparams['select'].split(','))
+
                 linter_errors = linter.run(
-                    path, code=code, ignore=params.get("ignore", set()),
-                    select=params.get("select", set()), params=lparams)
-                if linter_errors:
-                    for er in linter_errors:
-                        errors.append(Error(filename=path, linter=lname, **er))
+                    path, code=code, ignore=ignore, select=select, params=lparams)
+                if not linter_errors:
+                    continue
+
+                errors += filter_errors([
+                    Error(filename=path, linter=lname, **er) for er in linter_errors
+                ], ignore=ignore, select=select)
 
     except IOError as e:
         LOGGER.error("IOError %s", e)
@@ -82,8 +92,6 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
         import traceback
         LOGGER.error(traceback.format_exc())
 
-    errors = filter_errors(errors, **params)  # noqa
-
     errors = list(remove_duplicates(errors))
 
     if code and errors:
@@ -92,9 +100,11 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
     if options and options.sort:
         sort = dict((v, n) for n, v in enumerate(options.sort, 1))
 
-        def key(e): return (sort.get(e.type, 999), e.lnum)
+        def key(e):
+            return (sort.get(e.type, 999), e.lnum)
     else:
-        def key(e): return e.lnum
+        def key(e):
+            return e.lnum
 
     return sorted(errors, key=key)
 
