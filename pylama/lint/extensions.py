@@ -40,6 +40,12 @@ try:
 except ImportError:
     pass
 
+try:
+    from pylama.lint.pylama_pylint import Linter
+    LINTERS['pylint'] = Linter()
+except ImportError:
+    pass
+
 
 from pkg_resources import iter_entry_points
 

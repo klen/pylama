@@ -13,6 +13,7 @@
 .vimrc
 /.cache
 /.ropeproject
+/_
 /libs
 /todo.rst
 /todo.txt

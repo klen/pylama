@@ -396,6 +396,7 @@ Licensed under a `BSD license`_.
 .. _Pytest: http://pytest.org
 .. _gjslint: https://developers.google.com/closure/utilities
 .. _klen: http://klen.github.io/
-.. _Radon: https://github.com/rubik/radon
 .. |logo| image:: https://raw.github.com/klen/pylama/develop/docs/_static/logo.png
                   :width: 100
+.. _Radon: https://github.com/rubik/radon
+
