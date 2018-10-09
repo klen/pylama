@@ -112,7 +112,7 @@ PARSER.add_argument(
     "--linters", "-l", default=_Default(','.join(DEFAULT_LINTERS)),
     type=parse_linters, help=(
         "Select linters. (comma-separated). Choices are %s."
-        % ','.join(s for s in LINTERS.keys())
+        % ','.join(s for s in LINTERS)
     ))
 
 PARSER.add_argument(
@@ -266,7 +266,7 @@ def setup_logger(options):
         LOGGER.addHandler(logging.FileHandler(options.report, mode='w'))
 
     if options.options:
-        LOGGER.info('Try to read configuration from: ' + options.options)
+        LOGGER.info('Try to read configuration from: %r', options.options)
 
 
 def fix_pathname_sep(val):
