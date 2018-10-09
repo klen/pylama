@@ -3,9 +3,8 @@
 """Setup pylama installation."""
 
 import re
-import sys
 from os import path as op
-from io import open
+from io import open  # noqa
 
 from setuptools import setup, find_packages
 
