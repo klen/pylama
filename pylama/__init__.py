@@ -4,7 +4,7 @@
 :license: BSD, see LICENSE for more details.
 """
 
-__version__ = "7.6.4"
+__version__ = "7.6.5"
 __project__ = "pylama"
 __author__ = "Kirill Klenov <horneds@gmail.com>"
 __license__ = "GNU LGPL"

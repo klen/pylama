@@ -1,4 +1,6 @@
+-e .
+
 ipdb
 pytest
-
--e .
+eradicate   >= 0.2
+radon       >= 1.4.2
