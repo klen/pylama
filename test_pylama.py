@@ -137,6 +137,10 @@ def test_ignore_select():
     assert 'E301' not in numbers
     assert 'D102' not in numbers
 
+    options.linters_params['pycodestyle']['ignore'] = ['E126']
+    errors = run('dummy.py', options=options)
+    assert numbers == [error.number for error in errors]
+
     options.ignore = ['E3', 'D', 'E2']
     errors = run('dummy.py', options=options)
     assert len(errors) == 0
