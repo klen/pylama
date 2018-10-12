@@ -60,11 +60,11 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
                 lparams = linters_params.get(lname, dict())
                 LOGGER.info("Run %s %s", lname, lparams)
 
-                ignore = params.get('ignore', set())
+                ignore = set(params.get('ignore', set()))
                 if 'ignore' in lparams:
                     ignore |= set(lparams['ignore'].split(','))
 
-                select = params.get('select', set())
+                select = set(params.get('select', set()))
                 if 'select' in lparams:
                     select |= set(lparams['select'].split(','))
 
