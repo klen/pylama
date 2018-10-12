@@ -62,11 +62,11 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
 
                 ignore = params.get('ignore', set())
                 if 'ignore' in lparams:
-                    ignore |= set(lparams['ignore'].split(','))
+                    ignore |= set(lparams['ignore'])
 
                 select = params.get('select', set())
                 if 'select' in lparams:
-                    select |= set(lparams['select'].split(','))
+                    select |= set(lparams['select'])
 
                 linter_errors = linter.run(
                     path, code=code, ignore=ignore, select=select, params=lparams)
