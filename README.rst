@@ -12,6 +12,7 @@ Code audit tool for Python and JavaScript. Pylama wraps these tools:
 * Pylint_ © 2013, Logilab (should be installed 'pylama_pylint' module);
 * Radon_ © Michele Lacchia
 * gjslint_ © The Closure Linter Authors (should be installed 'pylama_gjslint' module);
+* eradicate_ © Steven Myint;
 
 .. _badges:
 
@@ -398,6 +399,8 @@ Licensed under a `BSD license`_.
 .. _Pytest: http://pytest.org
 .. _gjslint: https://developers.google.com/closure/utilities
 .. _klen: http://klen.github.io/
+.. _eradicate: https://github.com/myint/eradicate
+
 .. |logo| image:: https://raw.github.com/klen/pylama/develop/docs/_static/logo.png
                   :width: 100
 .. _Radon: https://github.com/rubik/radon
