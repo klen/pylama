@@ -104,10 +104,11 @@ Command line options
 
     $ pylama --help
 
-    usage: pylama [-h] [--verbose] [--version] [--format {pycodestyle,pylint}]
-                  [--select SELECT] [--sort SORT] [--linters LINTERS]
-                  [--ignore IGNORE] [--skip SKIP] [--report REPORT] [--hook]
-                  [--async] [--options OPTIONS] [--force] [--abspath]
+    usage: pylama [-h] [--verbose] [--version]
+                  [--format {pep8,pycodestyle,pylint,parsable}] [--select SELECT]
+                  [--sort SORT] [--linters LINTERS] [--ignore IGNORE]
+                  [--skip SKIP] [--report REPORT] [--hook] [--concurrent]
+                  [--options FILE] [--force] [--abspath]
                   [paths [paths ...]]
 
     Code audit tool for python.
@@ -119,14 +120,15 @@ Command line options
       -h, --help            show this help message and exit
       --verbose, -v         Verbose mode.
       --version             show program's version number and exit
-      --format {pycodestyle,pylint}, -f {pycodestyle,pylint}
-                            Choose errors format (pycodestyle, pylint).
+      --format {pep8,pycodestyle,pylint,parsable}, -f {pep8,pycodestyle,pylint,parsable}
+                            Choose errors format (pycodestyle, pylint, parsable).
       --select SELECT, -s SELECT
                             Select errors and warnings. (comma-separated list)
       --sort SORT           Sort result by error types. Ex. E,W,D
       --linters LINTERS, -l LINTERS
-                            Select linters. (comma-separated). Choices are
-                            mccabe,pycodestyle,pyflakes,pydocstyle.
+                            Select linters. (comma-separated). Choices are mccabe,
+                            pep257,pydocstyle,pep8,pycodestyle,pyflakes,pylint,iso
+                            rt.
       --ignore IGNORE, -i IGNORE
                             Ignore errors and warnings. (comma-separated)
       --skip SKIP           Skip files by masks (comma-separated, Ex.
@@ -140,8 +142,8 @@ Command line options
       --options FILE, -o FILE
                             Specify configuration file. Looks for pylama.ini,
                             setup.cfg, tox.ini, or pytest.ini in the current
-                            directory.
-      --force, -F           Force code checking (if linter doesnt allow)
+                            directory (default: None).
+      --force, -F           Force code checking (if linter doesn't allow)
       --abspath, -a         Use absolute paths in output.
 
 
