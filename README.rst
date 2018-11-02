@@ -12,6 +12,7 @@ Code audit tool for Python and JavaScript. Pylama wraps these tools:
 * Pylint_ © 2013, Logilab (should be installed 'pylama_pylint' module);
 * Radon_ © Michele Lacchia
 * gjslint_ © The Closure Linter Authors (should be installed 'pylama_gjslint' module);
+* eradicate_ © Steven Myint;
 
 .. _badges:
 
@@ -46,7 +47,7 @@ Docs are available at https://pylama.readthedocs.org/. Pull requests with docume
 Requirements:
 =============
 
-- Python (2.7, 3.2, 3.3)
+- Python (2.7, 3.4, 3.5, 3.6, 3.7)
 - To use JavaScript checker (``gjslint``) you need to install ``python-gflags`` with ``pip install python-gflags``.
 - If your tests are failing on Win platform you are missing: ``curses`` - http://www.lfd.uci.edu/~gohlke/pythonlibs/
   (The curses library supplies a terminal-independent screen-painting and keyboard-handling facility for text-based terminals)
@@ -104,10 +105,11 @@ Command line options
 
     $ pylama --help
 
-    usage: pylama [-h] [--verbose] [--version] [--format {pycodestyle,pylint}]
-                  [--select SELECT] [--sort SORT] [--linters LINTERS]
-                  [--ignore IGNORE] [--skip SKIP] [--report REPORT] [--hook]
-                  [--async] [--options OPTIONS] [--force] [--abspath]
+    usage: pylama [-h] [--verbose] [--version]
+                  [--format {pep8,pycodestyle,pylint,parsable}] [--select SELECT]
+                  [--sort SORT] [--linters LINTERS] [--ignore IGNORE]
+                  [--skip SKIP] [--report REPORT] [--hook] [--concurrent]
+                  [--options FILE] [--force] [--abspath]
                   [paths [paths ...]]
 
     Code audit tool for python.
@@ -119,14 +121,15 @@ Command line options
       -h, --help            show this help message and exit
       --verbose, -v         Verbose mode.
       --version             show program's version number and exit
-      --format {pycodestyle,pylint}, -f {pycodestyle,pylint}
-                            Choose errors format (pycodestyle, pylint).
+      --format {pep8,pycodestyle,pylint,parsable}, -f {pep8,pycodestyle,pylint,parsable}
+                            Choose errors format (pycodestyle, pylint, parsable).
       --select SELECT, -s SELECT
                             Select errors and warnings. (comma-separated list)
       --sort SORT           Sort result by error types. Ex. E,W,D
       --linters LINTERS, -l LINTERS
-                            Select linters. (comma-separated). Choices are
-                            mccabe,pycodestyle,pyflakes,pydocstyle.
+                            Select linters. (comma-separated). Choices are mccabe,
+                            pep257,pydocstyle,pep8,pycodestyle,pyflakes,pylint,iso
+                            rt.
       --ignore IGNORE, -i IGNORE
                             Ignore errors and warnings. (comma-separated)
       --skip SKIP           Skip files by masks (comma-separated, Ex.
@@ -140,8 +143,8 @@ Command line options
       --options FILE, -o FILE
                             Specify configuration file. Looks for pylama.ini,
                             setup.cfg, tox.ini, or pytest.ini in the current
-                            directory.
-      --force, -F           Force code checking (if linter doesnt allow)
+                            directory (default: None).
+      --force, -F           Force code checking (if linter doesn't allow)
       --abspath, -a         Use absolute paths in output.
 
 
@@ -396,6 +399,8 @@ Licensed under a `BSD license`_.
 .. _Pytest: http://pytest.org
 .. _gjslint: https://developers.google.com/closure/utilities
 .. _klen: http://klen.github.io/
+.. _eradicate: https://github.com/myint/eradicate
+
 .. |logo| image:: https://raw.github.com/klen/pylama/develop/docs/_static/logo.png
                   :width: 100
 .. _Radon: https://github.com/rubik/radon
