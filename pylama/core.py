@@ -50,7 +50,7 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
             for item in params.get('linters') or linters:
 
                 if not isinstance(item, tuple):
-                    item = (item, LINTERS.get(item))
+                    item = item, LINTERS.get(item)
 
                 lname, linter = item
 
@@ -60,13 +60,7 @@ def run(path='', code=None, rootdir=CURDIR, options=None):
                 lparams = linters_params.get(lname, dict())
                 LOGGER.info("Run %s %s", lname, lparams)
 
-                ignore = params.get('ignore', set())
-                if 'ignore' in lparams:
-                    ignore |= set(lparams['ignore'].split(','))
-
-                select = params.get('select', set())
-                if 'select' in lparams:
-                    select |= set(lparams['select'].split(','))
+                ignore, select = merge_params(params, lparams)
 
                 linter_errors = linter.run(
                     path, code=code, ignore=ignore, select=select, params=lparams)
@@ -187,6 +181,19 @@ def filter_skiplines(code, errors):
         errors = [er for er in errors if er.lnum not in removed]
 
     return errors
+
+
+def merge_params(params, lparams):
+    """Merge global ignore/select with linter local params."""
+    ignore = params.get('ignore', set())
+    if 'ignore' in lparams:
+        ignore = ignore | set(lparams['ignore'])
+
+    select = params.get('select', set())
+    if 'select' in lparams:
+        select = select | set(lparams['select'])
+
+    return ignore, select
 
 
 class CodeContext(object):
