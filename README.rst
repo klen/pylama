@@ -234,7 +234,9 @@ You could set options for special code checker with pylama configurations.
     max_line_length = 100
     disable = R
 
-See code-checkers' documentation for more info.
+See code-checkers' documentation for more info. Let's notice that dashes are
+replaced by underscores (e.g. Pylint's "max-line-length" becomes
+"max_line_length").
 
 
 Set options for file (group of files)
