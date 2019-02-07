@@ -26,16 +26,16 @@ def test_config():
 def test_ignore_select():
     options = parse_options()
     options.ignore = ['E301', 'D102']
-    options.linters = ['pycodestyle', 'pydocstyle', 'pyflakes', 'mccabe']
+    options.linters = ['pycodestyle', 'pydocstyle', 'pyflakes', 'mccabe', 'eradicate']
     errors = run('dummy.py', options=options)
-    assert len(errors) == 31
+    assert len(errors) == 35
 
     numbers = [error.number for error in errors]
     assert 'D100' in numbers
     assert 'E301' not in numbers
     assert 'D102' not in numbers
 
-    options.ignore = ['E3', 'D', 'E2']
+    options.ignore = ['E3', 'D', 'E2', 'E8']
     errors = run('dummy.py', options=options)
     assert not errors
 
