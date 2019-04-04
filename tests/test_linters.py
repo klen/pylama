@@ -52,3 +52,10 @@ def test_pydocstyle():
     assert len(options.linters) == 1
     errors = run('dummy.py', options=options)
     assert errors
+
+
+def test_mypy():
+    options = parse_options(linters=['mypy'])
+    assert len(options.linters) == 1
+    errors = run('dummy.py', options=options)
+    assert len(errors) == 1

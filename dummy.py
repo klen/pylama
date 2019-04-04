@@ -125,3 +125,13 @@ class UnusedVariable(Message):
         Message.__init__(self, filename, lineno)
         self.message_args = (names,)
         error = 1 # noQa and some comments
+
+
+class BadTyping(Message):
+    """Test the MyPy linting."""
+
+    message = 'error: No return value expected'
+
+    def bad_method(self):  # type: () -> None
+        """Return type mismatch."""
+        return 1
