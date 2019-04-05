@@ -1,3 +1,5 @@
+import sys
+
 from pylama.config import parse_options
 from pylama.core import run
 from pylama.lint.extensions import LINTERS
@@ -55,7 +57,8 @@ def test_pydocstyle():
 
 
 def test_mypy():
-    options = parse_options(linters=['mypy'])
-    assert len(options.linters) == 1
-    errors = run('dummy.py', options=options)
-    assert len(errors) == 1
+    if sys.version_info.major >= 3 and sys.version_info.minor >= 5:
+        options = parse_options(linters=['mypy'])
+        assert len(options.linters) == 1
+        errors = run('dummy.py', options=options)
+        assert len(errors) == 1
