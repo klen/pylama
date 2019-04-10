@@ -12,6 +12,7 @@
 .tox
 .vimrc
 /.cache
+/.mypy_cache
 /.ropeproject
 /_
 /libs
