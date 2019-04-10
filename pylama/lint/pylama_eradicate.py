@@ -29,7 +29,7 @@ class Linter(Abstract):
                 lnum=line_number,
                 offset=len(line) - len(line.rstrip()),
                 # https://github.com/sobolevn/flake8-eradicate#output-example
-                text=converter('E800: Found commented out code: ') + line,
+                text=converter('E800 Found commented out code: ') + line,
                 # https://github.com/sobolevn/flake8-eradicate#error-codes
                 type='E800',
             ))

@@ -19,7 +19,7 @@ def test_config():
 
     options = parse_options('-o dummy dummy.py'.split())
     linters, _ = zip(*options.linters)
-    assert set(linters) == set(['pycodestyle', 'mccabe', 'pyflakes', 'eradicate'])
+    assert set(linters) == set(['pycodestyle', 'mccabe', 'pyflakes'])
     assert options.skip == []
 
 
@@ -28,14 +28,14 @@ def test_ignore_select():
     options.ignore = ['E301', 'D102']
     options.linters = ['pycodestyle', 'pydocstyle', 'pyflakes', 'mccabe']
     errors = run('dummy.py', options=options)
-    assert len(errors) == 31
+    assert len(errors) == 32
 
     numbers = [error.number for error in errors]
     assert 'D100' in numbers
     assert 'E301' not in numbers
     assert 'D102' not in numbers
 
-    options.ignore = ['E3', 'D', 'E2']
+    options.ignore = ['E3', 'D', 'E2', 'E8']
     errors = run('dummy.py', options=options)
     assert not errors
 

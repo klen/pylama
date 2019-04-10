@@ -13,6 +13,7 @@ Code audit tool for Python and JavaScript. Pylama wraps these tools:
 * Radon_ © Michele Lacchia
 * gjslint_ © The Closure Linter Authors (should be installed 'pylama_gjslint' module);
 * eradicate_ © Steven Myint;
+* Mypy_ © Jukka Lehtosalo and contributors;
 
 .. _badges:
 
@@ -234,7 +235,9 @@ You could set options for special code checker with pylama configurations.
     max_line_length = 100
     disable = R
 
-See code-checkers' documentation for more info.
+See code-checkers' documentation for more info. Let's notice that dashes are
+replaced by underscores (e.g. Pylint's "max-line-length" becomes
+"max_line_length").
 
 
 Set options for file (group of files)
@@ -400,6 +403,7 @@ Licensed under a `BSD license`_.
 .. _gjslint: https://developers.google.com/closure/utilities
 .. _klen: http://klen.github.io/
 .. _eradicate: https://github.com/myint/eradicate
+.. _Mypy: https://github.com/python/mypy
 
 .. |logo| image:: https://raw.github.com/klen/pylama/develop/docs/_static/logo.png
                   :width: 100
