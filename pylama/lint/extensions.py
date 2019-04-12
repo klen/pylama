@@ -1,3 +1,4 @@
+from pkg_resources import iter_entry_points
 """Load extensions."""
 
 LINTERS = {}
@@ -53,7 +54,6 @@ except ImportError:
     pass
 
 
-from pkg_resources import iter_entry_points
 
 for entry in iter_entry_points('pylama.linter'):
     if entry.name not in LINTERS:
