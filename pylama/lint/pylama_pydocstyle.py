@@ -1,3 +1,4 @@
+from pylama.lint import Linter as Abstract
 """pydocstyle support."""
 
 THIRD_ARG = True
@@ -9,7 +10,6 @@ except ImportError:
     from pydocstyle import PEP257Checker as PyDocChecker
     THIRD_ARG = False
 
-from pylama.lint import Linter as Abstract
 
 
 class Linter(Abstract):
