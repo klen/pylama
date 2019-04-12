@@ -28,4 +28,3 @@ class Linter(Abstract):
              'text': 'R701: %s is too complex %d' % (block.name, block.complexity)}
             for block in visitor.blocks if block.complexity > complexity
         ]
-
