@@ -23,7 +23,7 @@ except ImportError:
 
 try:
     from pylama.lint.pylama_pycodestyle import Linter
-    LINTERS['pep8'] = Linter()  # for compability
+    LINTERS['pep8'] = Linter()  # for compatibility
     LINTERS['pycodestyle'] = Linter()
 except ImportError:
     pass
