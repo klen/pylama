@@ -58,8 +58,7 @@ Requirements:
 
 Installation:
 =============
-**Pylama** could be installed using pip: ::
-::
+**Pylama** can be installed using pip: ::
 
     $ pip install pylama
 
@@ -72,11 +71,11 @@ Quickstart
 **Pylama** is easy to use and really fun for checking code quality.
 Just run `pylama` and get common output from all pylama plugins (pycodestyle_, PyFlakes_ and etc)
 
-Recursive check the current directory. ::
+Recursively check the current directory. ::
 
     $ pylama
 
-Recursive check a path. ::
+Recursively check a path. ::
 
     $ pylama <path_to_directory_or_file>
 
@@ -84,7 +83,7 @@ Ignore errors ::
 
     $ pylama -i W,E501
 
-.. note:: You could choose a group erros `D`,`E1` and etc or special errors `C0312`
+.. note:: You can choose a group of errors like `D`, `E1`, etc, or special errors like `C0312`
 
 Choose code checkers ::
 
@@ -155,22 +154,20 @@ File modelines
 --------------
 
 You can set options for **Pylama** inside a source file. Use
-pylama *modeline* for this.
+a pylama *modeline* for this, anywhere in the file.
 
 Format: ::
 
     # pylama:{name1}={value1}:{name2}={value2}:...
 
 
-::
+For example, ignore warnings except W301: ::
 
-     .. Somethere in code
      # pylama:ignore=W:select=W301
 
 
 Disable code checking for current file: ::
 
-     .. Somethere in code
      # pylama:skip=1
 
 Those options have a higher priority.
@@ -180,7 +177,7 @@ Those options have a higher priority.
 Skip lines (noqa)
 -----------------
 
-Just add `# noqa` in end of line to ignore.
+Just add ``# noqa`` at the end of a line to ignore:
 
 ::
 
@@ -204,11 +201,11 @@ in this order: ::
     tox.ini
     pytest.ini
 
-The "--option" / "-o" argument can be used to specify a configuration file.
+The ``--option`` / ``-o`` argument can be used to specify a configuration file.
 
 Pylama searches for sections whose names start with `pylama`.
 
-The "pylama" section configures global options like `linters` and `skip`.
+The `pylama` section configures global options like `linters` and `skip`.
 
 ::
 
@@ -218,10 +215,10 @@ The "pylama" section configures global options like `linters` and `skip`.
     linters = pylint,mccabe
     ignore = F0401,C0111,E731
 
-Set Code-checkers' options
+Set code-checkers' options
 --------------------------
 
-You could set options for special code checker with pylama configurations.
+You can set options for special code checkers with pylama configurations.
 
 ::
 
@@ -235,15 +232,15 @@ You could set options for special code checker with pylama configurations.
     max_line_length = 100
     disable = R
 
-See code-checkers' documentation for more info. Let's notice that dashes are
-replaced by underscores (e.g. Pylint's "max-line-length" becomes
-"max_line_length").
+See code-checkers' documentation for more info. Note that dashes are
+replaced by underscores (e.g. Pylint's ``max-line-length`` becomes
+``max_line_length``).
 
 
 Set options for file (group of files)
 -------------------------------------
 
-You could set options for special file (group of files)
+You can set options for special file (group of files)
 with sections:
 
 The options have a higher priority than in the `pylama` section.
@@ -279,7 +276,7 @@ Writing a linter
 ================
 
 You can write a custom extension for Pylama.
-Custom linter should be a python module. Name should be like 'pylama_<name>'.
+The custom linter should be a python module. Its name should be like 'pylama_<name>'.
 
 In 'setup.py', 'pylama.linter' entry point should be defined. ::
 
@@ -292,10 +289,10 @@ In 'setup.py', 'pylama.linter' entry point should be defined. ::
     )
 
 'Linter' should be instance of 'pylama.lint.Linter' class.
-Must implement two methods:
+It must implement two methods:
 
-'allow' takes a path and returns true if linter can check this file for errors.
-'run' takes a path and meta keywords params and returns a list of errors.
+1. ``allow`` takes a `path` argument and returns true if the linter can check this file for errors.
+2. ``run`` takes a `path` argument and `meta` keyword arguments and returns a list of errors.
 
 Example:
 --------
@@ -328,7 +325,7 @@ pylama_wow.py: ::
                     return [{
                         lnum: 0,
                         col: 0,
-                        text: 'Wow has been finded.',
+                        text: '"wow" has been found.',
                         type: 'WOW'
                     }]
 
