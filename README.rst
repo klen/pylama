@@ -5,15 +5,15 @@
 
 Code audit tool for Python and JavaScript. Pylama wraps these tools:
 
-* pycodestyle_ (formerly pep8) © 2012-2013, Florent Xicluna;
-* pydocstyle_ (formerly pep257 by Vladimir Keleshev) © 2014, Amir Rachum;
-* PyFlakes_ © 2005-2013, Kevin Watters;
-* Mccabe_ © Ned Batchelder;
-* Pylint_ © 2013, Logilab (should be installed 'pylama_pylint' module);
+* pycodestyle_ (formerly `pep8`) © 2012-2013, Florent Xicluna
+* pydocstyle_ (formerly `pep257` by Vladimir Keleshev) © 2014, Amir Rachum
+* PyFlakes_ © 2005-2013, Kevin Watters
+* Mccabe_ © Ned Batchelder
+* Pylint_ © 2013, Logilab (should be installed 'pylama_pylint' module)
 * Radon_ © Michele Lacchia
-* gjslint_ © The Closure Linter Authors (should be installed 'pylama_gjslint' module);
-* eradicate_ © Steven Myint;
-* Mypy_ © Jukka Lehtosalo and contributors;
+* gjslint_ © The Closure Linter Authors (should be installed 'pylama_gjslint' module)
+* eradicate_ © Steven Myint
+* Mypy_ © Jukka Lehtosalo and contributors
 
 .. _badges:
 
@@ -45,8 +45,8 @@ Docs are available at https://pylama.readthedocs.org/. Pull requests with docume
 
 .. _requirements:
 
-Requirements:
-=============
+Requirements
+============
 
 - Python (2.7, 3.4, 3.5, 3.6, 3.7)
 - To use JavaScript checker (``gjslint``) you need to install ``python-gflags`` with ``pip install python-gflags``.
@@ -56,8 +56,8 @@ Requirements:
 
 .. _installation:
 
-Installation:
-=============
+Installation
+============
 **Pylama** can be installed using pip: ::
 
     $ pip install pylama
@@ -69,7 +69,7 @@ Quickstart
 ==========
 
 **Pylama** is easy to use and really fun for checking code quality.
-Just run `pylama` and get common output from all pylama plugins (pycodestyle_, PyFlakes_ and etc)
+Just run ``pylama`` and get common output from all pylama plugins (pycodestyle_, PyFlakes_, etc).
 
 Recursively check the current directory. ::
 
@@ -276,7 +276,7 @@ Writing a linter
 ================
 
 You can write a custom extension for Pylama.
-The custom linter should be a python module. Its name should be like 'pylama_<name>'.
+The custom linter should be a Python module. Its name should be like 'pylama_<name>'.
 
 In 'setup.py', 'pylama.linter' entry point should be defined. ::
 
@@ -294,8 +294,8 @@ It must implement two methods:
 1. ``allow`` takes a `path` argument and returns true if the linter can check this file for errors.
 2. ``run`` takes a `path` argument and `meta` keyword arguments and returns a list of errors.
 
-Example:
---------
+Example
+-------
 
 Just a virtual 'WOW' checker.
 
@@ -330,7 +330,7 @@ pylama_wow.py: ::
                     }]
 
 
-Run pylama from python code
+Run pylama from Python code
 ---------------------------
 ::
 
