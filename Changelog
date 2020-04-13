@@ -1,3 +1,78 @@
+2019-04-10 k.klenov
+	* Version 7.7.1
+	* Fix CI by removing eradicate from linters
+
+2019-04-10 k.klenov
+	* Version 7.7.0
+	* Add note about configuration option names
+	* Added eradicate as a requirement #144
+	* Adds mypy linter #150
+	* Remove eradicate from default linters.
+
+2018-11-02 k.klenov
+	* Version 7.6.6
+	* Avoid reference usage for linter specific ignore/select 
+	* Update Python requirements description
+	* Update the command help message description 
+	* Add eradicate to tools references 
+
+2018-10-10 k.klenov
+	* Version 7.6.5
+	* Fix build
+
+2018-10-09 k.klenov
+	* Version 7.6.4
+	* No changes other than version number
+
+2018-10-09 k.klenov
+	* Version 7.6.3
+	* Respect linters params
+
+2018-10-09 k.klenov
+	* Version 7.6.2
+	* No changes other than version number
+
+2018-10-09 k.klenov
+	* Version 7.6.1
+	* Merge #131
+
+2018-10-09 k.klenov
+	* Version 7.6.0
+	* Log errors in linters with ERROR logging level
+	* Include pylint support into pylama by default.
+
+2018-10-02 k.klenov
+	* Version 7.5.5
+	* Take advantage of startswith accepting a tuple #119
+
+2018-10-02 k.klenov
+	* Version 7.5.4
+	* Fix build with ASCII locale #116
+	* Respect tools own config without pylama #117
+
+2018-10-02 k.klenov
+	* Version 7.5.3
+	* Fix Travis CI 
+	
+2018-10-02 k.klenov
+	* Version 7.5.2
+	* Fix Travis CI 
+	
+2018-10-02 k.klenov
+	* Version 7.5.1
+	* Fix tests & update authors
+	
+2018-10-02 k.klenov
+	* Version 7.5.0
+	* 
+
+2017-09-13 k.klenov
+	* Version 7.4.2
+	* Fix Git hook with Python 3.6 #111
+
+2017-09-13 k.klenov
+	* Version 7.4.2
+
 2017-09-04  horneds
 	* Version 7.4.1
 	* Fix Windows encoding problem #108
