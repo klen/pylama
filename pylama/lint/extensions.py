@@ -52,6 +52,12 @@ try:
 except ImportError:
     pass
 
+try:
+    from pylama.lint.pylama_vulture import Linter
+    LINTERS['vulture'] = Linter()
+except ImportError:
+    pass
+
 
 from pkg_resources import iter_entry_points
 

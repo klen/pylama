@@ -62,3 +62,26 @@ def test_mypy():
         assert len(options.linters) == 1
         errors = run('dummy.py', options=options)
         assert len(errors) == 1
+
+
+def test_vulture():
+    options = parse_options(linters=['vulture'])
+    assert len(options.linters) == 1
+    errors = run('dummy.py', options=options)
+
+    assert len(errors) == 15
+    assert errors[0]["number"] == "V106"
+    assert errors[1]["number"] == "V101"
+    assert errors[2]["number"] == "V102"
+    assert errors[3]["number"] == "V102"
+    assert errors[4]["number"] == "V102"
+    assert errors[5]["number"] == "V102"
+    assert errors[6]["number"] == "V102"
+    assert errors[7]["number"] == "V102"
+    assert errors[8]["number"] == "V102"
+    assert errors[9]["number"] == "V102"
+    assert errors[10]["number"] == "V102"
+    assert errors[11]["number"] == "V102"
+    assert errors[12]["number"] == "V102"
+    assert errors[13]["number"] == "V102"
+    assert errors[14]["number"] == "V103"

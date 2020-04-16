@@ -14,6 +14,7 @@ Code audit tool for Python and JavaScript. Pylama wraps these tools:
 * gjslint_ © The Closure Linter Authors (should be installed 'pylama_gjslint' module);
 * eradicate_ © Steven Myint;
 * Mypy_ © Jukka Lehtosalo and contributors;
+* Vulture_ © Jendrik Seipp and contributors;
 
 .. _badges:
 
@@ -404,6 +405,7 @@ Licensed under a `BSD license`_.
 .. _klen: http://klen.github.io/
 .. _eradicate: https://github.com/myint/eradicate
 .. _Mypy: https://github.com/python/mypy
+.. _Vulture: https://github.com/jendrikseipp/vulture
 
 .. |logo| image:: https://raw.github.com/klen/pylama/develop/docs/_static/logo.png
                   :width: 100
