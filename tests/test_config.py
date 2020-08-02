@@ -25,7 +25,7 @@ def test_config():
 
 def test_ignore_select():
     options = parse_options()
-    options.ignore = ['E301', 'D102']
+    options.ignore = ['E301', 'D102', 'D415']
     options.linters = ['pycodestyle', 'pydocstyle', 'pyflakes', 'mccabe']
     errors = run('dummy.py', options=options)
     assert len(errors) == 32
