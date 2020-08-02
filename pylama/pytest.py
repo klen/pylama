@@ -40,6 +40,8 @@ def pytest_sessionfinish(session):
 def pytest_collect_file(path, parent):
     config = parent.config
     if config.option.pylama and path.ext == '.py':
+        if hasattr(PylamaItem, "from_parent"):
+            return PylamaItem.from_parent(parent=parent, path=path, fspath=path)
         return PylamaItem(path, parent)
 
 
@@ -49,7 +51,7 @@ class PylamaError(Exception):
 
 class PylamaItem(pytest.Item, pytest.File):
 
-    def __init__(self, path, parent):
+    def __init__(self, path, parent, fspath=None):
         super(PylamaItem, self).__init__(path, parent)
         self.add_marker("pycodestyle")
         self.cache = None
