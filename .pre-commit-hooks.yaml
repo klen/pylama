@@ -1,0 +1,8 @@
+- id: pylama
+  name: pylama
+  description: "Code audit tool for Python and JavaScript"
+  entry: pylama
+  language: python
+  language_version: python3
+  minimum_pre_commit_version: 2.9.2
+  types: [python, pyi]
