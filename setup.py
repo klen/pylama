@@ -35,7 +35,7 @@ meta = dict(
     author_email='horneds@gmail.com',
     url=' https://github.com/klen/pylama',
 
-    packages=find_packages(exclude=['plugins']),
+    packages=find_packages(include=['pylama.*'], exclude=['plugins']),
 
     entry_points={
         'console_scripts': [
