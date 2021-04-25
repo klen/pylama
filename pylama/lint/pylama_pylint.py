@@ -4,7 +4,11 @@ from os import path as op, environ
 
 from astroid import MANAGER
 from pylama.lint import Linter as BaseLinter
-from pylint.__pkginfo__ import numversion
+try:
+    from pylint.__pkginfo__ import numversion
+except ImportError:
+    # There was a breaking change in pylint 2.8.0
+    numversion = (2, 8, 0)
 from pylint.lint import Run
 from pylint.reporters import BaseReporter
 
