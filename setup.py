@@ -27,6 +27,8 @@ meta = dict(
     license=_license,
     description=_read('DESCRIPTION'),
     long_description=_read('README.rst'),
+    long_description_content_type='text/x-rst',
+
     platforms=('Any'),
     zip_safe=False,
     keywords='pylint pep8 pycodestyle pyflakes mccabe linter qa pep257 pydocstyle'.split(),
