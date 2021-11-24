@@ -2,7 +2,7 @@
 import logging
 from os import environ
 from pathlib import Path
-from typing import Dict
+from typing import Any, Dict, List
 
 from pylint.lint import Run
 from pylint.reporters import BaseReporter
@@ -20,8 +20,7 @@ class Linter(BaseLinter):
 
     name = "pylint"
 
-    @staticmethod
-    def run(path, *, code=None, params=None, ignore=None, select=None, **_):
+    def run(self, path, *, params=None, ignore=None, select=None, **_) -> List[Dict[str, Any]]:
         """Pylint code checking."""
         logger.debug("Start pylint")
 

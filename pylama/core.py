@@ -60,7 +60,7 @@ def run(path: str, rootdir: str = CURDIR, options: Namespace = None) -> List[Err
 
                 ignore, select = merge_params(params, lparams)
 
-                linter_errors = linter.run(
+                linter_errors = linter().run(
                     path, code=code, ignore=ignore, select=select, params=lparams
                 )
                 if linter_errors:

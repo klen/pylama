@@ -1,6 +1,6 @@
 """pydocstyle support."""
 
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from pydocstyle import ConventionChecker as PyDocChecker
 from pydocstyle.violations import conventions
@@ -13,8 +13,7 @@ class Linter(Abstract):
 
     name = "pydocstyle"
 
-    @staticmethod
-    def run(path: str, code: str = None, params=None, **_) -> List[Dict]:
+    def run(self, path: str, code: str = None, params=None, **_) -> List[Dict[str, Any]]:
         """Check code with pydocstyle."""
         if params is None:
             params = {}

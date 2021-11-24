@@ -1,5 +1,6 @@
 """MyPy support."""
 
+from typing import Any, Dict, List
 from mypy import api
 
 from pylama.lint import Linter as Abstract
@@ -55,8 +56,7 @@ class Linter(Abstract):
 
     name = 'mypy'
 
-    @staticmethod
-    def run(path, code=None, params=None, **_):
+    def run(self, path, **_) -> List[Dict[str, Any]]:
         """Check code with mypy."""
         args = [path, '--follow-imports=skip', '--show-column-numbers']
         stdout, _, _ = api.run(args)    # noqa

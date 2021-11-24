@@ -1,6 +1,6 @@
 """Code complexity checking."""
 import ast
-from typing import Dict, List
+from typing import Dict, List, Any
 
 from mccabe import McCabeChecker
 
@@ -12,8 +12,7 @@ class Linter(Abstract):
 
     name = "mccabe"
 
-    @staticmethod
-    def run(path: str, *, code: str = None, params=None, **_) -> List[Dict]:
+    def run(self, path: str, *, code: str = None, params=None, **_) -> List[Dict[str, Any]]:
         """Run Mccabe code checker."""
         if not code:
             return []

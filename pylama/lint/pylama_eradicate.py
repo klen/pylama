@@ -1,6 +1,6 @@
 """Commented-out code checking."""
 
-from typing import List, Dict
+from typing import List, Dict, Any
 
 from eradicate import Eradicator
 from pylama.lint import Linter as Abstract
@@ -11,8 +11,7 @@ class Linter(Abstract):
 
     name = 'eradicate'
 
-    @staticmethod
-    def run(path: str, *, code: str = None, **_) -> List[Dict[str, str]]:
+    def run(self, path: str, *, code: str = None, **_) -> List[Dict[str, Any]]:  # noqa
         """Eradicate code checking.
 
         TODO: Support params

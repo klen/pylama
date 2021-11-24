@@ -1,5 +1,5 @@
 """Support Vulture."""
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from vulture.core import Vulture, make_config, ERROR_CODES
 
@@ -16,8 +16,7 @@ class Linter(BaseLinter):
 
     name = 'vulture'
 
-    @staticmethod
-    def run(path, *, params=None, **_) -> List[Dict[str, str]]:
+    def run(self, path: str, *, params=None, **_) -> List[Dict[str, Any]]:
         """Check code with vulture."""
         config = make_config(parse_params(path, params or {}))
 

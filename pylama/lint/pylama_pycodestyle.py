@@ -1,6 +1,6 @@
 """pycodestyle support."""
 from io import StringIO
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from pycodestyle import (BaseReport, StyleGuide, _parse_multi_options,
                          get_parser)
@@ -13,8 +13,7 @@ class Linter(Abstract):
 
     name = "pycodestyle"
 
-    @staticmethod
-    def run(path, code=None, params=None, **_) -> List[Dict]:
+    def run(self, path, code=None, params=None, **_) -> List[Dict[str, Any]]:
         """Check code with pycodestyle.
 
         :return list: List of errors.

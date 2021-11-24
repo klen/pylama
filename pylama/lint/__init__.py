@@ -5,7 +5,7 @@ from abc import ABCMeta, abstractmethod
 from importlib import import_module
 from pathlib import Path
 from pkgutil import walk_packages
-from typing import Dict, List, Optional, Type
+from typing import Any, Dict, List, Optional, Type
 
 from pkg_resources import iter_entry_points
 
@@ -27,9 +27,8 @@ class Linter(metaclass=ABCMeta):
         """Check path is relevant for linter."""
         return path.endswith(".py")
 
-    @staticmethod
     @abstractmethod
-    def run(path: str, **meta) -> List[Dict]:
+    def run(self, path: str, **meta) -> List[Dict[str, Any]]:
         """Not implemented."""
         raise NotImplementedError(__doc__)
 

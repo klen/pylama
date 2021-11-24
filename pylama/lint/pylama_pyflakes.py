@@ -1,7 +1,7 @@
 """Pyflakes support."""
 
 import ast
-from typing import Dict, List
+from typing import Any, Dict, List
 from pyflakes import checker
 
 from pylama.lint import Linter as Abstract
@@ -31,8 +31,7 @@ class Linter(Abstract):
 
     name = 'pyflakes'
 
-    @staticmethod
-    def run(path, *, code=None, params=None, **_) -> List[Dict]:
+    def run(self, path, *, code=None, params=None, **_) -> List[Dict[str, Any]]:
         """Check code with pyflakes."""
         if params is None:
             params = {}

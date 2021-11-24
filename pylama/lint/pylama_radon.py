@@ -1,6 +1,6 @@
 """Support Radon."""
 
-from typing import Dict, List
+from typing import Any, Dict, List
 from radon.visitors import ComplexityVisitor
 from radon.complexity import add_inner_blocks
 
@@ -12,8 +12,7 @@ class Linter(Abstract):
 
     name = 'radon'
 
-    @staticmethod
-    def run(path, code=None, params=None, **_) -> List[Dict]:
+    def run(self, path: str, code=None, params=None, **_) -> List[Dict[str, Any]]:  # noqa
         """Check code with Radon."""
         if params is None:
             params = {}
