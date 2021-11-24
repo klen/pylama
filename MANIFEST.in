@@ -3,6 +3,7 @@ include Changelog
 include LICENSE
 include MANIFEST.in
 include README.rst
+include dummy.py
 
 recursive-include requirements *.txt
 recursive-include pylama *
