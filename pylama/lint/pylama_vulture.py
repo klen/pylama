@@ -7,6 +7,7 @@ from pylama.lint import Linter as BaseLinter
 
 
 def parse_params(path, params=None):
+    """Convert params from pylama."""
     return ['vulture'] + [f"--{key}={value}" for key, value in params.items()] + [path]
 
 
