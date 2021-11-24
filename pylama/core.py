@@ -5,6 +5,7 @@ Prepare params, check a modeline and run the checkers.
 import logging
 import os.path as op
 import traceback
+from typing import Generator
 
 from .config import CURDIR, LOGGER, MODELINE_RE, SKIP_PATTERN, process_value
 from .errors import Error, remove_duplicates
@@ -140,8 +141,6 @@ def prepare_params(modeline, fileconfig, options):
         for key in ("ignore", "select", "linters"):
             params[key] += process_value(key, config.get(key, []))
         params["skip"] = bool(int(config.get("skip", False)))
-    # TODO: skip what? This is causing erratic behavior for linters.
-    params["skip"] = False
 
     params["ignore"] = set(params["ignore"])
     params["select"] = set(params["select"])
@@ -149,7 +148,7 @@ def prepare_params(modeline, fileconfig, options):
     return params
 
 
-def filter_errors(errors, select=None, ignore=None, **params):
+def filter_errors(errors: Error, select=None, ignore=None, **_) -> Generator[Error, None, None]:
     """Filter errors by select and ignore options.
 
     :return bool:
