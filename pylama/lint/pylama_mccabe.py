@@ -12,7 +12,7 @@ class Linter(Abstract):
 
     name = "mccabe"
 
-    def run(self, path: str, *, code: str = None, params=None, **_) -> List[Dict[str, Any]]:
+    def run(self, path: str, *, code: str = None, params=None, **_) -> List[Dict[str, Any]]:  # noqa
         """Run Mccabe code checker."""
         if not code:
             return []

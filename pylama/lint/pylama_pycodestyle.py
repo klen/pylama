@@ -13,7 +13,7 @@ class Linter(Abstract):
 
     name = "pycodestyle"
 
-    def run(self, path, code=None, params=None, **_) -> List[Dict[str, Any]]:
+    def run(self, path, code=None, params=None, **_) -> List[Dict[str, Any]]:  # noqa
         """Check code with pycodestyle.
 
         :return list: List of errors.

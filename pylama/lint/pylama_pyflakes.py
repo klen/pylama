@@ -31,7 +31,7 @@ class Linter(Abstract):
 
     name = 'pyflakes'
 
-    def run(self, path, *, code=None, params=None, **_) -> List[Dict[str, Any]]:
+    def run(self, path, *, code=None, params=None, **_) -> List[Dict[str, Any]]:  # noqa
         """Check code with pyflakes."""
         if params is None:
             params = {}

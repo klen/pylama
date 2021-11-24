@@ -20,7 +20,7 @@ class Linter(BaseLinter):
 
     name = "pylint"
 
-    def run(self, path, *, params=None, ignore=None, select=None, **_) -> List[Dict[str, Any]]:
+    def run(self, path, *, params=None, ignore=None, select=None, **_) -> List[Dict[str, Any]]:  # noqa
         """Pylint code checking."""
         logger.debug("Start pylint")
 

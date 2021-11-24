@@ -16,7 +16,7 @@ class Linter(BaseLinter):
 
     name = 'vulture'
 
-    def run(self, path: str, *, params=None, **_) -> List[Dict[str, Any]]:
+    def run(self, path: str, *, params=None, **_) -> List[Dict[str, Any]]:  # noqa
         """Check code with vulture."""
         config = make_config(parse_params(path, params or {}))
 

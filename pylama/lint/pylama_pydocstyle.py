@@ -13,7 +13,7 @@ class Linter(Abstract):
 
     name = "pydocstyle"
 
-    def run(self, path: str, code: str = None, params=None, **_) -> List[Dict[str, Any]]:
+    def run(self, path: str, code: str = None, params=None, **_) -> List[Dict[str, Any]]:  # noqa
         """Check code with pydocstyle."""
         if params is None:
             params = {}
