@@ -47,7 +47,7 @@ def check_async(paths, options, rootdir=None):
 
     for num in range(CPU_COUNT):
         worker = Worker(path_queue, result_queue)
-        worker.setDaemon(True)
+        worker.daemon = True
         LOGGER.info("Start worker #%s", (num + 1))
         worker.start()
 
