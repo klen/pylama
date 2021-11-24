@@ -40,6 +40,9 @@ jobs:
     - name: Setup dependencies
       run: env/bin/pip install .[tests]
 
+    - name: Test pylama
+      run: env/bin/pytest --pylama pylama
+
     - name: Test with pytest
       run: env/bin/pytest tests
 
