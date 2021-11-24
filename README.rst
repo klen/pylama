@@ -16,21 +16,17 @@ Code audit tool for Python and JavaScript. Pylama wraps these tools:
 
 .. _badges:
 
-.. image:: http://img.shields.io/travis/klen/pylama.svg?style=flat-square
-    :target: http://travis-ci.org/klen/pylama
-    :alt: Build Status
+.. image:: https://github.com/klen/pylama/workflows/tests/badge.svg
+    :target: https://github.com/klen/pylama/actions
+    :alt: Tests Status
 
-.. image:: http://img.shields.io/coveralls/klen/pylama.svg?style=flat-square
-    :target: https://coveralls.io/r/klen/pylama
-    :alt: Coverals
+.. image:: https://img.shields.io/pypi/v/pylama
+    :target: https://pypi.org/project/pylama/
+    :alt: PYPI Version
 
-.. image:: http://img.shields.io/pypi/v/pylama.svg?style=flat-square
-    :target: https://crate.io/packages/pylama
-    :alt: Version
-
-.. image:: http://img.shields.io/gratipay/klen.svg?style=flat-square
-    :target: https://www.gratipay.com/klen/
-    :alt: Donate
+.. image:: https://img.shields.io/pypi/pyversions/pylama
+    :target: https://pypi.org/project/pylama/
+    :alt: Python Versions
 
 
 .. _documentation:
@@ -386,16 +382,17 @@ License
 
 This is free software. You are permitted to use, copy, modify, merge, publish,
 distribute, sublicense, and/or sell copies of it, under the terms of the MIT
-License. See LICENSE file for the complete license.
+License. See LICENSE_ file for the complete license.
 
 This software is provided WITHOUT ANY WARRANTY; without even the implied
 warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-LICENSE file for the complete disclaimer.
+LICENSE_ file for the complete disclaimer.
 
 
 .. _links:
 
 .. _AUTHORS: https://github.com/klen/pylama/blob/develop/AUTHORS
+.. _LICENSE: https://github.com/klen/pylama/blob/develop/LICENSE
 .. _BSD license: http://www.linfo.org/bsdlicense.html
 .. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
 .. _pydocstyle: https://github.com/PyCQA/pydocstyle/
