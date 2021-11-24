@@ -5,6 +5,7 @@
 	* Support mccabe==0.6.1, pycodestyle==2.8.0, pydocstyle==6.1.1,
 		pyflakes==2.4.0, eradicate==2.0.0, radon==5.1.0, pylint==2.11.1
 	* Support 'convention' for pydocstyle
+	* Support vulture
 	* License changed to MIT (see LICENSE file for details)
 
 2019-04-10 k.klenov

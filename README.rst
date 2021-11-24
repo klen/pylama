@@ -13,6 +13,7 @@ Code audit tool for Python and JavaScript. Pylama wraps these tools:
 * Radon_ © Michele Lacchia
 * eradicate_ © Steven Myint;
 * Mypy_ © Jukka Lehtosalo and contributors;
+* Vulture_ © Jendrik Seipp and contributors;
 
 .. _badges:
 
@@ -400,6 +401,7 @@ LICENSE_ file for the complete disclaimer.
 .. _klen: http://klen.github.io/
 .. _eradicate: https://github.com/myint/eradicate
 .. _Mypy: https://github.com/python/mypy
+.. _Vulture: https://github.com/jendrikseipp/vulture
 
 .. |logo| image:: https://raw.github.com/klen/pylama/develop/docs/_static/logo.png
                   :width: 100

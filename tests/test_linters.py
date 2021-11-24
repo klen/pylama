@@ -126,3 +126,14 @@ def test_quotes(source):
 
     errors = quotes().run("dummy.py", code=source)
     assert errors
+
+
+def test_vulture(source):
+    from pylama.lint import LINTERS, Linter
+
+    vulture = LINTERS["vulture"]
+    assert vulture
+    assert issubclass(vulture, Linter)
+
+    errors = vulture().run("dummy.py", code=source)
+    assert errors
