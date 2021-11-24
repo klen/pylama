@@ -89,7 +89,7 @@ class Error(object):
         """ Init error information with default values. """
         text = ' '.join(str(text).strip().split('\n'))
         if linter:
-            text = "%s [%s]" % (text, linter)
+            text = f"{text} [{linter}]"
         number = number or text.split(' ', 1)[0]
         if not PATTERN_NUMBER.match(number):
             number = ""
@@ -108,6 +108,6 @@ class Error(object):
         return self._info.get(name, default)
 
     def __repr__(self):
-        return "<Error: %s %s>" % (self.number, self.linter)
+        return f"<Error: {self.number} {self.linter}>"
 
 # pylama:ignore=W0622,D,R0924

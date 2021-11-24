@@ -3,14 +3,16 @@ from __future__ import absolute_import
 
 from os import path as op
 
-import py # noqa
 import pytest
+
+from pylama.main import parse_options, process_paths
+from pylama.config import CURDIR
 
 
 HISTKEY = "pylama/mtimes"
 
 
-def pytest_load_initial_conftests(early_config, parser, args):
+def pytest_load_initial_conftests(early_config, *_):
     # Marks have to be registered before usage
     # to not fail with --strict command line argument
     early_config.addinivalue_line(
@@ -40,7 +42,7 @@ def pytest_sessionfinish(session):
 def pytest_collect_file(path, parent):
     config = parent.config
     if config.option.pylama and path.ext == '.py':
-        return PylamaItem(path, parent)
+        return PylamaItem.from_parent(parent, fspath=path)
 
 
 class PylamaError(Exception):
@@ -49,8 +51,8 @@ class PylamaError(Exception):
 
 class PylamaItem(pytest.Item, pytest.File):
 
-    def __init__(self, path, parent):
-        super(PylamaItem, self).__init__(path, parent)
+    def __init__(self, fspath, parent):
+        super(PylamaItem, self).__init__(fspath, parent)
         self.add_marker("pycodestyle")
         self.cache = None
         self._pylamamtimes = None
@@ -85,9 +87,6 @@ class PylamaItem(pytest.Item, pytest.File):
 
 
 def check_file(path):
-    from pylama.main import parse_options, process_paths
-    from pylama.config import CURDIR
-
     options = parse_options()
     path = op.relpath(str(path), CURDIR)
     return process_paths(options, candidates=[path], error=False)

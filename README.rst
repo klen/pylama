@@ -11,7 +11,6 @@ Code audit tool for Python and JavaScript. Pylama wraps these tools:
 * Mccabe_ © Ned Batchelder;
 * Pylint_ © 2013, Logilab (should be installed 'pylama_pylint' module);
 * Radon_ © Michele Lacchia
-* gjslint_ © The Closure Linter Authors (should be installed 'pylama_gjslint' module);
 * eradicate_ © Steven Myint;
 * Mypy_ © Jukka Lehtosalo and contributors;
 
@@ -48,10 +47,11 @@ Docs are available at https://pylama.readthedocs.org/. Pull requests with docume
 Requirements:
 =============
 
-- Python (2.7, 3.4, 3.5, 3.6, 3.7)
-- To use JavaScript checker (``gjslint``) you need to install ``python-gflags`` with ``pip install python-gflags``.
+- Python (3.7, 3.8, 3.9, 3.10)
 - If your tests are failing on Win platform you are missing: ``curses`` - http://www.lfd.uci.edu/~gohlke/pythonlibs/
   (The curses library supplies a terminal-independent screen-painting and keyboard-handling facility for text-based terminals)
+
+For python versions < 3.7 install pylama 7.7.1
 
 
 .. _installation:
@@ -70,7 +70,7 @@ Quickstart
 ==========
 
 **Pylama** is easy to use and really fun for checking code quality.
-Just run `pylama` and get common output from all pylama plugins (pycodestyle_, PyFlakes_ and etc)
+Just run `pylama` and get common output from all pylama plugins (pycodestyle_, PyFlakes_, etc.)
 
 Recursive check the current directory. ::
 
@@ -90,9 +90,6 @@ Choose code checkers ::
 
     $ pylama -l "pycodestyle,mccabe"
 
-Choose code checkers for JavaScript::
-
-    $ pylama --linters=gjslint --ignore=E:0010 <path_to_directory_or_file>
 
 .. _options:
 
@@ -180,7 +177,7 @@ Those options have a higher priority.
 Skip lines (noqa)
 -----------------
 
-Just add `# noqa` in end of line to ignore.
+Just add `# noqa` at end of a line to ignore.
 
 ::
 
@@ -221,7 +218,7 @@ The "pylama" section configures global options like `linters` and `skip`.
 Set Code-checkers' options
 --------------------------
 
-You could set options for special code checker with pylama configurations.
+You could set options for a special code checker with pylama configurations.
 
 ::
 
@@ -265,13 +262,13 @@ Pytest integration
 ==================
 
 Pylama has Pytest_ support. The package automatically registers itself as a pytest
-plugin during installation. Pylama also supports `pytest_cache` plugin.
+plugin during installation. Pylama also supports the `pytest_cache` plugin.
 
 Check files with pylama ::
 
     pytest --pylama ...
 
-Recommended way to set pylama options when using pytest — configuration
+The recommended way to set pylama options when using pytest — configuration
 files (see below).
 
 
@@ -291,7 +288,7 @@ In 'setup.py', 'pylama.linter' entry point should be defined. ::
         # ...
     )
 
-'Linter' should be instance of 'pylama.lint.Linter' class.
+'Linter' should be an instance of the 'pylama.lint.Linter' class.
 Must implement two methods:
 
 'allow' takes a path and returns true if linter can check this file for errors.
@@ -387,7 +384,13 @@ See AUTHORS_.
 License
 -------
 
-Licensed under a `BSD license`_.
+This is free software. You are permitted to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of it, under the terms of the MIT
+License. See LICENSE file for the complete license.
+
+This software is provided WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+LICENSE file for the complete disclaimer.
 
 
 .. _links:
@@ -400,7 +403,6 @@ Licensed under a `BSD license`_.
 .. _PyFlakes: https://github.com/pyflakes/pyflakes
 .. _Pylint: http://pylint.org
 .. _Pytest: http://pytest.org
-.. _gjslint: https://developers.google.com/closure/utilities
 .. _klen: http://klen.github.io/
 .. _eradicate: https://github.com/myint/eradicate
 .. _Mypy: https://github.com/python/mypy

@@ -72,7 +72,7 @@ def shell(args=None, error=True):
 
     # Install VSC hook
     if options.hook:
-        from .hook import install_hook
+        from .hook import install_hook  # noqa
         for path in options.paths:
             return install_hook(path)
 

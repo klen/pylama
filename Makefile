@@ -2,6 +2,7 @@ MODULE=pylama
 SPHINXBUILD=sphinx-build
 ALLSPHINXOPTS= -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 BUILDDIR=_build
+VIRTUAL_ENV 	?= env
 
 LIBSDIR=$(CURDIR)/libs
 
@@ -9,6 +10,11 @@ LIBSDIR=$(CURDIR)/libs
 # target: help - Display callable targets
 help:
 	@egrep "^# target:" [Mm]akefile
+
+$(VIRTUAL_ENV): setup.cfg requirements/requirements.txt requirements/requirements-tests.txt
+	@[ -d $(VIRTUAL_ENV) ] || python -m venv $(VIRTUAL_ENV)
+	@$(VIRTUAL_ENV)/bin/pip install -e .[tests]
+	@touch $(VIRTUAL_ENV)
 
 .PHONY: clean
 # target: clean - Clean repo
@@ -45,11 +51,6 @@ patch:
 #  Build package
 # ===============
 
-.PHONY: register
-# target: register - Register module on PyPi
-register:
-	python setup.py register
-
 .PHONY: upload
 # target: upload - Upload module on PyPi
 upload: clean
@@ -65,9 +66,9 @@ upload: clean
 # =============
 
 .PHONY: t
-t test:
-	@py.test --pylama pylama
-	@py.test -sx tests
+t test: $(VIRTUAL_ENV)
+	@pytest --pylama pylama
+	@pytest tests
 
 .PHONY: audit
 audit:

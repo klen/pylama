@@ -1,25 +1,27 @@
 """Commented-out code checking."""
-from eradicate import commented_out_code_line_numbers
-from pylama.lint import Linter as Abstract
 
-try:
-    converter = unicode
-except NameError:
-    converter = str
+from typing import List, Dict
+
+from eradicate import Eradicator
+from pylama.lint import Linter as Abstract
 
 
 class Linter(Abstract):
-
     """Run commented-out code checking."""
 
+    name = 'eradicate'
+
     @staticmethod
-    def run(path, code=None, params=None, **meta):
+    def run(path: str, *, code: str = None, **_) -> List[Dict[str, str]]:
         """Eradicate code checking.
 
-        :return list: List of errors.
+        TODO: Support params
         """
-        code = converter(code)
-        line_numbers = commented_out_code_line_numbers(code)
+        if not code:
+            return []
+
+        eradicator = Eradicator()
+        line_numbers = eradicator.commented_out_code_line_numbers(code)
         lines = code.split('\n')
 
         result = []
@@ -28,9 +30,7 @@ class Linter(Abstract):
             result.append(dict(
                 lnum=line_number,
                 offset=len(line) - len(line.rstrip()),
-                # https://github.com/sobolevn/flake8-eradicate#output-example
-                text=converter('E800 Found commented out code: ') + line,
-                # https://github.com/sobolevn/flake8-eradicate#error-codes
+                text=str('E800 Found commented out code: ') + line,
                 type='E800',
             ))
         return result
