@@ -1,25 +1,26 @@
 """pycodestyle support."""
-from pycodestyle import BaseReport, StyleGuide, get_parser, _parse_multi_options
+from io import StringIO
+from typing import Dict, List
+
+from pycodestyle import (BaseReport, StyleGuide, _parse_multi_options,
+                         get_parser)
 
 from pylama.lint import Linter as Abstract
 
 
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
-
-
 class Linter(Abstract):
-
     """pycodestyle runner."""
 
+    name = "pycodestyle"
+
     @staticmethod
-    def run(path, code=None, params=None, **meta):
+    def run(path, code=None, params=None, **_) -> List[Dict]:
         """Check code with pycodestyle.
 
         :return list: List of errors.
         """
+        if params is None:
+            params = {}
         parser = get_parser()
         for option in parser.option_list:
             if option.dest and option.dest in params:
@@ -37,7 +38,6 @@ class Linter(Abstract):
 
 
 class _PycodestyleReport(BaseReport):
-
     def __init__(self, *args, **kwargs):
         super(_PycodestyleReport, self).__init__(*args, **kwargs)
         self.errors = []
@@ -45,21 +45,23 @@ class _PycodestyleReport(BaseReport):
     def init_file(self, filename, lines, expected, line_offset):
         """Prepare storage for errors."""
         super(_PycodestyleReport, self).init_file(
-            filename, lines, expected, line_offset)
+            filename, lines, expected, line_offset
+        )
         self.errors = []
 
     def error(self, line_number, offset, text, check):
         """Save errors."""
-        code = super(_PycodestyleReport, self).error(
-            line_number, offset, text, check)
+        code = super(_PycodestyleReport, self).error(line_number, offset, text, check)
 
         if code:
-            self.errors.append(dict(
-                text=text,
-                type=code.replace('E', 'C'),
-                col=offset + 1,
-                lnum=line_number,
-            ))
+            self.errors.append(
+                dict(
+                    text=text,
+                    type=code.replace("E", "C"),
+                    col=offset + 1,
+                    lnum=line_number,
+                )
+            )
 
     def get_file_results(self):
         """Get errors.

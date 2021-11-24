@@ -1,64 +1,124 @@
-import sys
+from pathlib import Path
 
-from pylama.config import parse_options
-from pylama.core import run
-from pylama.lint.extensions import LINTERS
+import pytest
 
 
-def test_mccabe():
-    mccabe = LINTERS.get('mccabe')
-    errors = mccabe.run('dummy.py', '', params={})
-    assert errors == []
+@pytest.fixture(scope="session")
+def source():
+    dummy = Path(__file__).parent / "../dummy.py"
+    return dummy.read_text()
 
 
-def test_eradicate():
-    eradicate = LINTERS.get('eradicate')
-    errors = eradicate.run('', code="\n".join([
-        "#import os",
-        "# from foo import junk",
-        "#a = 3",
-        "a = 4",
-        "#foo(1, 2, 3)",
-    ]))
-    assert len(errors) == 4
+def test_mccabe(source):
+    from pylama.lint import LINTERS, Linter
 
+    mccabe = LINTERS["mccabe"]
+    assert mccabe
+    assert issubclass(mccabe, Linter)
 
-def test_pyflakes():
-    options = parse_options(linters=['pyflakes'], config=False)
-    assert options.linters
-    errors = run('dummy.py', code="\n".join([
-        "import sys",
-        "def test():",
-        "    unused = 1"
-    ]), options=options)
-    assert len(errors) == 2
-
-
-def test_pycodestyle():
-    options = parse_options(linters=['pycodestyle'], config=False)
-    assert len(options.linters) == 1
-    errors = run('dummy.py', options=options)
-    numbers = [error.number for error in errors]
-    assert len(errors) == 4
-    assert 'E265' in numbers
-    assert 'E301' in numbers
-    assert 'E501' in numbers
-
-    options.linters_params['pycodestyle'] = dict(max_line_length=60)
-    errors = run('dummy.py', options=options)
-    assert len(errors) == 13
-
-
-def test_pydocstyle():
-    options = parse_options(linters=['pydocstyle'])
-    assert len(options.linters) == 1
-    errors = run('dummy.py', options=options)
+    errors = mccabe().run("dummy.py", code=source, params={'complexity': 3})
     assert errors
 
 
-def test_mypy():
-    if sys.version_info.major >= 3 and sys.version_info.minor >= 5:
-        options = parse_options(linters=['mypy'])
-        assert len(options.linters) == 1
-        errors = run('dummy.py', options=options)
-        assert len(errors) == 1
+def test_pydocstyle(source):
+    from pylama.lint import LINTERS, Linter
+
+    pydocstyle = LINTERS["pydocstyle"]
+    assert pydocstyle
+    assert issubclass(pydocstyle, Linter)
+
+    errors = pydocstyle().run("dummy.py", code=source)
+    assert errors
+
+
+def test_pycodestyle(source):
+    from pylama.lint import LINTERS, Linter
+
+    pycodestyle = LINTERS["pycodestyle"]
+    assert pycodestyle
+    assert issubclass(pycodestyle, Linter)
+
+    errors = pycodestyle().run("dummy.py", code=source)
+    assert errors
+
+    errors2 = pycodestyle().run("dummy.py", code=source, params={"max_line_length": 60})
+    assert errors2
+    assert len(errors2) > len(errors)
+
+
+def test_pyflakes(source):
+    from pylama.lint import LINTERS, Linter
+
+    pyflakes = LINTERS["pyflakes"]
+    assert pyflakes
+    assert issubclass(pyflakes, Linter)
+
+    errors = pyflakes().run("dummy.py", code=source)
+    assert errors
+
+
+def test_eradicate(source):
+    from pylama.lint import LINTERS, Linter
+
+    eradicate = LINTERS["eradicate"]
+    assert eradicate
+    assert issubclass(eradicate, Linter)
+
+    errors = eradicate().run("dummy.py", code=source)
+    assert errors
+
+    errors = eradicate().run(
+        "",
+        code=(
+            "#import os\n"
+            "# from foo import junk\n"
+            "#a = 3\n"
+            "a = 4\n"
+            "#foo(1, 2, 3)"
+        )
+    )
+    assert len(errors) == 4
+
+
+def test_mypy(source):
+    from pylama.lint import LINTERS, Linter
+
+    mypy = LINTERS["mypy"]
+    assert mypy
+    assert issubclass(mypy, Linter)
+
+    errors = mypy().run("dummy.py", code=source)
+    assert errors
+
+
+def test_radon(source):
+    from pylama.lint import LINTERS, Linter
+
+    radon = LINTERS["radon"]
+    assert radon
+    assert issubclass(radon, Linter)
+
+    errors = radon().run("dummy.py", code=source, params={'complexity': 3})
+    assert errors
+
+
+def test_pylint(source):
+    from pylama.lint import LINTERS, Linter
+
+    pylint = LINTERS["pylint"]
+    assert pylint
+    assert issubclass(pylint, Linter)
+
+    errors = pylint().run("dummy.py", code=source)
+    assert errors
+
+
+def test_quotes(source):
+    from pylama.lint import LINTERS, Linter
+
+    quotes = LINTERS["quotes"]
+    assert quotes
+    assert issubclass(quotes, Linter)
+
+    errors = quotes().run("dummy.py", code=source)
+    assert errors

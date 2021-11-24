@@ -1,3 +1,11 @@
+2021-11-24  k.klenov
+
+	* Support python 3.7, 3.8, 3.9
+	* Drop support for python 2
+	* Support mccabe==0.6.1, pycodestyle==2.8.0, pydocstyle==6.1.1,
+		pyflakes==2.4.0, eradicate==2.0.0, radon==5.1.0, pylint==2.11.1
+	* License changed to MIT (see LICENSE file for details)
+
 2019-04-10 k.klenov
 	* Version 7.7.1
 	* Fix CI by removing eradicate from linters
@@ -72,6 +80,7 @@
 
 2017-09-13 k.klenov
 	* Version 7.4.2
+
 
 2017-09-04  horneds
 	* Version 7.4.1

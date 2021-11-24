@@ -9,29 +9,24 @@ Code audit tool for Python and JavaScript. Pylama wraps these tools:
 * pydocstyle_ (formerly pep257 by Vladimir Keleshev) © 2014, Amir Rachum;
 * PyFlakes_ © 2005-2013, Kevin Watters;
 * Mccabe_ © Ned Batchelder;
-* Pylint_ © 2013, Logilab (should be installed 'pylama_pylint' module);
+* Pylint_ © 2013, Logilab;
 * Radon_ © Michele Lacchia
-* gjslint_ © The Closure Linter Authors (should be installed 'pylama_gjslint' module);
 * eradicate_ © Steven Myint;
 * Mypy_ © Jukka Lehtosalo and contributors;
 
 .. _badges:
 
-.. image:: http://img.shields.io/travis/klen/pylama.svg?style=flat-square
-    :target: http://travis-ci.org/klen/pylama
-    :alt: Build Status
+.. image:: https://github.com/klen/pylama/workflows/tests/badge.svg
+    :target: https://github.com/klen/pylama/actions
+    :alt: Tests Status
 
-.. image:: http://img.shields.io/coveralls/klen/pylama.svg?style=flat-square
-    :target: https://coveralls.io/r/klen/pylama
-    :alt: Coverals
+.. image:: https://img.shields.io/pypi/v/pylama
+    :target: https://pypi.org/project/pylama/
+    :alt: PYPI Version
 
-.. image:: http://img.shields.io/pypi/v/pylama.svg?style=flat-square
-    :target: https://crate.io/packages/pylama
-    :alt: Version
-
-.. image:: http://img.shields.io/gratipay/klen.svg?style=flat-square
-    :target: https://www.gratipay.com/klen/
-    :alt: Donate
+.. image:: https://img.shields.io/pypi/pyversions/pylama
+    :target: https://pypi.org/project/pylama/
+    :alt: Python Versions
 
 
 .. _documentation:
@@ -48,18 +43,18 @@ Docs are available at https://pylama.readthedocs.org/. Pull requests with docume
 Requirements:
 =============
 
-- Python (2.7, 3.4, 3.5, 3.6, 3.7)
-- To use JavaScript checker (``gjslint``) you need to install ``python-gflags`` with ``pip install python-gflags``.
+- Python (3.7, 3.8, 3.9, 3.10)
 - If your tests are failing on Win platform you are missing: ``curses`` - http://www.lfd.uci.edu/~gohlke/pythonlibs/
   (The curses library supplies a terminal-independent screen-painting and keyboard-handling facility for text-based terminals)
+
+For python versions < 3.7 install pylama 7.7.1
 
 
 .. _installation:
 
 Installation:
 =============
-**Pylama** could be installed using pip: ::
-::
+**Pylama** can be installed using pip: ::
 
     $ pip install pylama
 
@@ -70,13 +65,13 @@ Quickstart
 ==========
 
 **Pylama** is easy to use and really fun for checking code quality.
-Just run `pylama` and get common output from all pylama plugins (pycodestyle_, PyFlakes_ and etc)
+Just run `pylama` and get common output from all pylama plugins (pycodestyle_, PyFlakes_, etc.)
 
-Recursive check the current directory. ::
+Recursively check the current directory. ::
 
     $ pylama
 
-Recursive check a path. ::
+Recursively check a path. ::
 
     $ pylama <path_to_directory_or_file>
 
@@ -84,15 +79,12 @@ Ignore errors ::
 
     $ pylama -i W,E501
 
-.. note:: You could choose a group erros `D`,`E1` and etc or special errors `C0312`
+.. note:: You can choose a group of errors like `D`, `E1`, etc, or special errors like `C0312`
 
 Choose code checkers ::
 
     $ pylama -l "pycodestyle,mccabe"
 
-Choose code checkers for JavaScript::
-
-    $ pylama --linters=gjslint --ignore=E:0010 <path_to_directory_or_file>
 
 .. _options:
 
@@ -155,22 +147,20 @@ File modelines
 --------------
 
 You can set options for **Pylama** inside a source file. Use
-pylama *modeline* for this.
+a pylama *modeline* for this, anywhere in the file.
 
 Format: ::
 
     # pylama:{name1}={value1}:{name2}={value2}:...
 
 
-::
+For example, ignore warnings except W301: ::
 
-     .. Somethere in code
      # pylama:ignore=W:select=W301
 
 
 Disable code checking for current file: ::
 
-     .. Somethere in code
      # pylama:skip=1
 
 Those options have a higher priority.
@@ -180,7 +170,7 @@ Those options have a higher priority.
 Skip lines (noqa)
 -----------------
 
-Just add `# noqa` in end of line to ignore.
+Just add ``# noqa`` at the end of a line to ignore:
 
 ::
 
@@ -204,11 +194,11 @@ in this order: ::
     tox.ini
     pytest.ini
 
-The "--option" / "-o" argument can be used to specify a configuration file.
+The ``--option`` / ``-o`` argument can be used to specify a configuration file.
 
 Pylama searches for sections whose names start with `pylama`.
 
-The "pylama" section configures global options like `linters` and `skip`.
+The `pylama` section configures global options like `linters` and `skip`.
 
 ::
 
@@ -218,10 +208,10 @@ The "pylama" section configures global options like `linters` and `skip`.
     linters = pylint,mccabe
     ignore = F0401,C0111,E731
 
-Set Code-checkers' options
+Set code-checkers' options
 --------------------------
 
-You could set options for special code checker with pylama configurations.
+You can set options for a special code checkers with pylama configurations.
 
 ::
 
@@ -235,15 +225,15 @@ You could set options for special code checker with pylama configurations.
     max_line_length = 100
     disable = R
 
-See code-checkers' documentation for more info. Let's notice that dashes are
-replaced by underscores (e.g. Pylint's "max-line-length" becomes
-"max_line_length").
+See code-checkers' documentation for more info. Note that dashes are
+replaced by underscores (e.g. Pylint's ``max-line-length`` becomes
+``max_line_length``).
 
 
 Set options for file (group of files)
 -------------------------------------
 
-You could set options for special file (group of files)
+You can set options for special file (group of files)
 with sections:
 
 The options have a higher priority than in the `pylama` section.
@@ -265,13 +255,13 @@ Pytest integration
 ==================
 
 Pylama has Pytest_ support. The package automatically registers itself as a pytest
-plugin during installation. Pylama also supports `pytest_cache` plugin.
+plugin during installation. Pylama also supports the `pytest_cache` plugin.
 
 Check files with pylama ::
 
     pytest --pylama ...
 
-Recommended way to set pylama options when using pytest — configuration
+The recommended way to set pylama options when using pytest — configuration
 files (see below).
 
 
@@ -279,7 +269,7 @@ Writing a linter
 ================
 
 You can write a custom extension for Pylama.
-Custom linter should be a python module. Name should be like 'pylama_<name>'.
+The custom linter should be a python module. Its name should be like 'pylama_<name>'.
 
 In 'setup.py', 'pylama.linter' entry point should be defined. ::
 
@@ -291,11 +281,11 @@ In 'setup.py', 'pylama.linter' entry point should be defined. ::
         # ...
     )
 
-'Linter' should be instance of 'pylama.lint.Linter' class.
-Must implement two methods:
+'Linter' should be an instance of 'pylama.lint.Linter' class.
+It must implement two methods:
 
-'allow' takes a path and returns true if linter can check this file for errors.
-'run' takes a path and meta keywords params and returns a list of errors.
+1. ``allow`` takes a `path` argument and returns true if the linter can check this file for errors.
+2. ``run`` takes a `path` argument and `meta` keyword arguments and returns a list of errors.
 
 Example:
 --------
@@ -328,7 +318,7 @@ pylama_wow.py: ::
                     return [{
                         lnum: 0,
                         col: 0,
-                        text: 'Wow has been finded.',
+                        text: '"wow" has been found.',
                         type: 'WOW'
                     }]
 
@@ -387,12 +377,19 @@ See AUTHORS_.
 License
 -------
 
-Licensed under a `BSD license`_.
+This is free software. You are permitted to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of it, under the terms of the MIT
+License. See LICENSE_ file for the complete license.
+
+This software is provided WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+LICENSE_ file for the complete disclaimer.
 
 
 .. _links:
 
 .. _AUTHORS: https://github.com/klen/pylama/blob/develop/AUTHORS
+.. _LICENSE: https://github.com/klen/pylama/blob/develop/LICENSE
 .. _BSD license: http://www.linfo.org/bsdlicense.html
 .. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
 .. _pydocstyle: https://github.com/PyCQA/pydocstyle/
@@ -400,7 +397,6 @@ Licensed under a `BSD license`_.
 .. _PyFlakes: https://github.com/pyflakes/pyflakes
 .. _Pylint: http://pylint.org
 .. _Pytest: http://pytest.org
-.. _gjslint: https://developers.google.com/closure/utilities
 .. _klen: http://klen.github.io/
 .. _eradicate: https://github.com/myint/eradicate
 .. _Mypy: https://github.com/python/mypy

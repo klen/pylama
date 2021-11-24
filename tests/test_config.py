@@ -1,8 +1,6 @@
-from pylama.config import parse_options, get_config
-from pylama.core import run, prepare_params
-
-
 def test_config():
+    from pylama.config import parse_options, get_config
+
     config = get_config()
     assert config
 
@@ -24,11 +22,15 @@ def test_config():
 
 
 def test_ignore_select():
+    from pylama.config import parse_options
+    from pylama.core import run
+
     options = parse_options()
     options.ignore = ['E301', 'D102']
     options.linters = ['pycodestyle', 'pydocstyle', 'pyflakes', 'mccabe']
     errors = run('dummy.py', options=options)
-    assert len(errors) == 32
+    for err in errors:
+        assert err.number not in options.ignore
 
     numbers = [error.number for error in errors]
     assert 'D100' in numbers
@@ -46,6 +48,9 @@ def test_ignore_select():
 
 
 def test_prepare_params():
+    from pylama.config import parse_options
+    from pylama.core import prepare_params
+
     p1 = dict(ignore='W', select='R01', skip='0')
     p2 = dict(ignore='E34,R45', select='E')
     options = parse_options(ignore=['D'], config=False)

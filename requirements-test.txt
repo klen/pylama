@@ -1,7 +1,0 @@
--e .
-
-ipdb
-pytest
-eradicate   >= 1.0
-radon       >= 1.4.2
-mypy        ; python_version >= '3.5'

@@ -1,0 +1,58 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: tests
+
+on:
+  pull_request:
+    branches: [master, develop]
+
+  push:
+    branches: [master, develop]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.7', '3.8', '3.9', '3.10']
+
+    steps:
+    - name: Checkout changes
+      uses: actions/checkout@main
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@main
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache env
+      id: cache-env
+      uses: actions/cache@main
+      with:
+        path: env
+        key: env-${{ matrix.python-version }}-${{ hashFiles('requirements/requirements.txt', 'requirements/requirements-tests.txt') }}
+
+    - name: Initialize virtual env
+      run: python -m venv env
+      if: steps.cache-env.outputs.cache-hit != 'true'
+
+    - name: Setup dependencies
+      run: env/bin/pip install .[tests]
+
+    - name: Test with pytest
+      run: env/bin/pytest tests
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+
+    - name: Notify Success
+      uses: archive/github-actions-slack@master
+      with:
+          slack-channel: C2CRL4C4V
+          slack-text: Tests are passed *[${{ github.repository }}] (${{ github.ref }})* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_TOKEN }}
+          slack-optional-as_user: false
+          slack-optional-icon_emoji: ":white_check_mark:"

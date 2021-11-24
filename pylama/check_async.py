@@ -1,13 +1,8 @@
 """Support for checking code asynchronously."""
 
 import logging
+import queue as Queue
 import threading
-
-try:
-    import Queue
-except ImportError:
-    import queue as Queue
-
 
 try:
     import multiprocessing
@@ -19,21 +14,20 @@ except (ImportError, NotImplementedError):
 
 from .core import run
 
-
-LOGGER = logging.getLogger('pylama')
+LOGGER = logging.getLogger("pylama")
 
 
 class Worker(threading.Thread):
     """Get tasks from queue and run."""
 
     def __init__(self, path_queue, result_queue):
-        """ Init worker. """
+        """Init worker."""
         threading.Thread.__init__(self)
         self.path_queue = path_queue
         self.result_queue = result_queue
 
     def run(self):
-        """ Run tasks from queue. """
+        """Run tasks from queue."""
         while True:
             path, params = self.path_queue.get()
             errors = run(path, **params)
@@ -47,14 +41,14 @@ def check_async(paths, options, rootdir=None):
     :return list: list of errors
 
     """
-    LOGGER.info('Async code checking is enabled.')
+    LOGGER.info("Async code checking is enabled.")
     path_queue = Queue.Queue()
     result_queue = Queue.Queue()
 
     for num in range(CPU_COUNT):
         worker = Worker(path_queue, result_queue)
         worker.setDaemon(True)
-        LOGGER.info('Start worker #%s', (num + 1))
+        LOGGER.info("Start worker #%s", (num + 1))
         worker.start()
 
     for path in paths:
