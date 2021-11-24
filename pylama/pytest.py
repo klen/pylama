@@ -105,4 +105,4 @@ def check_file(path):
     return process_paths(options, candidates=[path], error=False)
 
 
-# pylama:ignore=D,E1002,W0212,F0001
+# pylama:ignore=D,E1002,W0212,F0001,C0115,C0116
