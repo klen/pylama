@@ -3,6 +3,7 @@
 from typing import Dict, List
 
 from pydocstyle import ConventionChecker as PyDocChecker
+from pydocstyle.violations import conventions
 
 from pylama.lint import Linter as Abstract
 
@@ -18,6 +19,8 @@ class Linter(Abstract):
         if params is None:
             params = {}
 
+        convention_codes = conventions.get(params.get('convention'))
+
         return [
             {
                 "lnum": e.line,
@@ -29,9 +32,8 @@ class Linter(Abstract):
                 "number": e.code,
             }
             for e in PyDocChecker().check_source(
-                code,
-                path,
+                code, path,
                 params.get("ignore_decorators"),
                 params.get("ignore_inline_noqa", False),
-            )
+            ) if convention_codes is None or e.code in convention_codes
         ]

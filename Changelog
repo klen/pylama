@@ -4,6 +4,7 @@
 	* Drop support for python 2
 	* Support mccabe==0.6.1, pycodestyle==2.8.0, pydocstyle==6.1.1,
 		pyflakes==2.4.0, eradicate==2.0.0, radon==5.1.0, pylint==2.11.1
+	* Support 'convention' for pydocstyle
 	* License changed to MIT (see LICENSE file for details)
 
 2019-04-10 k.klenov
@@ -19,10 +20,10 @@
 
 2018-11-02 k.klenov
 	* Version 7.6.6
-	* Avoid reference usage for linter specific ignore/select 
+	* Avoid reference usage for linter specific ignore/select
 	* Update Python requirements description
-	* Update the command help message description 
-	* Add eradicate to tools references 
+	* Update the command help message description
+	* Add eradicate to tools references
 
 2018-10-10 k.klenov
 	* Version 7.6.5

@@ -30,6 +30,10 @@ def test_pydocstyle(source):
     errors = pydocstyle().run("dummy.py", code=source)
     assert errors
 
+    errors2 = pydocstyle().run("dummy.py", code=source, params={'convention': 'numpy'})
+    assert errors2
+    assert len(errors) > len(errors2)
+
 
 def test_pycodestyle(source):
     from pylama.lint import LINTERS, Linter
