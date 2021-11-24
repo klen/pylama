@@ -15,10 +15,10 @@ from .main import LOGGER, process_paths
 
 def run(command: str) -> Tuple[int, List[bytes], List[bytes]]:
     """Run a shell command."""
-    with Popen(command.split(), stdout=PIPE, stderr=PIPE) as p:
-        (stdout, stderr) = p.communicate()
+    with Popen(command.split(), stdout=PIPE, stderr=PIPE) as pipe:
+        (stdout, stderr) = pipe.communicate()
         return (
-            p.returncode,
+            pipe.returncode,
             [line.strip() for line in stdout.splitlines()],
             [line.strip() for line in stderr.splitlines()],
         )
@@ -35,7 +35,7 @@ def git_hook(error=True):
         process_paths(options, candidates=candidates, error=error)
 
 
-def hg_hook(ui, repo, node=None, **kwargs):
+def hg_hook(_, repo, node=None, **kwargs):  # noqa
     """Run pylama after mercurial commit."""
     seen = set()
     paths = []
@@ -57,8 +57,8 @@ def hg_hook(ui, repo, node=None, **kwargs):
 def install_git(path):
     """Install hook in Git repository."""
     hook = op.join(path, "pre-commit")
-    with open(hook, "w", encoding='utf-8') as fd:
-        fd.write(
+    with open(hook, "w", encoding='utf-8') as target:
+        target.write(
             """#!/usr/bin/env python
 import sys
 from pylama.hook import git_hook
@@ -76,33 +76,33 @@ def install_hg(path):
     if not op.isfile(hook):
         open(hook, "w+", encoding='utf-8').close()
 
-    c = ConfigParser()
+    cfgp = ConfigParser()
     with open(hook, "r", encoding='utf-8') as source:
-        c.read_file(source)
+        cfgp.read_file(source)
 
-    if not c.has_section("hooks"):
-        c.add_section("hooks")
+    if not cfgp.has_section("hooks"):
+        cfgp.add_section("hooks")
 
-    if not c.has_option("hooks", "commit"):
-        c.set("hooks", "commit", "python:pylama.hooks.hg_hook")
+    if not cfgp.has_option("hooks", "commit"):
+        cfgp.set("hooks", "commit", "python:pylama.hooks.hg_hook")
 
-    if not c.has_option("hooks", "qrefresh"):
-        c.set("hooks", "qrefresh", "python:pylama.hooks.hg_hook")
+    if not cfgp.has_option("hooks", "qrefresh"):
+        cfgp.set("hooks", "qrefresh", "python:pylama.hooks.hg_hook")
 
     with open(hook, "w+", encoding='utf-8') as target:
-        c.write(target)
+        cfgp.write(target)
 
 
 def install_hook(path):
     """Auto definition of SCM and hook installation."""
-    git = op.join(path, ".git", "hooks")
-    hg = op.join(path, ".hg")
-    if op.exists(git):
-        install_git(git)
+    is_git = op.join(path, ".git", "hooks")
+    is_hg = op.join(path, ".hg")
+    if op.exists(is_git):
+        install_git(is_git)
         LOGGER.warning("Git hook has been installed.")
 
-    elif op.exists(hg):
-        install_hg(hg)
+    elif op.exists(is_hg):
+        install_hg(is_hg)
         LOGGER.warning("Mercurial hook has been installed.")
 
     else:
