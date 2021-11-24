@@ -41,12 +41,11 @@ class Linter(Abstract):
             builtins = builtins.split(",")
 
         tree = compile(code, path, "exec", ast.PyCF_ONLY_AST)
-        w = checker.Checker(tree, path, builtins=builtins)
-        w.messages = sorted(w.messages, key=lambda m: m.lineno)
+        check = checker.Checker(tree, path, builtins=builtins)
         return [{
-            'lnum': m.lineno,
-            'text': m.message % m.message_args,
-            'type': m.message[0]
-        } for m in w.messages]
+            'lnum': msg.lineno,
+            'text': msg.message % msg.message_args,
+            'type': msg.message[0]
+        } for msg in check.messages]
 
 #  pylama:ignore=E501,C0301
