@@ -31,9 +31,9 @@ class Linter(Abstract):
             if key in params and isinstance(params[key], str):
                 params[key] = _parse_multi_options(params[key])
 
-        P8Style = StyleGuide(reporter=_PycodestyleReport, **params)
+        checker = StyleGuide(reporter=_PycodestyleReport, **params)
         buf = StringIO(code)
-        return P8Style.input_file(path, lines=buf.readlines())
+        return checker.input_file(path, lines=buf.readlines())
 
 
 class _PycodestyleReport(BaseReport):
