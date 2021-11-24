@@ -28,6 +28,8 @@ class Linter(BaseLinter):
             params = {}
 
         class Reporter(BaseReporter):
+            """Handle messages."""
+
             def __init__(self):
                 self.errors = []
                 super().__init__()
