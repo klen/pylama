@@ -59,6 +59,18 @@ Installation:
 
     $ pip install pylama
 
+You may optionally install the requirements with the library: ::
+
+    $ pip install pylama[mypy]
+    $ pip install pylama[pylint]
+    $ pip install pylama[eradicate]
+    $ pip install pylama[radon]
+    $ pip install pylama[vulture]
+
+Or install them all: ::
+
+    $ pip install pylama[all]
+
 
 .. _quickstart:
 

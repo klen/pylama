@@ -2,7 +2,7 @@
 
 from typing import Dict, List, Any
 
-import unknown_module
+import unknown_module  # noqa
 
 from pylama.lint import Linter as Abstract
 
