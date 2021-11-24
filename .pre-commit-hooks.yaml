@@ -1,0 +1,11 @@
+---
+# For use with pre-commit.
+# See usage instructions at https://pre-commit.com
+- id: pylama
+  name: pylama
+  description: This hook runs pylama.
+  entry: pylama
+  language: python
+  types: [file, python]
+  args: []
+  additional_dependencies: []
