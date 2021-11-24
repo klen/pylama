@@ -13,18 +13,15 @@ from .config import parse_options, setup_logger
 from .main import LOGGER, process_paths
 
 
-def run(command) -> Tuple[int, List[bytes], List[bytes]]:
-    """Run a shell command.
-
-    :return str: Stdout
-    """
-    p = Popen(command.split(), stdout=PIPE, stderr=PIPE)
-    (stdout, stderr) = p.communicate()
-    return (
-        p.returncode,
-        [line.strip() for line in stdout.splitlines()],
-        [line.strip() for line in stderr.splitlines()],
-    )
+def run(command: str) -> Tuple[int, List[bytes], List[bytes]]:
+    """Run a shell command."""
+    with Popen(command.split(), stdout=PIPE, stderr=PIPE) as p:
+        (stdout, stderr) = p.communicate()
+        return (
+            p.returncode,
+            [line.strip() for line in stdout.splitlines()],
+            [line.strip() for line in stderr.splitlines()],
+        )
 
 
 def git_hook(error=True):
@@ -60,7 +57,7 @@ def hg_hook(ui, repo, node=None, **kwargs):
 def install_git(path):
     """Install hook in Git repository."""
     hook = op.join(path, "pre-commit")
-    with open(hook, "w") as fd:
+    with open(hook, "w", encoding='utf-8') as fd:
         fd.write(
             """#!/usr/bin/env python
 import sys
@@ -77,10 +74,12 @@ def install_hg(path):
     """Install hook in Mercurial repository."""
     hook = op.join(path, "hgrc")
     if not op.isfile(hook):
-        open(hook, "w+").close()
+        open(hook, "w+", encoding='utf-8').close()
 
     c = ConfigParser()
-    c.readfp(open(hook, "r"))
+    with open(hook, "r", encoding='utf-8') as source:
+        c.read_file(source)
+
     if not c.has_section("hooks"):
         c.add_section("hooks")
 
@@ -90,7 +89,8 @@ def install_hg(path):
     if not c.has_option("hooks", "qrefresh"):
         c.set("hooks", "qrefresh", "python:pylama.hooks.hg_hook")
 
-    c.write(open(hook, "w+"))
+    with open(hook, "w+", encoding='utf-8') as target:
+        c.write(target)
 
 
 def install_hook(path):
@@ -99,11 +99,11 @@ def install_hook(path):
     hg = op.join(path, ".hg")
     if op.exists(git):
         install_git(git)
-        LOGGER.warn("Git hook has been installed.")
+        LOGGER.warning("Git hook has been installed.")
 
     elif op.exists(hg):
         install_hg(hg)
-        LOGGER.warn("Mercurial hook has been installed.")
+        LOGGER.warning("Mercurial hook has been installed.")
 
     else:
         LOGGER.error("VCS has not found. Check your path.")

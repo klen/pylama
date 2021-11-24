@@ -4,7 +4,6 @@ from os import environ
 from pathlib import Path
 from typing import Dict
 
-from astroid import MANAGER
 from pylint.lint import Run
 from pylint.reporters import BaseReporter
 
@@ -28,10 +27,6 @@ class Linter(BaseLinter):
 
         if params is None:
             params = {}
-
-        clear_cache = params.pop("clear_cache", False)
-        if clear_cache:
-            MANAGER.astroid_cache.clear()
 
         class Reporter(BaseReporter):
             def __init__(self):
@@ -63,22 +58,22 @@ class _Params:
     """Store pylint params."""
 
     def __init__(self, params: Dict,  select=None, ignore=None):
+        attrs = {
+            name.replace("_", "-"): self.prepare_value(value)
+            for name, value in params.items() if value is not None
+        }
         if HOME_RCFILE.exists():
-            params["rcfile"] = HOME_RCFILE.as_posix()
+            attrs["rcfile"] = HOME_RCFILE.as_posix()
 
         if select:
-            enable = params.get("enable", None)
-            params["enable"] = select | set(enable.split(",") if enable else [])
+            enable = attrs.get("enable", None)
+            attrs["enable"] = select | set(enable.split(",") if enable else [])
 
         if ignore:
-            disable = params.get("disable", None)
-            params["disable"] = ignore | set(disable.split(",") if disable else [])
+            disable = attrs.get("disable", None)
+            attrs["disable"] = ignore | set(disable.split(",") if disable else [])
 
-        self.params = dict(
-            (name.replace("_", "-"), self.prepare_value(value))
-            for name, value in params.items()
-            if value is not None
-        )
+        self.attrs = attrs
 
     @staticmethod
     def prepare_value(value):
@@ -93,7 +88,7 @@ class _Params:
 
     def to_attrs(self):
         """Convert to argument list."""
-        return ["--%s=%s" % item for item in self.params.items()]  # noqa
+        return [f"--{key}={value}" for key, value in self.attrs.items()]  # noqa
 
     def __str__(self):
         return " ".join(self.to_attrs())

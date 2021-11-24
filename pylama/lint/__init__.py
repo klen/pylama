@@ -35,8 +35,11 @@ class Linter(metaclass=ABCMeta):
 
 
 # Import default linters
-for _, name, _ in walk_packages([str(Path(__file__).parent)]):
-    import_module(f"{__name__}.{name}")
+for _, name, _ in walk_packages([str(Path(__file__).parent)]):  # type: ignore
+    try:
+        import_module(f"{__name__}.{name}")
+    except ImportError:
+        pass
 
 # Import installed linters
 for entry in iter_entry_points("pylama.linter"):

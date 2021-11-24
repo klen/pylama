@@ -4,11 +4,12 @@ import logging
 import os
 import re
 import sys
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
+from typing import Any, Collection, List, Optional, Set, Tuple, Type, Union
 
 from . import __version__
-from .libs.inirama import Namespace
-from .lint import LINTERS
+from .libs import inirama
+from .lint import LINTERS, Linter
 
 #: A default checkers
 DEFAULT_LINTERS = "pycodestyle", "pyflakes", "mccabe"
@@ -42,22 +43,15 @@ class _Default:
         return f"<_Default [{self.value}]>"
 
 
-def split_csp_str(val):
-    """Split comma separated string into unique values, keeping their order.
-
-    :returns: list of splitted values
-    """
-    seen = set()
-    values = val if isinstance(val, (list, tuple)) else val.strip().split(",")
-    return [x for x in values if x and not (x in seen or seen.add(x))]
+def split_csp_str(val: Union[Collection[str], str]) -> Set[str]:
+    """Split comma separated string into unique values, keeping their order."""
+    if isinstance(val, str):
+        val = val.strip().split(",")
+    return set(x for x in val if x)
 
 
-def parse_linters(linters):
-    """Initialize choosen linters.
-
-    :returns: list of inited linters
-
-    """
+def parse_linters(linters: str) -> List[Tuple[str, Type[Linter]]]:
+    """Initialize choosen linters."""
     result = []
     for name in split_csp_str(linters):
         linter = LINTERS.get(name)
@@ -68,7 +62,7 @@ def parse_linters(linters):
     return result
 
 
-def get_default_config_file(rootdir=None):
+def get_default_config_file(rootdir: str = None) -> Optional[str]:
     """Search for configuration file."""
     if rootdir is None:
         return DEFAULT_CONFIG_FILE
@@ -187,18 +181,16 @@ PARSER.add_argument(
 ACTIONS = dict((a.dest, a) for a in PARSER._actions)  # pylint: disable=protected-access
 
 
-def parse_options(args=None, config=True, rootdir=CURDIR, **overrides):  # noqa
-    """Parse options from command line and configuration files.
-
-    :return argparse.Namespace:
-
-    """
+def parse_options(  # noqa
+    args: List[str] = None, config: bool = True, rootdir: str = CURDIR, **overrides
+) -> Namespace:
+    """Parse options from command line and configuration files."""
     args = args or []
 
     # Parse args from command string
     options = PARSER.parse_args(args)
-    options.file_params = dict()
-    options.linters_params = dict()
+    options.file_params = {}
+    options.linters_params = {}
 
     # Compile options from ini
     if config:
@@ -230,7 +222,8 @@ def parse_options(args=None, config=True, rootdir=CURDIR, **overrides):  # noqa
             options.file_params[mask] = dict(opts)
 
     # Override options
-    _override_options(options, **overrides)
+    for opt, val in overrides.items():
+        setattr(options, opt, process_value(opt, val))
 
     # Postprocess options
     for name in options.__dict__:
@@ -245,19 +238,7 @@ def parse_options(args=None, config=True, rootdir=CURDIR, **overrides):  # noqa
     return options
 
 
-def _override_options(options, **overrides):
-    """Override options."""
-    for opt, val in overrides.items():
-        passed_value = getattr(options, opt, _Default())
-        if opt in ("ignore", "select") and passed_value:
-            value = process_value(opt, passed_value.value)
-            value += process_value(opt, val)
-            setattr(options, opt, value)
-        elif isinstance(passed_value, _Default):
-            setattr(options, opt, process_value(opt, val))
-
-
-def process_value(name, value):
+def process_value(name: str, value: Any) -> Any:
     """Compile option value."""
     action = ACTIONS.get(name)
     if not action:
@@ -272,9 +253,9 @@ def process_value(name, value):
     return value
 
 
-def get_config(ini_path=None, rootdir=None) -> Namespace:
+def get_config(ini_path: str = None, rootdir: str = None) -> inirama.Namespace:
     """Load configuration from INI."""
-    config = Namespace()
+    config = inirama.Namespace()
     config.default_section = "pylama"
 
     if not ini_path:
@@ -287,7 +268,7 @@ def get_config(ini_path=None, rootdir=None) -> Namespace:
     return config
 
 
-def setup_logger(options):
+def setup_logger(options: Namespace):
     """Do the logger setup with options."""
     LOGGER.setLevel(logging.INFO if options.verbose else logging.WARN)
     if options.report:
@@ -298,7 +279,7 @@ def setup_logger(options):
         LOGGER.info("Try to read configuration from: %r", options.options)
 
 
-def fix_pathname_sep(val):
+def fix_pathname_sep(val: str) -> str:
     """Fix pathnames for Win."""
     return val.replace(os.altsep or "\\", os.sep)
 

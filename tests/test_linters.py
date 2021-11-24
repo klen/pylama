@@ -1,4 +1,6 @@
 from pathlib import Path
+import sys
+import builtins
 
 import pytest
 
@@ -7,6 +9,12 @@ import pytest
 def source():
     dummy = Path(__file__).parent / "../dummy.py"
     return dummy.read_text()
+
+
+def test_skip_optional_if_not_installed():
+    from pylama.lint import LINTERS
+
+    assert 'fake' not in LINTERS
 
 
 def test_mccabe(source):
@@ -115,6 +123,12 @@ def test_pylint(source):
 
     errors = pylint().run("dummy.py", code=source)
     assert errors
+
+    # Test immutable params
+    params = {}
+    errors = pylint().run("dummy.py", code=source, params=params)
+    assert errors
+    assert params == {}
 
 
 def test_quotes(source):

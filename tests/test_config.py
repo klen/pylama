@@ -13,12 +13,19 @@ def test_config():
     options = parse_options(['-l', 'pydocstyle,pycodestyle', '-i', 'E'])
     linters, _ = zip(*options.linters)
     assert set(linters) == set(['pydocstyle', 'pycodestyle'])
-    assert options.ignore == ['E']
+    assert options.ignore == {'E'}
 
     options = parse_options('-o dummy dummy.py'.split())
     linters, _ = zip(*options.linters)
     assert set(linters) == set(['pycodestyle', 'mccabe', 'pyflakes'])
     assert options.skip == []
+
+
+def test_parse_options():
+    from pylama.config import parse_options
+
+    options = parse_options()
+    assert not options.select
 
 
 def test_ignore_select():
@@ -44,17 +51,17 @@ def test_ignore_select():
     options.select = ['E301']
     errors = run('dummy.py', options=options)
     assert len(errors) == 1
-    assert errors[0]['col']
+    assert errors[0].col
 
 
-def test_prepare_params():
+def test_build_params():
     from pylama.config import parse_options
-    from pylama.core import prepare_params
+    from pylama.core import build_params
 
     p1 = dict(ignore='W', select='R01', skip='0')
     p2 = dict(ignore='E34,R45', select='E')
     options = parse_options(ignore=['D'], config=False)
-    params = prepare_params(p1, p2, options)
+    params = build_params(options, p1, p2)
     assert params == {
         'ignore': set(['R45', 'E34', 'W', 'D']),
         'select': set(['R01', 'E']),
@@ -65,8 +72,8 @@ def test_merge_params():
     from pylama.core import merge_params
 
     params = {'ignore': {1, 2, 3}}
-    lparams = {'ignore': {4, 5}}
+    lparams = {'ignore': '4,5'}
 
     ignore, _ = merge_params(params, lparams)
-    assert ignore == {1, 2, 3, 4, 5}
+    assert ignore == {1, 2, 3, '4', '5'}
     assert params['ignore'] == {1, 2, 3}

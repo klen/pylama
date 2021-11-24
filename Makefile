@@ -70,6 +70,9 @@ t test: $(VIRTUAL_ENV)
 	@pytest --pylama pylama
 	@pytest tests
 
+mypy: $(VIRTUAL_ENV)
+	mypy pylama
+
 .PHONY: audit
 audit:
 	@python -m "pylama.main"
