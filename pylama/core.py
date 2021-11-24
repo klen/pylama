@@ -73,18 +73,18 @@ def run(path: str, rootdir: str = CURDIR, options: Namespace = None) -> List[Err
                         select=select,
                     )
 
-    except IOError as e:
-        LOGGER.error("IOError %s", e)
-        errors.append(Error(text=str(e), filename=path, linter=lname))
+    except IOError as exc:
+        LOGGER.error("IOError %s", exc)
+        errors.append(Error(text=str(exc), filename=path, linter=lname))
 
-    except SyntaxError as e:
-        LOGGER.error("SyntaxError %s", e)
+    except SyntaxError as exc:
+        LOGGER.error("SyntaxError %s", exc)
         errors.append(
             Error(
                 linter="pylama",
-                lnum=e.lineno,
-                col=e.offset,
-                text=f"E0100 SyntaxError: {e.args[0]}",
+                lnum=exc.lineno,
+                col=exc.offset,
+                text=f"E0100 SyntaxError: {exc.args[0]}",
                 filename=path,
             )
         )
@@ -143,17 +143,17 @@ def filter_errors(
     select = select or []
     ignore = ignore or []
 
-    for e in errors:
-        for s in select:
-            if e.number.startswith(s):
-                yield e
+    for err in errors:
+        for rule in select:
+            if err.number.startswith(rule):
+                yield err
                 break
         else:
-            for s in ignore:
-                if e.number.startswith(s):
+            for rule in ignore:
+                if err.number.startswith(rule):
                     break
             else:
-                yield e
+                yield err
 
 
 def filter_skiplines(code: str, errors: List[Error]) -> List[Error]:

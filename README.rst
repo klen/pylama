@@ -1,20 +1,6 @@
 |logo| Pylama
 #############
 
-.. _description:
-
-Code audit tool for Python and JavaScript. Pylama wraps these tools:
-
-* pycodestyle_ (formerly pep8) © 2012-2013, Florent Xicluna;
-* pydocstyle_ (formerly pep257 by Vladimir Keleshev) © 2014, Amir Rachum;
-* PyFlakes_ © 2005-2013, Kevin Watters;
-* Mccabe_ © Ned Batchelder;
-* Pylint_ © 2013, Logilab;
-* Radon_ © Michele Lacchia
-* eradicate_ © Steven Myint;
-* Mypy_ © Jukka Lehtosalo and contributors;
-* Vulture_ © Jendrik Seipp and contributors;
-
 .. _badges:
 
 .. image:: https://github.com/klen/pylama/workflows/tests/badge.svg
@@ -28,6 +14,20 @@ Code audit tool for Python and JavaScript. Pylama wraps these tools:
 .. image:: https://img.shields.io/pypi/pyversions/pylama
     :target: https://pypi.org/project/pylama/
     :alt: Python Versions
+
+.. _description:
+
+Code audit tool for Python and JavaScript. Pylama wraps these tools:
+
+* pycodestyle_ (formerly pep8) © 2012-2013, Florent Xicluna;
+* pydocstyle_ (formerly pep257 by Vladimir Keleshev) © 2014, Amir Rachum;
+* PyFlakes_ © 2005-2013, Kevin Watters;
+* Mccabe_ © Ned Batchelder;
+* Pylint_ © 2013, Logilab;
+* Radon_ © Michele Lacchia
+* eradicate_ © Steven Myint;
+* Mypy_ © Jukka Lehtosalo and contributors;
+* Vulture_ © Jendrik Seipp and contributors;
 
 
 .. _documentation:
