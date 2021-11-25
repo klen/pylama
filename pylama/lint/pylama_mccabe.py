@@ -1,26 +1,36 @@
 """Code complexity checking."""
+import ast
+from typing import Dict, List, Any
+
 from mccabe import McCabeChecker
 
 from pylama.lint import Linter as Abstract
-import ast
 
 
 class Linter(Abstract):
-
     """Run complexity checking."""
 
-    @staticmethod
-    def run(path, code=None, params=None, **meta):
-        """MCCabe code checking.
+    name = "mccabe"
 
-        :return list: List of errors.
-        """
+    def run(self, path: str, *, code: str = None, params=None, **_) -> List[Dict[str, Any]]:  # noqa
+        """Run Mccabe code checker."""
+        if not code:
+            return []
+
+        if params is None:
+            params = {}
+
         tree = compile(code, path, "exec", ast.PyCF_ONLY_AST)
-
-        McCabeChecker.max_complexity = int(params.get('complexity', 10))
+        McCabeChecker.max_complexity = int(params.get("complexity", 10))
         return [
-            {'lnum': lineno, 'offset': offset, 'text': text, 'type': McCabeChecker._code}
+            {
+                "lnum": lineno,
+                "offset": offset,
+                "text": text,
+                "type": McCabeChecker._code,
+            }
             for lineno, offset, text, _ in McCabeChecker(tree, path).run()
         ]
+
 
 #  pylama:ignore=W0212

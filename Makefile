@@ -2,6 +2,7 @@ MODULE=pylama
 SPHINXBUILD=sphinx-build
 ALLSPHINXOPTS= -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 BUILDDIR=_build
+VIRTUAL_ENV 	?= env
 
 LIBSDIR=$(CURDIR)/libs
 
@@ -9,6 +10,11 @@ LIBSDIR=$(CURDIR)/libs
 # target: help - Display callable targets
 help:
 	@egrep "^# target:" [Mm]akefile
+
+$(VIRTUAL_ENV): setup.cfg requirements/requirements.txt requirements/requirements-tests.txt
+	@[ -d $(VIRTUAL_ENV) ] || python -m venv $(VIRTUAL_ENV)
+	@$(VIRTUAL_ENV)/bin/pip install -e .[tests]
+	@touch $(VIRTUAL_ENV)
 
 .PHONY: clean
 # target: clean - Clean repo
@@ -25,7 +31,7 @@ clean:
 .PHONY: release
 VERSION?=minor
 # target: release - Bump version
-release:
+release minor:
 	@pip install bumpversion
 	@bumpversion $(VERSION)
 	@git checkout master
@@ -34,8 +40,9 @@ release:
 	@git push --all
 	@git push --tags
 
-.PHONY: minor
-minor: release
+.PHONY: major
+major:
+	make release VERSION=major
 
 .PHONY: patch
 patch:
@@ -44,11 +51,6 @@ patch:
 # ===============
 #  Build package
 # ===============
-
-.PHONY: register
-# target: register - Register module on PyPi
-register:
-	python setup.py register
 
 .PHONY: upload
 # target: upload - Upload module on PyPi
@@ -65,9 +67,12 @@ upload: clean
 # =============
 
 .PHONY: t
-t test:
-	@py.test --pylama pylama
-	@py.test -sx tests
+t test: $(VIRTUAL_ENV)
+	@pytest --pylama pylama
+	@pytest tests
+
+mypy: $(VIRTUAL_ENV)
+	mypy pylama
 
 .PHONY: audit
 audit:

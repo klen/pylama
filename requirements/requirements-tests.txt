@@ -1,0 +1,10 @@
+pytest
+pytest-mypy
+eradicate   >= 2.0.0
+radon       >= 5.1.0
+mypy
+pylint      >= 2.11.1
+pylama-quotes
+vulture
+
+types-setuptools

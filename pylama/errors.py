@@ -1,76 +1,66 @@
 """ Don't duplicate same errors from different linters. """
+from __future__ import annotations
+
 import re
 from collections import defaultdict
+from typing import DefaultDict, Generator, List, Set
 
 
 PATTERN_NUMBER = re.compile(r'^[A-Z]\d+$')
 
-
-DUPLICATES = (
+DUPLICATES = {key: values for values in (
 
     # multiple statements on one line
-    [('pycodestyle', 'E701'), ('pylint', 'C0321')],
-    [('pep8', 'E701'), ('pylint', 'C0321')],
+    {('pycodestyle', 'E701'), ('pylint', 'C0321')},
 
     # unused variable
-    [('pylint', 'W0612'), ('pyflakes', 'W0612')],
+    {('pylint', 'W0612'), ('pyflakes', 'W0612')},
 
     # undefined variable
-    [('pylint', 'E0602'), ('pyflakes', 'E0602')],
+    {('pylint', 'E0602'), ('pyflakes', 'E0602')},
 
     # unused import
-    [('pylint', 'W0611'), ('pyflakes', 'W0611')],
+    {('pylint', 'W0611'), ('pyflakes', 'W0611')},
 
     # whitespace before ')'
-    [('pylint', 'C0326'), ('pycodestyle', 'E202')],
-    [('pylint', 'C0326'), ('pep8', 'E202')],
+    {('pylint', 'C0326'), ('pycodestyle', 'E202')},
 
     # whitespace before '('
-    [('pylint', 'C0326'), ('pycodestyle', 'E211')],
-    [('pylint', 'C0326'), ('pep8', 'E211')],
+    {('pylint', 'C0326'), ('pycodestyle', 'E211')},
 
     # multiple spaces after operator
-    [('pylint', 'C0326'), ('pycodestyle', 'E222')],
-    [('pylint', 'C0326'), ('pep8', 'E222')],
+    {('pylint', 'C0326'), ('pycodestyle', 'E222')},
 
     # missing whitespace around operator
-    [('pylint', 'C0326'), ('pycodestyle', 'E225')],
-    [('pylint', 'C0326'), ('pep8', 'E225')],
+    {('pylint', 'C0326'), ('pycodestyle', 'E225')},
 
     # unexpected spaces
-    [('pylint', 'C0326'), ('pycodestyle', 'E251')],
-    [('pylint', 'C0326'), ('pep8', 'E251')],
+    {('pylint', 'C0326'), ('pycodestyle', 'E251')},
 
     # long lines
-    [('pylint', 'C0301'), ('pycodestyle', 'E501')],
-    [('pylint', 'C0301'), ('pep8', 'E501')],
+    {('pylint', 'C0301'), ('pycodestyle', 'E501')},
 
     # statement ends with a semicolon
-    [('pylint', 'W0301'), ('pycodestyle', 'E703')],
-    [('pylint', 'W0301'), ('pep8', 'E703')],
+    {('pylint', 'W0301'), ('pycodestyle', 'E703')},
 
     # multiple statements on one line
-    [('pylint', 'C0321'), ('pycodestyle', 'E702')],
+    {('pylint', 'C0321'), ('pycodestyle', 'E702')},
 
     # bad indentation
-    [('pylint', 'W0311'), ('pycodestyle', 'E111')],
-    [('pylint', 'W0311'), ('pep8', 'E111')],
+    {('pylint', 'W0311'), ('pycodestyle', 'E111')},
 
     # wildcart import
-    [('pylint', 'W00401'), ('pyflakes', 'W0401')],
+    {('pylint', 'W00401'), ('pyflakes', 'W0401')},
 
     # module docstring
-    [('pydocstyle', 'D100'), ('pylint', 'C0111')],
-    [('pep257', 'D100'), ('pylint', 'C0111')],
+    {('pydocstyle', 'D100'), ('pylint', 'C0111')},
 
-)
-
-DUPLICATES = dict((key, values) for values in DUPLICATES for key in values)
+) for key in values}
 
 
-def remove_duplicates(errors):
+def remove_duplicates(errors: List[Error]) -> Generator[Error, None, None]:
     """ Filter duplicates from given error's list. """
-    passed = defaultdict(list)
+    passed: DefaultDict[str, Set] = defaultdict(set)
     for error in errors:
         key = error.linter, error.number
         if key in DUPLICATES:
@@ -80,34 +70,31 @@ def remove_duplicates(errors):
         yield error
 
 
-class Error(object):
+class Error:
 
     """ Store an error's information. """
 
+    __slots__ = 'linter', 'col', 'lnum', 'type', 'text', 'filename', 'number'
+
     def __init__(self, linter="", col=1, lnum=1, type="E",
-                 text="unknown error", filename="", number="", **kwargs):
+                 text="unknown error", filename="", number="", **_):
         """ Init error information with default values. """
-        text = ' '.join(str(text).strip().split('\n'))
+        text = str(text).strip().replace('\n', ' ')
         if linter:
-            text = "%s [%s]" % (text, linter)
+            text = f"{text} [{linter}]"
         number = number or text.split(' ', 1)[0]
         if not PATTERN_NUMBER.match(number):
             number = ""
 
-        self._info = dict(linter=linter, col=col, lnum=lnum, type=type[:1],
-                          text=text, filename=filename, number=number)
-
-    def __getattr__(self, name):
-        return self._info[name]
-
-    def __getitem__(self, name):
-        return self._info[name]
-
-    def get(self, name, default=None):
-        """ Implement dictionary `get` method. """
-        return self._info.get(name, default)
+        self.linter = linter
+        self.col = col
+        self.lnum = int(lnum)
+        self.type = type[:1]
+        self.text = text
+        self.filename = filename
+        self.number = number
 
     def __repr__(self):
-        return "<Error: %s %s>" % (self.number, self.linter)
+        return f"<Error: {self.number} {self.linter}>"
 
 # pylama:ignore=W0622,D,R0924

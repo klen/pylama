@@ -26,57 +26,13 @@ __license__ = "BSD"
 import io
 import re
 import logging
-try:
-    from collections import OrderedDict
-except ImportError:
-    from UserDict import DictMixin
-
-    class OrderedDict(dict, DictMixin):
-
-        null = object()
-
-        def __init__(self, *args, **kwargs):
-            self.clear()
-            self.update(*args, **kwargs)
-
-        def clear(self):
-            self.__map = dict()
-            self.__order = list()
-            dict.clear(self)
-
-    def __setitem__(self, key, value):
-        if key not in self:
-            self.__map[key] = len(self.__order)
-            self.__order.append(key)
-        dict.__setitem__(self, key, value)
-
-    def __delitem__(self, key):
-        dict.__delitem__(self, key)
-        self.__map.pop(key)
-        self.__order = self.null
-
-    def __iter__(self):
-        for key in self.__order:
-            if key is not self.null:
-                yield key
-
-    def keys(self):
-        return list(self)
-
-    setdefault = DictMixin.setdefault
-    update = DictMixin.update
-    pop = DictMixin.pop
-    values = DictMixin.values
-    items = DictMixin.items
-    iterkeys = DictMixin.iterkeys
-    itervalues = DictMixin.itervalues
-    iteritems = DictMixin.iteritems
+from collections import OrderedDict
 
 
 NS_LOGGER = logging.getLogger('inirama')
 
 
-class Scanner(object):
+class Scanner:
 
     """ Split a code string on tokens. """
 

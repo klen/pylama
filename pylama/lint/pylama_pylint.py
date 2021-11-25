@@ -1,89 +1,80 @@
 """Pylint integration to Pylama."""
 import logging
-from os import path as op, environ
+from os import environ
+from pathlib import Path
+from typing import Any, Dict, List
 
-from astroid import MANAGER
-from pylama.lint import Linter as BaseLinter
-from pylint.__pkginfo__ import numversion
 from pylint.lint import Run
 from pylint.reporters import BaseReporter
 
+from pylama.lint import Linter as BaseLinter
 
-CURDIR = op.abspath(op.dirname(__file__))
-HOME_RCFILE = op.abspath(op.join(environ.get('HOME', ''), '.pylintrc'))
-LAMA_RCFILE = op.abspath(op.join(CURDIR, 'pylint.rc'))
+HOME_RCFILE = Path(environ.get("HOME", "")) / ".pylintrc"
 
 
-logger = logging.getLogger('pylama')
+logger = logging.getLogger("pylama")
 
 
 class Linter(BaseLinter):
     """Check code with Pylint."""
 
-    @staticmethod
-    def run(path, code, params=None, ignore=None, select=None, **meta):
-        """Pylint code checking.
+    name = "pylint"
 
-        :return list: List of errors.
-        """
-        logger.debug('Start pylint')
+    def run(self, path, *, params=None, ignore=None, select=None, **_) -> List[Dict[str, Any]]:  # noqa
+        """Pylint code checking."""
+        logger.debug("Start pylint")
 
-        clear_cache = params.pop('clear_cache', False)
-        if clear_cache:
-            MANAGER.astroid_cache.clear()
+        if params is None:
+            params = {}
 
         class Reporter(BaseReporter):
+            """Handle messages."""
 
             def __init__(self):
                 self.errors = []
-                super(Reporter, self).__init__()
+                super().__init__()
 
-            def _display(self, layout):
+            def _display(self, _):
                 pass
 
             def handle_message(self, msg):
-                self.errors.append(dict(
-                    lnum=msg.line,
-                    col=msg.column,
-                    text="%s %s" % (msg.msg_id, msg.msg),
-                    type=msg.msg_id[0]
-                ))
+                self.errors.append(
+                    dict(
+                        lnum=msg.line,
+                        col=msg.column,
+                        text=f"{msg.msg_id} {msg.msg}",
+                        type=msg.msg_id[0],
+                    )
+                )
 
-        params = _Params(ignore=ignore, select=select, params=params)
+        params = _Params(params, ignore=ignore, select=select)
         logger.debug(params)
 
         reporter = Reporter()
-
-        kwargs = {
-            (numversion[0] == 1 and 'exit' or 'do_exit'): False
-        }
-
-        Run([path] + params.to_attrs(), reporter=reporter, **kwargs)
-
+        Run([path] + params.to_attrs(), reporter=reporter, exit=False)
         return reporter.errors
 
 
-class _Params(object):
+class _Params:
     """Store pylint params."""
 
-    def __init__(self, select=None, ignore=None, params=None):
-
-        params = dict(params)
-
-        if op.exists(HOME_RCFILE):
-            params['rcfile'] = HOME_RCFILE
+    def __init__(self, params: Dict,  select=None, ignore=None):
+        attrs = {
+            name.replace("_", "-"): self.prepare_value(value)
+            for name, value in params.items() if value is not None
+        }
+        if HOME_RCFILE.exists():
+            attrs["rcfile"] = HOME_RCFILE.as_posix()
 
         if select:
-            enable = params.get('enable', None)
-            params['enable'] = select | set(enable.split(",") if enable else [])
+            enable = attrs.get("enable", None)
+            attrs["enable"] = select | set(enable.split(",") if enable else [])
 
         if ignore:
-            disable = params.get('disable', None)
-            params['disable'] = ignore | set(disable.split(",") if disable else [])
+            disable = attrs.get("disable", None)
+            attrs["disable"] = ignore | set(disable.split(",") if disable else [])
 
-        self.params = dict(
-            (name.replace('_', '-'), self.prepare_value(value))
-            for name, value in params.items() if value is not None)
+        self.attrs = attrs
 
     @staticmethod
     def prepare_value(value):
@@ -98,12 +89,13 @@ class _Params(object):
 
     def to_attrs(self):
         """Convert to argument list."""
-        return ["--%s=%s" % item for item in self.params.items()]
+        return [f"--{key}={value}" for key, value in self.attrs.items()]  # noqa
 
     def __str__(self):
         return " ".join(self.to_attrs())
 
     def __repr__(self):
-        return "<Pylint %s>" % self
+        return f"<Pylint {self}>"
+
 
 # pylama:ignore=W0403
