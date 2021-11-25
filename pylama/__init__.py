@@ -3,4 +3,4 @@
 :copyright: 2013 by Kirill Klenov.
 """
 
-__version__ = "7.7.1"
+__version__ = "8.0.0"
