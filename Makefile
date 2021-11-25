@@ -31,7 +31,7 @@ clean:
 .PHONY: release
 VERSION?=minor
 # target: release - Bump version
-release:
+release minor:
 	@pip install bumpversion
 	@bumpversion $(VERSION)
 	@git checkout master
@@ -40,8 +40,9 @@ release:
 	@git push --all
 	@git push --tags
 
-.PHONY: minor
-minor: release
+.PHONY: major
+major:
+	make release VERSION=major
 
 .PHONY: patch
 patch:
