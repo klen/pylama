@@ -44,13 +44,15 @@ def check_paths(
         path = candidates[0]
         rootdir = path if op.isdir(path) else op.dirname(path)
 
+    linters = options.linters
+    if not options.force:
+        candidates = [path for path in candidates if any(l.allow(path) for _, l in linters)]
+
     if options.concurrent:
         return check_async(candidates, options, rootdir)
 
     errors = []
     for path in candidates:
-        if not options.force and not any(l.allow(path) for _, l in options.linters):
-            continue
         errors += run(path=path, rootdir=rootdir, options=options)
 
     return errors

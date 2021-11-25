@@ -3,7 +3,7 @@
 Prepare params, check a modeline and run the checkers.
 """
 import os.path as op
-from typing import Any, Collection, Dict, Generator, List, Set, Tuple, Optional
+from typing import Any, Collection, Dict, Generator, List, Optional, Set, Tuple
 
 from .config import (CURDIR, LOGGER, MODELINE_RE, SKIP_PATTERN, Namespace,
                      process_value)
@@ -16,16 +16,14 @@ def run(path: str, rootdir: str = CURDIR, options: Namespace = None) -> List[Err
 
     :param path: (str) A file's path.
     """
+    code = None
     errors: List[Error] = []
     fileconfig = {}
-    linters = LINTERS
     linters_params = {}
-    lname = "undefined"
     params = {}
     path = op.relpath(path, rootdir)
 
     if options:
-        linters = options.linters
         linters_params = options.linters_params
         for mask in options.file_params:
             if mask.match(path):
@@ -35,32 +33,19 @@ def run(path: str, rootdir: str = CURDIR, options: Namespace = None) -> List[Err
             LOGGER.info("Skip checking for path: %s", path)
             return []
 
-    code = None
     try:
         with open(path, encoding="utf-8") as source:
             code = source.read()
             params = build_params(options, fileconfig, parse_modeline(code))
-            LOGGER.debug("Checking params: %s", params)
-
             if params.get("skip"):
+                LOGGER.info("Skip: %s", path)
                 return errors
 
-            for item in params.get("linters") or linters:
-
-                if not isinstance(item, tuple):
-                    item = item, LINTERS.get(item)
-
-                lname, linter = item
-
-                if not linter or not linter.allow(path):
-                    continue
-
-                lparams = linters_params.get(lname, {})
-                LOGGER.info("Run %s %s", lname, lparams)
-
-                ignore, select = merge_params(params, lparams)
-
-                linter_errors = linter().run(
+            LOGGER.debug("Checking params: %s", params)
+            linters_to_run = get_linters(path, params, linters_params)
+            for linter_cls, lname, select, ignore, lparams in linters_to_run:
+                LOGGER.info("Run [%s] %s - %s", lname, path, lparams)
+                linter_errors = linter_cls().run(
                     path, code=code, ignore=ignore, select=select, params=lparams
                 )
                 if linter_errors:
@@ -69,13 +54,13 @@ def run(path: str, rootdir: str = CURDIR, options: Namespace = None) -> List[Err
                             Error(filename=path, linter=lname, **er)
                             for er in linter_errors
                         ],
-                        ignore=ignore,
                         select=select,
+                        ignore=ignore,
                     )
 
     except IOError as exc:
         LOGGER.error("IOError %s", exc)
-        errors.append(Error(text=str(exc), filename=path, linter=lname))
+        errors.append(Error(text=str(exc), filename=path, linter="pylama"))
 
     except SyntaxError as exc:
         LOGGER.error("SyntaxError %s", exc)
@@ -105,6 +90,24 @@ def run(path: str, rootdir: str = CURDIR, options: Namespace = None) -> List[Err
     return sorted(errors, key=sorter)
 
 
+def get_linters(
+    path: str, params: Dict[str, Any], linters_params: Dict[str, Any]
+) -> Generator[Tuple, None, None]:
+    """Prepare linters and params."""
+    linters = params.get("linters") or LINTERS
+    for item in linters:
+        if not isinstance(item, tuple):
+            item = item, LINTERS.get(item)
+
+        lname, lclass = item
+        if not (lclass and lclass.allow(path)):  # noqa
+            continue
+
+        lparams = linters_params.get(lname, {})
+        ignore, select = merge_params(params, lparams)
+        yield (lclass, lname, select, ignore, lparams)
+
+
 def parse_modeline(code: str) -> Dict[str, str]:
     """Parse params from file's modeline."""
     seek = MODELINE_RE.search(code)
@@ -114,11 +117,19 @@ def parse_modeline(code: str) -> Dict[str, str]:
     return {}
 
 
-def build_params(options: Optional[Namespace], *configs: Dict[str, str]) -> Dict[str, Any]:
+def build_params(
+    options: Optional[Namespace], *configs: Dict[str, str]
+) -> Dict[str, Any]:
     """Prepare and merge a params from modelines and configs."""
-    params: Dict[str, Any] = dict(
-        skip=False, ignore=options and options.ignore or set(),
-        select=options and options.select or set(), linters=[])
+    if options:
+        params: Dict[str, Any] = dict(
+            skip=False,
+            linters=options.linters,
+            ignore=options.ignore,
+            select=options.select,
+        )
+    else:
+        params = dict(skip=False, ignore=set(), select=set(), linters=[])
 
     for config in configs:
         if not config:
@@ -128,8 +139,8 @@ def build_params(options: Optional[Namespace], *configs: Dict[str, str]) -> Dict
             if key in config:
                 params[key] |= process_value(key, config[key])
 
-        if 'linters' in config:
-            params['linters'] = process_value('linters', config['linters'])
+        if "linters" in config:
+            params["linters"] = process_value("linters", config["linters"])
 
         params["skip"] = bool(int(config.get("skip", False)))
 

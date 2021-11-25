@@ -36,6 +36,7 @@ def test_ignore_select():
     options.ignore = ['E301', 'D102']
     options.linters = ['pycodestyle', 'pydocstyle', 'pyflakes', 'mccabe']
     errors = run('dummy.py', options=options)
+    assert errors
     for err in errors:
         assert err.number not in options.ignore
 
@@ -62,10 +63,11 @@ def test_build_params():
     p2 = dict(ignore='E34,R45', select='E')
     options = parse_options(ignore=['D'], config=False)
     params = build_params(options, p1, p2)
-    assert params == {
-        'ignore': set(['R45', 'E34', 'W', 'D']),
-        'select': set(['R01', 'E']),
-        'skip': False, 'linters': []}
+    assert params
+    assert params['linters']
+    assert params['ignore'] == set(['R45', 'E34', 'W', 'D'])
+    assert params['select'] == set(['R01', 'E'])
+    assert params['skip'] is False
 
 
 def test_merge_params():

@@ -1,5 +1,6 @@
 2021-11-24  k.klenov
 
+	* Version 8.0.0
 	* Support python 3.7, 3.8, 3.9
 	* Drop support for python 2
 	* Support mccabe==0.6.1, pycodestyle==2.8.0, pydocstyle==6.1.1,
