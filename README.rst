@@ -145,7 +145,6 @@ Command line options
       --hook                Install Git (Mercurial) hook.
       --concurrent, --async
                             Enable async mode. Useful for checking a lot of files.
-                            Unsupported with pylint.
       --options FILE, -o FILE
                             Specify configuration file. Looks for pylama.ini,
                             setup.cfg, tox.ini, or pytest.ini in the current
@@ -402,7 +401,6 @@ LICENSE file for the complete disclaimer.
 .. _links:
 
 .. _AUTHORS: https://github.com/klen/pylama/blob/develop/AUTHORS
-.. _LICENSE: https://github.com/klen/pylama/blob/develop/LICENSE
 .. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
 .. _pydocstyle: https://github.com/PyCQA/pydocstyle/
 .. _pycodestyle: https://github.com/PyCQA/pycodestyle
