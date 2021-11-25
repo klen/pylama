@@ -145,8 +145,7 @@ PARSER.add_argument(
     "--concurrent",
     "--async",
     action="store_true",
-    help="Enable async mode. Useful for checking a lot of files. "
-    "Unsupported with pylint.",
+    help="Enable async mode. Useful for checking a lot of files. ",
 )
 
 PARSER.add_argument(
