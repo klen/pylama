@@ -26,25 +26,21 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Cache env
-      id: cache-env
+    - name: Cache pip
       uses: actions/cache@main
       with:
-        path: env
-        key: env-${{ matrix.python-version }}-${{ hashFiles('requirements/requirements.txt', 'requirements/requirements-tests.txt') }}
+        path: ${{ steps.pip-cache.outputs.dir }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements/requirements.txt', 'requirements/requirements-tests.txt') }}
 
-    - name: Initialize virtual env
-      run: python -m venv env
-      if: steps.cache-env.outputs.cache-hit != 'true'
-
-    - name: Setup dependencies
-      run: env/bin/pip install .[tests]
+    - name: Install dependencies
+      run: |
+        python -m pip install .[tests]
 
     - name: Test pylama
-      run: env/bin/pytest --pylama pylama
+      run: pytest --pylama pylama
 
     - name: Test with pytest
-      run: env/bin/pytest tests
+      run: pytest tests
 
   notify:
     runs-on: ubuntu-latest
