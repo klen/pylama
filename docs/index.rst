@@ -13,7 +13,7 @@ Welcome to Pylama's documentation.
     :end-before: .. _documentation:
 
 :copyright: 2013 by Kirill Klenov.
-:license: BSD, see LICENSE for more details.
+:license: MIT, see LICENSE for more details.
 
 .. contents::
 

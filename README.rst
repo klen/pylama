@@ -392,18 +392,17 @@ License
 
 This is free software. You are permitted to use, copy, modify, merge, publish,
 distribute, sublicense, and/or sell copies of it, under the terms of the MIT
-License. See LICENSE_ file for the complete license.
+License. See LICENSE file for the complete license.
 
 This software is provided WITHOUT ANY WARRANTY; without even the implied
 warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
-LICENSE_ file for the complete disclaimer.
+LICENSE file for the complete disclaimer.
 
 
 .. _links:
 
 .. _AUTHORS: https://github.com/klen/pylama/blob/develop/AUTHORS
 .. _LICENSE: https://github.com/klen/pylama/blob/develop/LICENSE
-.. _BSD license: http://www.linfo.org/bsdlicense.html
 .. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
 .. _pydocstyle: https://github.com/PyCQA/pydocstyle/
 .. _pycodestyle: https://github.com/PyCQA/pycodestyle
