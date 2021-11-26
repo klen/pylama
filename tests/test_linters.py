@@ -1,16 +1,3 @@
-from pathlib import Path
-import sys
-import builtins
-
-import pytest
-
-
-@pytest.fixture(scope="session")
-def source():
-    dummy = Path(__file__).parent / "../dummy.py"
-    return dummy.read_text()
-
-
 def test_skip_optional_if_not_installed():
     from pylama.lint import LINTERS
 

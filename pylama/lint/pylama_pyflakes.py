@@ -1,4 +1,7 @@
-"""Pyflakes support."""
+"""Pyflakes support.
+
+Supports stdin.
+"""
 
 import ast
 from typing import Any, Dict, List

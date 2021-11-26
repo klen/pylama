@@ -1,3 +1,6 @@
+	* Support json format
+	* Support `--from-stdin` option
+
 2021-11-26  k.klenov
 
 	* Version 8.0.5

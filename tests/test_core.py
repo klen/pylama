@@ -28,8 +28,7 @@ def test_parser_modeline():
     assert params == dict(ignore='W12,E14', select='R', skip='0')
 
 
-def test_checkpath():
-    from pylama.config import parse_options
+def test_checkpath(parse_options):
     from pylama.main import check_paths
 
     path = op.abspath('dummy.py')
@@ -39,55 +38,14 @@ def test_checkpath():
     assert result[0].filename == 'dummy.py'
 
 
-def test_linters_params():
-    from pylama.core import run
-    from pylama.config import parse_options
-
-    options = parse_options(linters='mccabe', config=False)
-    options.linters_params['mccabe'] = dict(complexity=1)
-    errors = run('dummy.py', options=options)
-    assert len(errors) == 1
-
-    options.linters_params['mccabe'] = dict(complexity=20)
-    errors = run('dummy.py', options=options)
-    assert not errors
-
-
-def test_sort():
-    from pylama.core import run
-    from pylama.config import parse_options
-
-    options = parse_options()
-    options.sort = ['C', 'D']
-    errors = run('dummy.py', options=options)
-    assert errors[0].type == 'C'
-
-
-def test_shell():
-    from pylama.main import shell
-
-    errors = shell('-o dummy dummy.py'.split(), error=False)
+def test_run_with_code(run, parse_options):
+    options = parse_options(linters='pyflakes')
+    errors = run('filename.py', code='unknown_call()', options=options)
     assert errors
 
-    errors = shell(['unknown.py'], error=False)
-    assert not errors
 
-
-def test_git_hook():
-    from pylama.hook import git_hook
-
-    assert not git_hook(False)
-
-
-def test_hg_hook():
-    from pylama.hook import hg_hook
-
-    assert not hg_hook(None, dict())
-
-
-def test_async():
+def test_async(parse_options):
     from pylama.check_async import check_async
-    from pylama.config import parse_options
 
     options = parse_options(config=False)
     errors = check_async(['dummy.py'], options=options, rootdir='.')

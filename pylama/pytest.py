@@ -6,7 +6,7 @@ from os import path as op
 import pytest
 
 from pylama.config import CURDIR
-from pylama.main import DEFAULT_FORMAT, parse_options, process_paths
+from pylama.main import DEFAULT_FORMAT, parse_options, check_paths
 
 HISTKEY = "pylama/mtimes"
 
@@ -74,18 +74,7 @@ class PylamaItem(pytest.Item, pytest.File):
     def runtest(self):
         errors = check_file(self.fspath)
         if errors:
-            out = "\n".join(
-                [
-                    DEFAULT_FORMAT.format(
-                        filename=err.filename,
-                        lnum=err.lnum,
-                        col=err.col,
-                        etype=err.type,
-                        text=err.text,
-                    )
-                    for err in errors
-                ]
-            )
+            out = "\n".join(err.format(DEFAULT_FORMAT) for err in errors)
             raise PylamaError(out)
 
         # update mtime only if test passed
@@ -102,7 +91,7 @@ class PylamaItem(pytest.Item, pytest.File):
 def check_file(path):
     options = parse_options()
     path = op.relpath(str(path), CURDIR)
-    return process_paths(options, candidates=[path], error=False)
+    return check_paths([path], options, rootdir=CURDIR)
 
 
-# pylama:ignore=D,E1002,W0212,F0001,C0115,C0116
+# pylama:ignore=E1002,W0212,F0001,C0115,C0116

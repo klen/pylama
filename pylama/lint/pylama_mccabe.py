@@ -1,4 +1,7 @@
-"""Code complexity checking."""
+"""Code complexity checking.
+
+Support stdin.
+"""
 import ast
 from typing import Dict, List, Any
 

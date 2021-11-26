@@ -1,4 +1,7 @@
-"""Support Vulture."""
+"""Support Vulture.
+
+Supports stdin.
+"""
 from typing import Any, Dict, List
 
 from vulture.core import Vulture, make_config, ERROR_CODES
@@ -16,7 +19,7 @@ class Linter(BaseLinter):
 
     name = 'vulture'
 
-    def run(self, path: str, *, params=None, **_) -> List[Dict[str, Any]]:  # noqa
+    def run(self, path: str, *, code: str = None, params=None, **_) -> List[Dict[str, Any]]:  # noqa
         """Check code with vulture."""
         config = make_config(parse_params(path, params or {}))
 
@@ -25,7 +28,7 @@ class Linter(BaseLinter):
             ignore_names=config['ignore_names'],
             ignore_decorators=config['ignore_decorators'],
         )
-        vulture.scavenge([path], exclude=config['exclude'])
+        vulture.scan(code, filename=path)
         unused_code_items = vulture.get_unused_code(
             min_confidence=config['min_confidence'],
             sort_by_size=config['sort_by_size']

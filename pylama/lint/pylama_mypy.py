@@ -1,9 +1,36 @@
-"""MyPy support."""
+"""MyPy support.
+
+TODO: stdin
+"""
 
 from typing import Any, Dict, List
 from mypy import api
 
 from pylama.lint import Linter as Abstract
+
+
+class Linter(Abstract):
+    """MyPy runner."""
+
+    name = 'mypy'
+
+    def run(self, path, **_) -> List[Dict[str, Any]]:
+        """Check code with mypy."""
+        args = [path, '--follow-imports=skip', '--show-column-numbers']
+        stdout, _, _ = api.run(args)    # noqa
+        messages = []
+        for line in stdout.split('\n'):
+            if not line:
+                continue
+            message = _MyPyMessage(line)
+            if message.valid:
+                if message.message_type == 'note':
+                    if messages[-1].line_num == message.line_num:
+                        messages[-1].add_note(message.text)
+                else:
+                    messages.append(message)
+
+        return [m.to_result() for m in messages]
 
 
 class _MyPyMessage:
@@ -49,27 +76,3 @@ class _MyPyMessage:
             'text': self.text,
             'type': self.types.get(self.message_type.strip(), 'W')
         }
-
-
-class Linter(Abstract):
-    """MyPy runner."""
-
-    name = 'mypy'
-
-    def run(self, path, **_) -> List[Dict[str, Any]]:
-        """Check code with mypy."""
-        args = [path, '--follow-imports=skip', '--show-column-numbers']
-        stdout, _, _ = api.run(args)    # noqa
-        messages = []
-        for line in stdout.split('\n'):
-            if not line:
-                continue
-            message = _MyPyMessage(line)
-            if message.valid:
-                if message.message_type == 'note':
-                    if messages[-1].line_num == message.line_num:
-                        messages[-1].add_note(message.text)
-                else:
-                    messages.append(message)
-
-        return [m.to_result() for m in messages]

@@ -1,4 +1,7 @@
-"""pydocstyle support."""
+"""pydocstyle support.
+
+Support stdin.
+"""
 
 from typing import Any, Dict, List
 

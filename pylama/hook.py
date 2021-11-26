@@ -10,7 +10,7 @@ from subprocess import PIPE, Popen
 from typing import List, Tuple
 
 from .config import parse_options, setup_logger
-from .main import LOGGER, process_paths
+from .main import LOGGER, check_paths, display_errors
 
 
 def run(command: str) -> Tuple[int, List[bytes], List[bytes]]:
@@ -32,13 +32,15 @@ def git_hook(error=True):
     setup_logger(options)
     candidates = [f.decode("utf-8") for f in files_modified]
     if candidates:
-        process_paths(options, candidates=candidates, error=error)
+        errors = check_paths(candidates, options)
+        display_errors(errors, options)
+        sys.exit(int(error and bool(errors)))
 
 
 def hg_hook(_, repo, node=None, **kwargs):  # noqa
     """Run pylama after mercurial commit."""
     seen = set()
-    paths = []
+    candidates = []
     if len(repo):
         for rev in range(repo[node], len(repo)):
             for file_ in repo[rev].files():
@@ -46,12 +48,14 @@ def hg_hook(_, repo, node=None, **kwargs):  # noqa
                 if file_ in seen or not op.exists(file_):
                     continue
                 seen.add(file_)
-                paths.append(file_)
+                candidates.append(file_)
 
     options = parse_options()
     setup_logger(options)
-    if paths:
-        process_paths(options, candidates=paths)
+    if candidates:
+        errors = check_paths(candidates, options)
+        display_errors(errors, options)
+        sys.exit(int(bool(errors)))
 
 
 def install_git(path):

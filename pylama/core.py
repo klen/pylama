@@ -3,20 +3,22 @@
 Prepare params, check a modeline and run the checkers.
 """
 import os.path as op
-from typing import Any, Collection, Dict, Generator, List, Optional, Set, Tuple
+from typing import Any, Dict, Generator, List, Optional, Set, Tuple
 
 from .config import (CURDIR, LOGGER, MODELINE_RE, SKIP_PATTERN, Namespace,
                      process_value)
-from .errors import Error, remove_duplicates
+from .errors import Error, default_sorter, filter_errors, remove_duplicates
 from .lint import LINTERS
+from .utils import get_lines, read
 
 
-def run(path: str, rootdir: str = CURDIR, options: Namespace = None) -> List[Error]:
+def run(
+    path: str, code: str = None, rootdir: str = CURDIR, options: Namespace = None
+) -> List[Error]:
     """Run code checkers with given params.
 
     :param path: (str) A file's path.
     """
-    code = None
     errors: List[Error] = []
     fileconfig = {}
     linters_params = {}
@@ -24,6 +26,9 @@ def run(path: str, rootdir: str = CURDIR, options: Namespace = None) -> List[Err
     path = op.relpath(path, rootdir)
 
     if options:
+        if options.abspath:
+            path = op.abspath(path)
+
         linters_params = options.linters_params
         for mask in options.file_params:
             if mask.match(path):
@@ -34,33 +39,37 @@ def run(path: str, rootdir: str = CURDIR, options: Namespace = None) -> List[Err
             return []
 
     try:
-        with open(path, encoding="utf-8") as source:
-            code = source.read()
-            params = build_params(options, fileconfig, parse_modeline(code))
-            if params.get("skip"):
-                LOGGER.info("Skip: %s", path)
-                return errors
+        if code is None:
+            code = read(path)
 
-            LOGGER.debug("Checking params: %s", params)
-            linters_to_run = get_linters(path, params, linters_params)
-            for linter_cls, lname, select, ignore, lparams in linters_to_run:
-                LOGGER.info("Run [%s] %s - %s", lname, path, lparams)
-                linter_errors = linter_cls().run(
+        params = build_params(options, fileconfig, parse_modeline(code))
+        if params.get("skip"):
+            LOGGER.info("Skip: %s", path)
+            return errors
+
+        LOGGER.debug("Checking params: %s", params)
+        linters_to_run = get_linters(path, params, linters_params)
+        for linter_cls, lname, select, ignore, lparams in linters_to_run:
+            LOGGER.info("Run [%s] %s - %s", lname, path, lparams)
+            linter_errors = [
+                Error(filename=path, linter=lname, **err_info)
+                for err_info in linter_cls().run(
                     path, code=code, ignore=ignore, select=select, params=lparams
                 )
-                if linter_errors:
-                    errors += filter_errors(
-                        [
-                            Error(filename=path, linter=lname, **er)
-                            for er in linter_errors
-                        ],
-                        select=select,
-                        ignore=ignore,
+            ]
+            if linter_errors:
+                if ignore:
+                    linter_errors = filter_errors(
+                        linter_errors, select=select, ignore=ignore
                     )
+                errors += linter_errors
 
     except IOError as exc:
         LOGGER.error("IOError %s", exc)
-        errors.append(Error(text=str(exc), filename=path, linter="pylama"))
+        errors.append(Error(text=f"E001 {exc}", filename=path, number="E001"))
+
+    except UnicodeError:
+        errors.append(Error(text=f"E001 UnicodeError: {path}", filename=path, number="E001"))
 
     except SyntaxError as exc:
         LOGGER.error("SyntaxError %s", exc)
@@ -84,7 +93,7 @@ def run(path: str, rootdir: str = CURDIR, options: Namespace = None) -> List[Err
 
     sorter = default_sorter
     if options and options.sort:
-        sort = dict((v, n) for n, v in enumerate(options.sort, 1))
+        sort = options.sort
         sorter = lambda err: (sort.get(err.type, 999), err.lnum)
 
     return sorted(errors, key=sorter)
@@ -147,32 +156,12 @@ def build_params(
     return params
 
 
-def filter_errors(
-    errors: List[Error], select: Collection[str] = None, ignore: Collection[str] = None
-) -> Generator[Error, None, None]:
-    """Filter errors by select and ignore options."""
-    select = select or []
-    ignore = ignore or []
-
-    for err in errors:
-        for rule in select:
-            if err.number.startswith(rule):
-                yield err
-                break
-        else:
-            for rule in ignore:
-                if err.number.startswith(rule):
-                    break
-            else:
-                yield err
-
-
 def filter_skiplines(code: str, errors: List[Error]) -> List[Error]:
     """Filter lines by `noqa`."""
     lnums = set(er.lnum for er in errors)
     skipped = set(
         lnum
-        for lnum, line in enumerate(code.split("\n"), 1)
+        for lnum, line in enumerate(get_lines(code), 1)
         if lnum in lnums and SKIP_PATTERN(line)
     )
 
@@ -195,11 +184,6 @@ def merge_params(
         select = select | set(lparams["select"].split(","))
 
     return ignore, select
-
-
-def default_sorter(err: Error) -> Any:
-    """Sort by line number."""
-    return err.lnum
 
 
 # pylama:ignore=R0912,D210,F0001

@@ -1,4 +1,7 @@
-"""Pylint integration to Pylama."""
+"""Pylint integration to Pylama.
+
+TODO: Stdin
+"""
 import logging
 from os import environ
 from pathlib import Path

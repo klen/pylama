@@ -1,4 +1,7 @@
-"""Support Radon."""
+"""Support Radon.
+
+Supports stdin.
+"""
 
 from typing import Any, Dict, List
 from radon.visitors import ComplexityVisitor

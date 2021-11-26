@@ -5,7 +5,7 @@ import os
 import re
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import Any, Collection, List, Optional, Set, Tuple, Type, Union
+from typing import Any, Collection, Dict, List, Optional, Set, Tuple, Type, Union
 
 from . import __version__
 from .libs import inirama
@@ -50,6 +50,15 @@ def split_csp_str(val: Union[Collection[str], str]) -> Set[str]:
     return set(x for x in val if x)
 
 
+def prepare_sorter(val: Union[Collection[str], str]) -> Optional[Dict[str, int]]:
+    """Parse sort value."""
+    if val:
+        types = split_csp_str(val)
+        return dict((v, n) for n, v in enumerate(types, 1))
+
+    return None
+
+
 def parse_linters(linters: str) -> List[Tuple[str, Type[Linter]]]:
     """Initialize choosen linters."""
     result = []
@@ -91,10 +100,18 @@ PARSER.add_argument("--verbose", "-v", action="store_true", help="Verbose mode."
 PARSER.add_argument("--version", action="version", version="%(prog)s " + __version__)
 
 PARSER.add_argument(
+    "--from-stdin",
+    action="store_true",
+    help="Interpret the stdin as a python script, "
+    "whose filename needs to be passed as the module_or_package argument.",
+)
+
+
+PARSER.add_argument(
     "--format",
     "-f",
     default=_Default("pycodestyle"),
-    choices=["pep8", "pycodestyle", "pylint", "parsable"],
+    choices=["json", "pep8", "pycodestyle", "pylint", "parsable"],
     help="Choose errors format (pycodestyle, pylint, parsable).",
 )
 
@@ -108,8 +125,8 @@ PARSER.add_argument(
 
 PARSER.add_argument(
     "--sort",
-    default=_Default(""),
-    type=split_csp_str,
+    default=_Default(),
+    type=prepare_sorter,
     help="Sort result by error types. Ex. E,W,D",
 )
 
@@ -184,10 +201,8 @@ def parse_options(  # noqa
     args: List[str] = None, config: bool = True, rootdir: str = CURDIR, **overrides
 ) -> Namespace:
     """Parse options from command line and configuration files."""
-    args = args or []
-
     # Parse args from command string
-    options = PARSER.parse_args(args)
+    options = PARSER.parse_args(args or [])
     options.file_params = {}
     options.linters_params = {}
 

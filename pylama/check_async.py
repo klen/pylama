@@ -22,18 +22,18 @@ LOGGER = logging.getLogger("pylama")
 
 def worker(params):
     """Do work."""
-    path, options, rootdir = params
-    return run(path, rootdir=rootdir, options=options)
+    path, code, options, rootdir = params
+    return run(path, code=code, rootdir=rootdir, options=options)
 
 
 def check_async(
-    paths: List[str], options: Namespace, rootdir: str = None
+    paths: List[str], code: str = None, options: Namespace = None, rootdir: str = None
 ) -> List[Error]:
     """Check given paths asynchronously."""
     with ProcessPoolExecutor(CPU_COUNT) as pool:
         return [
             err
-            for res in pool.map(worker, [(path, options, rootdir) for path in paths])
+            for res in pool.map(worker, [(path, code, options, rootdir) for path in paths])
             for err in res
         ]
 
