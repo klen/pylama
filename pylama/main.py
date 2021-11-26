@@ -65,7 +65,7 @@ def check_path(
     options: Namespace,
     rootdir: str = None,
     candidates: List[str] = None,
-    code: str = None,
+    code: str = None,  # noqa
 ) -> List[Error]:
     """Support legacy code."""
     warnings.warn(
