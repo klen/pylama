@@ -28,6 +28,6 @@ class Linter(Abstract):
 
         return [
             {'lnum': block.lineno, 'col': block.col_offset, 'type': 'R', 'number': 'R901',
-             'text': f"R901: {block.name} is too complex {block.complexity}"}
+             'text': f"R901 {block.name} is too complex {block.complexity}"}
             for block in visitor.blocks if block.complexity > complexity
         ]
