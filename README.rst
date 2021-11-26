@@ -339,7 +339,7 @@ Run pylama from python code
 ---------------------------
 ::
 
-    from pylama.main import check_path, parse_options
+    from pylama.main import check_paths, parse_options
 
     # Use and/or modify 0 or more of the options defined as keys in the variable my_redefined_options below.
     # To use defaults for any option, remove that key completely.
@@ -357,7 +357,7 @@ Run pylama from python code
     my_path = '...'
 
     options = parse_options([my_path], **my_redefined_options)
-    errors = check_path(options, rootdir='.')
+    errors = check_paths(my_path, options, rootdir='.')
 
 
 .. _bagtracker:

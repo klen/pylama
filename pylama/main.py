@@ -1,6 +1,7 @@
 """Pylama's shell support."""
 
 import sys
+import warnings
 from os import path as op
 from os import walk
 from typing import List, Optional
@@ -46,7 +47,9 @@ def check_paths(
 
     linters = options.linters
     if not options.force:
-        candidates = [path for path in candidates if any(l.allow(path) for _, l in linters)]
+        candidates = [
+            path for path in candidates if any(l.allow(path) for _, l in linters)
+        ]
 
     if options.concurrent:
         return check_async(candidates, options, rootdir)
@@ -56,6 +59,20 @@ def check_paths(
         errors += run(path=path, rootdir=rootdir, options=options)
 
     return errors
+
+
+def check_path(
+    options: Namespace,
+    rootdir: str = None,
+    candidates: List[str] = None,
+    code: str = None,
+) -> List[Error]:
+    """Support legacy code."""
+    warnings.warn(
+        "pylama.main.check_path is depricated and will be removed in pylama 9",
+        DeprecationWarning,
+    )
+    return check_paths(candidates, options=options, rootdir=rootdir)
 
 
 def shell(args=None, error=True):

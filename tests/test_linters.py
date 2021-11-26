@@ -113,6 +113,9 @@ def test_radon(source):
     errors = radon().run("dummy.py", code=source, params={'complexity': 3})
     assert errors
 
+    # Issue #164
+    assert ':' not in errors[0]['text']
+
 
 def test_pylint(source):
     from pylama.lint import LINTERS, Linter
