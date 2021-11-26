@@ -12,8 +12,8 @@ def get_lines(value: str) -> List[str]:
 
 def read(filename: str) -> str:
     """Read the given filename."""
-    with open(filename, encoding="utf-8") as fd:
-        return fd.read()
+    with open(filename, encoding="utf-8") as file:
+        return file.read()
 
 
 def read_stdin() -> str:
