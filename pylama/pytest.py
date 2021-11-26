@@ -94,4 +94,4 @@ def check_file(path):
     return check_paths([path], options, rootdir=CURDIR)
 
 
-# pylama:ignore=E1002,W0212,F0001,C0115,C0116
+# pylama:ignore=D,E1002,W0212,F0001,C0115,C0116
