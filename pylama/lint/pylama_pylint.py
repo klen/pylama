@@ -35,7 +35,7 @@ class Linter(BaseLinter):
             def handle_message(self, msg):
                 msg_id = msg.msg_id
                 ctx.push(
-                    col=msg.column,
+                    col=msg.column + 1,
                     lnum=msg.line,
                     number=msg_id,
                     text=msg.msg,

@@ -82,7 +82,7 @@ class Error:
         self.message = text
 
     def __repr__(self):
-        return f"<Error: {self.number} {self.message}>"
+        return f"<Error:{self.lnum}:{self.col}: {self.number} {self.message}>"
 
     def format(self, pattern: str) -> str:
         """Format the error with the given pattern."""
