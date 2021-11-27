@@ -22,11 +22,11 @@ def test_sort(parse_options):
 
 def test_linters_params(parse_options, run):
     options = parse_options(linters='mccabe', config=False)
-    options.linters_params['mccabe'] = dict(complexity=1)
+    options.linters_params['mccabe'] = {'max-complexity': '1'}
     errors = run('dummy.py', options=options)
     assert len(errors) == 1
 
-    options.linters_params['mccabe'] = dict(complexity=20)
+    options.linters_params['mccabe'] = {'max-complexity': '20'}
     errors = run('dummy.py', options=options)
     assert not errors
 
