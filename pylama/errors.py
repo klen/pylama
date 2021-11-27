@@ -3,10 +3,10 @@ from __future__ import annotations
 
 import re
 from collections import defaultdict
-from typing import DefaultDict, Generator, List, Set
+from typing import Any, DefaultDict, Dict, Generator, List, Set
 
 
-PATTERN_NUMBER = re.compile(r'^[A-Z]\d+$')
+PATTERN_NUMBER = re.compile(r'^\s*([A-Z]\d+)\s*', re.I)
 
 DUPLICATES = {key: values for values in (
 
@@ -58,11 +58,62 @@ DUPLICATES = {key: values for values in (
 ) for key in values}
 
 
+class Error:
+
+    """ Store an error's information. """
+
+    __slots__ = 'source', 'col', 'lnum', 'etype', 'message', 'filename', 'number'
+
+    def __init__(self, source="pylama", col=1, lnum=1, type=None,
+                 text="unknown error", filename="", number="", **_):
+        """ Init error information with default values. """
+        text = str(text).strip().replace('\n', ' ')
+        if number:
+            self.number = number
+        else:
+            number = PATTERN_NUMBER.match(text)
+            self.number = number.group(1).upper() if number else ""
+
+        self.etype = type[:1] if type else (number[0] if number else 'E')
+        self.col = col
+        self.filename = filename
+        self.source = source
+        self.lnum = int(lnum)
+        self.message = text
+
+    def __repr__(self):
+        return f"<Error: {self.number} {self.message}>"
+
+    def format(self, pattern: str) -> str:
+        """Format the error with the given pattern."""
+        return pattern.format(
+            filename=self.filename,
+            lnum=self.lnum,
+            col=self.col,
+            message=self.message,
+            etype=self.etype,
+            source=self.source,
+            number=self.number,
+        )
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the error as a dict."""
+        return {
+            'source': self.source,
+            'col': self.col,
+            'lnum': self.lnum,
+            'etype': self.etype,
+            'message': self.message,
+            'filename': self.filename,
+            'number': self.number,
+        }
+
+
 def remove_duplicates(errors: List[Error]) -> Generator[Error, None, None]:
     """ Filter duplicates from given error's list. """
     passed: DefaultDict[str, Set] = defaultdict(set)
     for error in errors:
-        key = error.linter, error.number
+        key = error.source, error.number
         if key in DUPLICATES:
             if key in passed[error.lnum]:
                 continue
@@ -70,31 +121,9 @@ def remove_duplicates(errors: List[Error]) -> Generator[Error, None, None]:
         yield error
 
 
-class Error:
+def default_sorter(err: Error) -> Any:
+    """Sort by line number."""
+    return err.lnum
 
-    """ Store an error's information. """
-
-    __slots__ = 'linter', 'col', 'lnum', 'type', 'text', 'filename', 'number'
-
-    def __init__(self, linter="", col=1, lnum=1, type="E",
-                 text="unknown error", filename="", number="", **_):
-        """ Init error information with default values. """
-        text = str(text).strip().replace('\n', ' ')
-        if linter:
-            text = f"{text} [{linter}]"
-        number = number or text.split(' ', 1)[0]
-        if not PATTERN_NUMBER.match(number):
-            number = ""
-
-        self.linter = linter
-        self.col = col
-        self.lnum = int(lnum)
-        self.type = type[:1]
-        self.text = text
-        self.filename = filename
-        self.number = number
-
-    def __repr__(self):
-        return f"<Error: {self.number} {self.linter}>"
 
 # pylama:ignore=W0622,D,R0924

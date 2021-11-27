@@ -6,7 +6,7 @@ from os import path as op
 import pytest
 
 from pylama.config import CURDIR
-from pylama.main import DEFAULT_FORMAT, parse_options, process_paths
+from pylama.main import DEFAULT_FORMAT, parse_options, check_paths
 
 HISTKEY = "pylama/mtimes"
 
@@ -44,6 +44,7 @@ def pytest_collect_file(path, parent):
     config = parent.config
     if config.option.pylama and path.ext == ".py":
         return PylamaItem.from_parent(parent, fspath=path)
+    return None
 
 
 class PylamaError(Exception):
@@ -52,7 +53,7 @@ class PylamaError(Exception):
 
 class PylamaItem(pytest.Item, pytest.File):
     def __init__(self, fspath, parent):
-        super(PylamaItem, self).__init__(fspath, parent)
+        super().__init__(fspath, parent)
         self.add_marker("pycodestyle")
         self.cache = None
         self._pylamamtimes = None
@@ -71,21 +72,12 @@ class PylamaItem(pytest.Item, pytest.File):
         if old == self._pylamamtimes:
             pytest.skip("file(s) previously passed Pylama checks")
 
+        return True
+
     def runtest(self):
         errors = check_file(self.fspath)
         if errors:
-            out = "\n".join(
-                [
-                    DEFAULT_FORMAT.format(
-                        filename=err.filename,
-                        lnum=err.lnum,
-                        col=err.col,
-                        etype=err.type,
-                        text=err.text,
-                    )
-                    for err in errors
-                ]
-            )
+            out = "\n".join(err.format(DEFAULT_FORMAT) for err in errors)
             raise PylamaError(out)
 
         # update mtime only if test passed
@@ -96,13 +88,13 @@ class PylamaItem(pytest.Item, pytest.File):
     def repr_failure(self, excinfo):
         if excinfo.errisinstance(PylamaError):
             return excinfo.value.args[0]
-        return super(PylamaItem, self).repr_failure(excinfo)
+        return super().repr_failure(excinfo)
 
 
 def check_file(path):
     options = parse_options()
     path = op.relpath(str(path), CURDIR)
-    return process_paths(options, candidates=[path], error=False)
+    return check_paths([path], options, rootdir=CURDIR)
 
 
 # pylama:ignore=D,E1002,W0212,F0001,C0115,C0116

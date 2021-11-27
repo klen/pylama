@@ -111,46 +111,41 @@ Command line options
 
     $ pylama --help
 
-    usage: pylama [-h] [--verbose] [--version]
-                  [--format {pep8,pycodestyle,pylint,parsable}] [--select SELECT]
-                  [--sort SORT] [--linters LINTERS] [--ignore IGNORE]
-                  [--skip SKIP] [--report REPORT] [--hook] [--concurrent]
-                  [--options FILE] [--force] [--abspath]
-                  [paths [paths ...]]
+    usage: pylama [-h] [--verbose] [--version] [--from-stdin] [--format {json,pep8,pycodestyle,pylint,parsable}] [--select SELECT]
+                [--sort SORT] [--linters LINTERS] [--ignore IGNORE] [--skip SKIP] [--report REPORT] [--hook] [--concurrent]
+                [--options FILE] [--abspath]
+                [paths ...]
 
     Code audit tool for python.
 
     positional arguments:
-      paths                 Paths to files or directories for code check.
+    paths                 Paths to files or directories for code check.
 
     optional arguments:
-      -h, --help            show this help message and exit
-      --verbose, -v         Verbose mode.
-      --version             show program's version number and exit
-      --format {pep8,pycodestyle,pylint,parsable}, -f {pep8,pycodestyle,pylint,parsable}
-                            Choose errors format (pycodestyle, pylint, parsable).
-      --select SELECT, -s SELECT
+    -h, --help            show this help message and exit
+    --verbose, -v         Verbose mode.
+    --version             show program's version number and exit
+    --from-stdin          Interpret the stdin as a python script, whose filename needs to be passed as the path argument.
+    --format {pydocstyle,pycodestyle,pylint,parsable,json}, -f {pydocstyle,pycodestyle,pylint,parsable, json}
+                            Choose output format.
+    --select SELECT, -s SELECT
                             Select errors and warnings. (comma-separated list)
-      --sort SORT           Sort result by error types. Ex. E,W,D
-      --linters LINTERS, -l LINTERS
-                            Select linters. (comma-separated). Choices are mccabe,
-                            pep257,pydocstyle,pep8,pycodestyle,pyflakes,pylint,iso
-                            rt.
-      --ignore IGNORE, -i IGNORE
+    --sort SORT           Sort result by error types. Ex. E,W,D
+    --linters LINTERS, -l LINTERS
+                            Select linters. (comma-separated). Choices are
+                            eradicate,mccabe,mypy,pycodestyle,pydocstyle,pyflakes,pylint,radon,vulture,quotes,isort.
+    --ignore IGNORE, -i IGNORE
                             Ignore errors and warnings. (comma-separated)
-      --skip SKIP           Skip files by masks (comma-separated, Ex.
-                            */messages.py)
-      --report REPORT, -r REPORT
+    --skip SKIP           Skip files by masks (comma-separated, Ex. */messages.py)
+    --report REPORT, -r REPORT
                             Send report to file [REPORT]
-      --hook                Install Git (Mercurial) hook.
-      --concurrent, --async
+    --hook                Install Git (Mercurial) hook.
+    --concurrent, --async
                             Enable async mode. Useful for checking a lot of files.
-      --options FILE, -o FILE
-                            Specify configuration file. Looks for pylama.ini,
-                            setup.cfg, tox.ini, or pytest.ini in the current
-                            directory (default: None).
-      --force, -F           Force code checking (if linter doesn't allow)
-      --abspath, -a         Use absolute paths in output.
+    --options FILE, -o FILE
+                            Specify configuration file. Looks for pylama.ini, setup.cfg, tox.ini, or pytest.ini in the current directory
+                            (default: /Users/horneds/projects/pylama/setup.cfg)
+    --abspath, -a         Use absolute paths in output.
 
 
 .. _modeline:

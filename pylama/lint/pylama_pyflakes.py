@@ -1,51 +1,51 @@
 """Pyflakes support."""
 
-import ast
-from typing import Any, Dict, List
 from pyflakes import checker
 
-from pylama.lint import Linter as Abstract
+from pylama.context import RunContext
+from pylama.lint import LinterV2 as Abstract
 
-
-# Path pyflakes messages
 m = checker.messages
-m.UnusedImport.message = f"W0611 {m.UnusedImport.message}"
-m.RedefinedWhileUnused.message = f"W0404 {m.RedefinedWhileUnused.message}"
-m.RedefinedInListComp.message = f"W0621 {m.RedefinedInListComp}"
-m.ImportShadowedByLoopVar.message = f"W0621 {m.ImportShadowedByLoopVar}"
-m.ImportStarUsed.message = f"W0401 {m.ImportStarUsed.message}"
-m.ImportStarUsage.message = f"W0401 {m.ImportStarUsage.message}"
-m.UndefinedName.message = f"E0602 {m.UndefinedName.message}"
-m.DoctestSyntaxError.message = f"W0511 {m.DoctestSyntaxError.message}"
-m.UndefinedExport.message = f"E0603 {m.UndefinedExport.message}"
-m.UndefinedLocal.message = f"E0602 {m.UndefinedLocal.message}"
-m.DuplicateArgument.message = f"E1122 {m.DuplicateArgument.message}"
-m.LateFutureImport.message = f"W0410 {m.LateFutureImport.message}"
-m.UnusedVariable.message = f"W0612 {m.UnusedVariable.message}"
-m.ReturnWithArgsInsideGenerator.message = f"E0106 {m.ReturnWithArgsInsideGenerator.message}"
-m.ReturnOutsideFunction.message = f"E0104 {m.ReturnOutsideFunction.message}"
+CODES = {
+    m.UnusedImport.message: "W0611",
+    m.RedefinedWhileUnused.message: "W0404",
+    m.RedefinedInListComp.message: "W0621",
+    m.ImportShadowedByLoopVar.message: "W0621",
+    m.ImportStarUsed.message: "W0401",
+    m.ImportStarUsage.message: "W0401",
+    m.UndefinedName.message: "E0602",
+    m.DoctestSyntaxError.message: "W0511",
+    m.UndefinedExport.message: "E0603",
+    m.UndefinedLocal.message: "E0602",
+    m.DuplicateArgument.message: "E1122",
+    m.LateFutureImport.message: "W0410",
+    m.UnusedVariable.message: "W0612",
+    m.ReturnWithArgsInsideGenerator.message: "E0106",
+    m.ReturnOutsideFunction.message: "E0104",
+}
 
 
 class Linter(Abstract):
     """Pyflakes runner."""
 
-    name = 'pyflakes'
+    name = "pyflakes"
 
-    def run(self, path, *, code=None, params=None, **_) -> List[Dict[str, Any]]:  # noqa
+    def run_check(self, context: RunContext):  # noqa
         """Check code with pyflakes."""
-        if params is None:
-            params = {}
-
+        params = context.get_params("pyflakes")
         builtins = params.get("builtins", "")
         if builtins:
             builtins = builtins.split(",")
 
-        tree = compile(code, path, "exec", ast.PyCF_ONLY_AST)
-        check = checker.Checker(tree, path, builtins=builtins)
-        return [{
-            'lnum': msg.lineno,
-            'text': msg.message % msg.message_args,
-            'type': msg.message[0]
-        } for msg in check.messages]
+        check = checker.Checker(context.ast, context.filename, builtins=builtins)
+        for msg in check.messages:
+            context.push(
+                lnum=msg.lineno,
+                col=msg.col,
+                text=msg.message % msg.message_args,
+                number=CODES.get(msg.message, ""),
+                source="pyflakes",
+            )
+
 
 #  pylama:ignore=E501,C0301

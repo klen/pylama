@@ -3,4 +3,11 @@
 :copyright: 2013 by Kirill Klenov.
 """
 
-__version__ = "8.0.6"
+import logging
+
+__version__ = "8.1.0"
+
+LOGGER = logging.getLogger("pylama")
+
+
+# pylama:ignore=D

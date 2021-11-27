@@ -1,19 +1,44 @@
-"""MyPy support."""
+"""MyPy support.
 
-from typing import Any, Dict, List
+TODO: Error codes
+"""
+from __future__ import annotations
+
 from mypy import api
 
-from pylama.lint import Linter as Abstract
+from pylama.context import RunContext
+from pylama.lint import LinterV2 as Abstract
+
+
+class Linter(Abstract):
+    """MyPy runner."""
+
+    name = "mypy"
+
+    def run_check(self, ctx: RunContext):
+        """Check code with mypy."""
+        # Support stdin
+        args = [ctx.temp_filename, "--follow-imports=skip", "--show-column-numbers"]
+        stdout, _, _ = api.run(args)  # noqa
+
+        for line in stdout.splitlines():
+            if not line:
+                continue
+            message = _MyPyMessage(line)
+            if message.valid:
+                ctx.push(
+                    source="mypy",
+                    lnum=message.line_num,
+                    col=message.column,
+                    text=message.text,
+                    type=message.types.get(message.message_type.strip(), "W"),
+                )
 
 
 class _MyPyMessage:
     """Parser for a single MyPy output line."""
 
-    types = {
-        'error': 'E',
-        'warning': 'W',
-        'note': 'N'
-    }
+    types = {"error": "E", "warning": "W", "note": "N"}
 
     valid = False
 
@@ -23,7 +48,7 @@ class _MyPyMessage:
         self.column = None
 
         try:
-            result = line.split(':', maxsplit=4)
+            result = line.split(":", maxsplit=4)
             self.filename, line_num_txt, column_txt, self.message_type, text = result
         except ValueError:
             return
@@ -36,40 +61,3 @@ class _MyPyMessage:
 
         self.text = text.strip()
         self.valid = True
-
-    def add_note(self, note):
-        """Add in additional information about this message."""
-        self.text = f"{self.text} - {note}"
-
-    def to_result(self):
-        """Convert to the Linter.run return value."""
-        return {
-            'lnum': self.line_num,
-            'col': self.column,
-            'text': self.text,
-            'type': self.types.get(self.message_type.strip(), 'W')
-        }
-
-
-class Linter(Abstract):
-    """MyPy runner."""
-
-    name = 'mypy'
-
-    def run(self, path, **_) -> List[Dict[str, Any]]:
-        """Check code with mypy."""
-        args = [path, '--follow-imports=skip', '--show-column-numbers']
-        stdout, _, _ = api.run(args)    # noqa
-        messages = []
-        for line in stdout.split('\n'):
-            if not line:
-                continue
-            message = _MyPyMessage(line)
-            if message.valid:
-                if message.message_type == 'note':
-                    if messages[-1].line_num == message.line_num:
-                        messages[-1].add_note(message.text)
-                else:
-                    messages.append(message)
-
-        return [m.to_result() for m in messages]

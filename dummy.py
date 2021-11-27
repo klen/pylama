@@ -125,6 +125,7 @@ class UnusedVariable(Message):
         Message.__init__(self, filename, lineno)
         self.message_args = (names,)
         error = 1 # noQa and some comments
+        another = 42
 
 
 class BadTyping(Message):

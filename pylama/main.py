@@ -2,6 +2,7 @@
 
 import sys
 import warnings
+from json import dumps
 from os import path as op
 from os import walk
 from typing import List, Optional
@@ -10,33 +11,44 @@ from .check_async import check_async
 from .config import CURDIR, Namespace, parse_options, setup_logger
 from .core import LOGGER, run
 from .errors import Error
+from .utils import read_stdin
 
-DEFAULT_FORMAT = "{filename}:{lnum}:{col} [{etype}] {text}"
+DEFAULT_FORMAT = "{filename}:{lnum}:{col} [{etype}] {number} {message} [{source}]"
 MESSAGE_FORMATS = {
-    "pylint": "{filename}:{lnum}: [{etype}] {text}",
-    "pycodestyle": "{filename}:{lnum}:{col} {text}",
+    "pylint": "{filename}:{lnum}: [{etype}] {number} {message} [{source}]",
+    "pycodestyle": "{filename}:{lnum}:{col} {number} {message} [{source}]",
     "parsable": DEFAULT_FORMAT,
 }
 
 
 def check_paths(
-    paths: Optional[List[str]], options: Namespace, rootdir: str = None
+    paths: Optional[List[str]],
+    options: Namespace,
+    code: str = None,
+    rootdir: str = None,
 ) -> List[Error]:
     """Check the given paths.
 
     :param rootdir: Root directory (for making relative file paths)
     :param options: Parsed pylama options (from pylama.config.parse_options)
     """
-    candidates = []
-    for path in paths or options.paths:
-        if not op.exists(path):
-            continue
+    paths = paths or options.paths
+    if not paths:
+        return []
 
-        if not op.isdir(path):
-            candidates.append(op.abspath(path))
+    if code is None:
+        candidates = []
+        for path in paths or options.paths:
+            if not op.exists(path):
+                continue
 
-        for root, _, files in walk(path):
-            candidates += [op.relpath(op.join(root, f), CURDIR) for f in files]
+            if not op.isdir(path):
+                candidates.append(op.abspath(path))
+
+            for root, _, files in walk(path):
+                candidates += [op.relpath(op.join(root, f), CURDIR) for f in files]
+    else:
+        candidates = [paths[0]]
 
     if not candidates:
         return []
@@ -45,18 +57,14 @@ def check_paths(
         path = candidates[0]
         rootdir = path if op.isdir(path) else op.dirname(path)
 
-    linters = options.linters
-    if not options.force:
-        candidates = [
-            path for path in candidates if any(l.allow(path) for _, l in linters)
-        ]
+    candidates = [path for path in candidates if path.endswith('.py')]
 
     if options.concurrent:
-        return check_async(candidates, options, rootdir)
+        return check_async(candidates, code=code, options=options, rootdir=rootdir)
 
     errors = []
     for path in candidates:
-        errors += run(path=path, rootdir=rootdir, options=options)
+        errors += run(path=path, code=code, rootdir=rootdir, options=options)
 
     return errors
 
@@ -72,17 +80,13 @@ def check_path(
         "pylama.main.check_path is depricated and will be removed in pylama 9",
         DeprecationWarning,
     )
-    return check_paths(candidates, options=options, rootdir=rootdir)
+    return check_paths(candidates, code=code, options=options, rootdir=rootdir)
 
 
-def shell(args=None, error=True):
+def shell(args: List[str] = None, error: bool = True):
     """Endpoint for console.
 
     Parse a command arguments, configuration files and run a checkers.
-
-    :return list: list of errors
-    :raise SystemExit:
-
     """
     if args is None:
         args = sys.argv[1:]
@@ -98,33 +102,33 @@ def shell(args=None, error=True):
         for path in options.paths:
             return install_hook(path)
 
-    return process_paths(options, error=error)
+    if options.from_stdin and not options.paths:
+        LOGGER.error('--from-stdin requires a filename')
+        return sys.exit(1)
 
-
-def process_paths(
-    options: Namespace, candidates: List[str] = None, error: bool = True
-) -> List[Error]:
-    """Process files and log errors."""
-    errors = check_paths(candidates, options, rootdir=CURDIR)
-    pattern = MESSAGE_FORMATS.get(options.format, DEFAULT_FORMAT)
-
-    for err in errors:
-        if options.abspath:
-            err.filename = op.abspath(err.filename)
-        LOGGER.warning(
-            pattern.format(
-                filename=err.filename,
-                lnum=err.lnum,
-                col=err.col,
-                text=err.text,
-                etype=err.type,
-            )
-        )
+    errors = check_paths(
+        options.paths,
+        code=read_stdin() if options.from_stdin else None,
+        options=options,
+        rootdir=CURDIR,
+    )
+    display_errors(errors, options)
 
     if error:
         sys.exit(int(bool(errors)))
 
     return errors
+
+
+def display_errors(errors: List[Error], options: Namespace):
+    """Format and display the given errors."""
+    if options.format == "json":
+        LOGGER.warning(dumps([err.to_dict() for err in errors]))
+
+    else:
+        pattern = MESSAGE_FORMATS.get(options.format, DEFAULT_FORMAT)
+        for err in errors:
+            LOGGER.warning(err.format(pattern))
 
 
 if __name__ == "__main__":

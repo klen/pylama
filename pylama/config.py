@@ -5,11 +5,11 @@ import os
 import re
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import Any, Collection, List, Optional, Set, Tuple, Type, Union
+from typing import Any, Collection, Dict, List, Optional, Set, Union
 
-from . import __version__
-from .libs import inirama
-from .lint import LINTERS, Linter
+from pylama import __version__, LOGGER
+from pylama.libs import inirama
+from pylama.lint import LINTERS
 
 #: A default checkers
 DEFAULT_LINTERS = "pycodestyle", "pyflakes", "mccabe"
@@ -17,16 +17,7 @@ DEFAULT_LINTERS = "pycodestyle", "pyflakes", "mccabe"
 CURDIR = os.getcwd()
 CONFIG_FILES = "pylama.ini", "setup.cfg", "tox.ini", "pytest.ini"
 
-#: The skip pattern
-SKIP_PATTERN = re.compile(r"# *noqa\b", re.I).search
-
-# Parse a modelines
-MODELINE_RE = re.compile(
-    r"^\s*#\s+(?:pylama:)\s*((?:[\w_]*=[^:\n\s]+:?)+)", re.I | re.M
-)
-
 # Setup a logger
-LOGGER = logging.getLogger("pylama")
 LOGGER.propagate = False
 STREAM = logging.StreamHandler(sys.stdout)
 LOGGER.addHandler(STREAM)
@@ -50,16 +41,18 @@ def split_csp_str(val: Union[Collection[str], str]) -> Set[str]:
     return set(x for x in val if x)
 
 
-def parse_linters(linters: str) -> List[Tuple[str, Type[Linter]]]:
+def prepare_sorter(val: Union[Collection[str], str]) -> Optional[Dict[str, int]]:
+    """Parse sort value."""
+    if val:
+        types = split_csp_str(val)
+        return dict((v, n) for n, v in enumerate(types, 1))
+
+    return None
+
+
+def parse_linters(linters: str) -> List[str]:
     """Initialize choosen linters."""
-    result = []
-    for name in split_csp_str(linters):
-        linter = LINTERS.get(name)
-        if linter:
-            result.append((name, linter))
-        else:
-            logging.warning("Linter `%s` not found.", name)
-    return result
+    return [name for name in split_csp_str(linters) if name in LINTERS]
 
 
 def get_default_config_file(rootdir: str = None) -> Optional[str]:
@@ -91,11 +84,19 @@ PARSER.add_argument("--verbose", "-v", action="store_true", help="Verbose mode."
 PARSER.add_argument("--version", action="version", version="%(prog)s " + __version__)
 
 PARSER.add_argument(
+    "--from-stdin",
+    action="store_true",
+    help="Interpret the stdin as a python script, "
+    "whose filename needs to be passed as the path argument.",
+)
+
+
+PARSER.add_argument(
     "--format",
     "-f",
     default=_Default("pycodestyle"),
-    choices=["pep8", "pycodestyle", "pylint", "parsable"],
-    help="Choose errors format (pycodestyle, pylint, parsable).",
+    choices=["pydocstyle", "pycodestyle", "pylint", "parsable", "json"],
+    help="Choose output format.",
 )
 
 PARSER.add_argument(
@@ -108,8 +109,8 @@ PARSER.add_argument(
 
 PARSER.add_argument(
     "--sort",
-    default=_Default(""),
-    type=split_csp_str,
+    default=_Default(),
+    type=prepare_sorter,
     help="Sort result by error types. Ex. E,W,D",
 )
 
@@ -161,14 +162,6 @@ PARSER.add_argument(
 )
 
 PARSER.add_argument(
-    "--force",
-    "-F",
-    action="store_true",
-    default=_Default(False),
-    help="Force code checking (if linter doesn't allow)",
-)
-
-PARSER.add_argument(
     "--abspath",
     "-a",
     action="store_true",
@@ -184,10 +177,8 @@ def parse_options(  # noqa
     args: List[str] = None, config: bool = True, rootdir: str = CURDIR, **overrides
 ) -> Namespace:
     """Parse options from command line and configuration files."""
-    args = args or []
-
     # Parse args from command string
-    options = PARSER.parse_args(args)
+    options = PARSER.parse_args(args or [])
     options.file_params = {}
     options.linters_params = {}
 
