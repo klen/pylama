@@ -10,7 +10,7 @@ def test_mccabe(context):
     mccabe = LINTERS["mccabe"]
     assert mccabe
 
-    ctx = context(mccabe={'complexity': 3})
+    ctx = context(mccabe={'max-complexity': 3})
     mccabe().run_check(ctx)
     errors = ctx.errors
     assert errors

@@ -1,9 +1,10 @@
 2021-11-27  k.klenov
 
-	* Version 8.1.0
+	* Version 8.1.2
 	* Support json format
 	* Support `--from-stdin` option
 	* Changed: pylama only allows to check python files (--force is removed)
+	* Changed: mccabe argument `complexity` -> `max-complexity`
 
 2021-11-26  k.klenov
 

@@ -55,6 +55,15 @@ def test_ignore_select(parse_options, run):
     assert errors[0].col
 
 
+def test_skip(parse_options, run):
+    options = parse_options()
+    errors = run('dummy.py', options=options, code=(
+        "undefined()\n"
+        "# pylama: skip=1"
+    ))
+    assert not errors
+
+
 def test_stdin(monkeypatch, parse_args):
     monkeypatch.setattr('sys.stdin', io.StringIO('unknown_call()\ndef no_doc():\n  pass\n\n'))
     options = parse_args("--from-stdin dummy.py")
