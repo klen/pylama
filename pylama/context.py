@@ -134,7 +134,7 @@ class RunContext:
         if skip is not None:
             self.skip = bool(int(skip))
 
-    @lru_cache
+    @lru_cache(42)
     def get_params(self, name: str) -> Dict:
         """Get params for a linter with the given name."""
         lparams = self.linters_params.get(name, {})
@@ -143,7 +143,7 @@ class RunContext:
                 lparams[key] = set(lparams[key].split(','))
         return lparams
 
-    @lru_cache
+    @lru_cache(42)
     def get_filter(self, name: str, key: str) -> Set:
         """Get select/ignore from linter params."""
         lparams = self.get_params(name)
