@@ -13,7 +13,7 @@ class Linter(Abstract):
     def run_check(self, ctx: RunContext):
         """Run Mccabe code checker."""
         params = ctx.get_params('mccabe')
-        McCabeChecker.max_complexity = int(params.get("complexity", 10))
+        McCabeChecker.max_complexity = int(params.get("max-complexity", 10))
         McCabeChecker._error_tmpl = "%r is too complex (%d)"
         number = McCabeChecker._code
         for lineno, offset, text, _ in McCabeChecker(ctx.ast, ctx.filename).run():
