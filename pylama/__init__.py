@@ -5,7 +5,7 @@
 
 import logging
 
-__version__ = "8.0.6"
+__version__ = "8.1.0"
 
 LOGGER = logging.getLogger("pylama")
 
