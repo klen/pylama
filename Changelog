@@ -1,5 +1,9 @@
+2021-11-27  k.klenov
+
+	* Version 8.1.0
 	* Support json format
 	* Support `--from-stdin` option
+	* Changed: pylama only allows to check python files (--force is removed)
 
 2021-11-26  k.klenov
 

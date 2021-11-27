@@ -5,11 +5,11 @@ import os
 import re
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import Any, Collection, Dict, List, Optional, Set, Tuple, Type, Union
+from typing import Any, Collection, Dict, List, Optional, Set, Union
 
-from . import __version__
-from .libs import inirama
-from .lint import LINTERS, Linter
+from pylama import __version__, LOGGER
+from pylama.libs import inirama
+from pylama.lint import LINTERS
 
 #: A default checkers
 DEFAULT_LINTERS = "pycodestyle", "pyflakes", "mccabe"
@@ -17,16 +17,7 @@ DEFAULT_LINTERS = "pycodestyle", "pyflakes", "mccabe"
 CURDIR = os.getcwd()
 CONFIG_FILES = "pylama.ini", "setup.cfg", "tox.ini", "pytest.ini"
 
-#: The skip pattern
-SKIP_PATTERN = re.compile(r"# *noqa\b", re.I).search
-
-# Parse a modelines
-MODELINE_RE = re.compile(
-    r"^\s*#\s+(?:pylama:)\s*((?:[\w_]*=[^:\n\s]+:?)+)", re.I | re.M
-)
-
 # Setup a logger
-LOGGER = logging.getLogger("pylama")
 LOGGER.propagate = False
 STREAM = logging.StreamHandler(sys.stdout)
 LOGGER.addHandler(STREAM)
@@ -59,16 +50,9 @@ def prepare_sorter(val: Union[Collection[str], str]) -> Optional[Dict[str, int]]
     return None
 
 
-def parse_linters(linters: str) -> List[Tuple[str, Type[Linter]]]:
+def parse_linters(linters: str) -> List[str]:
     """Initialize choosen linters."""
-    result = []
-    for name in split_csp_str(linters):
-        linter = LINTERS.get(name)
-        if linter:
-            result.append((name, linter))
-        else:
-            logging.warning("Linter `%s` not found.", name)
-    return result
+    return [name for name in split_csp_str(linters) if name in LINTERS]
 
 
 def get_default_config_file(rootdir: str = None) -> Optional[str]:
@@ -103,7 +87,7 @@ PARSER.add_argument(
     "--from-stdin",
     action="store_true",
     help="Interpret the stdin as a python script, "
-    "whose filename needs to be passed as the module_or_package argument.",
+    "whose filename needs to be passed as the path argument.",
 )
 
 
@@ -111,8 +95,8 @@ PARSER.add_argument(
     "--format",
     "-f",
     default=_Default("pycodestyle"),
-    choices=["json", "pep8", "pycodestyle", "pylint", "parsable"],
-    help="Choose errors format (pycodestyle, pylint, parsable).",
+    choices=["pydocstyle", "pycodestyle", "pylint", "parsable", "json"],
+    help="Choose output format.",
 )
 
 PARSER.add_argument(
@@ -175,14 +159,6 @@ PARSER.add_argument(
         f"Looks for {', '.join(CONFIG_FILES[:-1])}, or {CONFIG_FILES[-1]}"
         f" in the current directory (default: {DEFAULT_CONFIG_FILE})"
     ),
-)
-
-PARSER.add_argument(
-    "--force",
-    "-F",
-    action="store_true",
-    default=_Default(False),
-    help="Force code checking (if linter doesn't allow)",
 )
 
 PARSER.add_argument(

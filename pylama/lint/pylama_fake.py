@@ -1,6 +1,6 @@
 """A fake linter which one never be loaded."""
 
-from typing import Dict, List, Any
+from typing import Dict, Iterator, Any
 
 import unknown_module  # noqa
 
@@ -12,6 +12,6 @@ class Linter(Abstract):
 
     name = "fake"
 
-    def run(self, path: str, **_) -> List[Dict[str, Any]]:
+    def run(self, path: str, **_) -> Iterator[Dict[str, Any]]:
         """Run the unknown module."""
         return unknown_module.run(path)

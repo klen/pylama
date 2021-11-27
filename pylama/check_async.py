@@ -15,7 +15,7 @@ try:
 except (ImportError, NotImplementedError):
     CPU_COUNT = 1
 
-from .core import run
+from pylama.core import run
 
 LOGGER = logging.getLogger("pylama")
 

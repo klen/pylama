@@ -1,16 +1,14 @@
-"""Pylint integration to Pylama.
-
-TODO: Stdin
-"""
+"""Pylint integration to Pylama."""
 import logging
 from os import environ
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Dict
 
 from pylint.lint import Run
 from pylint.reporters import BaseReporter
 
-from pylama.lint import Linter as BaseLinter
+from pylama.context import RunContext
+from pylama.lint import LinterV2 as BaseLinter
 
 HOME_RCFILE = Path(environ.get("HOME", "")) / ".pylintrc"
 
@@ -23,59 +21,46 @@ class Linter(BaseLinter):
 
     name = "pylint"
 
-    def run(self, path, *, params=None, ignore=None, select=None, **_) -> List[Dict[str, Any]]:  # noqa
+    def run_check(self, ctx: RunContext):
         """Pylint code checking."""
         logger.debug("Start pylint")
-
-        if params is None:
-            params = {}
+        params = ctx.get_params("pylint")
 
         class Reporter(BaseReporter):
             """Handle messages."""
-
-            def __init__(self):
-                self.errors = []
-                super().__init__()
 
             def _display(self, _):
                 pass
 
             def handle_message(self, msg):
-                self.errors.append(
-                    dict(
-                        lnum=msg.line,
-                        col=msg.column,
-                        text=f"{msg.msg_id} {msg.msg}",
-                        type=msg.msg_id[0],
-                    )
+                msg_id = msg.msg_id
+                ctx.push(
+                    col=msg.column,
+                    lnum=msg.line,
+                    number=msg_id,
+                    text=msg.msg,
+                    type=msg_id[0],
+                    source="pylint",
                 )
 
-        params = _Params(params, ignore=ignore, select=select)
+        params = _Params(params)
         logger.debug(params)
 
         reporter = Reporter()
-        Run([path] + params.to_attrs(), reporter=reporter, exit=False)
-        return reporter.errors
+        Run([ctx.temp_filename] + params.to_attrs(), reporter=reporter, exit=False)
 
 
 class _Params:
     """Store pylint params."""
 
-    def __init__(self, params: Dict,  select=None, ignore=None):
+    def __init__(self, params: Dict):
         attrs = {
             name.replace("_", "-"): self.prepare_value(value)
-            for name, value in params.items() if value is not None
+            for name, value in params.items()
+            if value is not None
         }
         if HOME_RCFILE.exists():
             attrs["rcfile"] = HOME_RCFILE.as_posix()
-
-        if select:
-            enable = attrs.get("enable", None)
-            attrs["enable"] = select | set(enable.split(",") if enable else [])
-
-        if ignore:
-            disable = attrs.get("disable", None)
-            attrs["disable"] = ignore | set(disable.split(",") if disable else [])
 
         self.attrs = attrs
 

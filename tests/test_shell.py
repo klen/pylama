@@ -17,7 +17,7 @@ def test_sort(parse_options):
     options = parse_options()
     options.sort = {'C': 1, 'D': 2}
     errors = run('dummy.py', options=options)
-    assert errors[0].type == 'C'
+    assert errors[0].etype == 'C'
 
 
 def test_linters_params(parse_options, run):
@@ -33,7 +33,7 @@ def test_linters_params(parse_options, run):
 
 def test_ignore_select(parse_options, run):
     options = parse_options()
-    options.ignore = ['E301', 'D102']
+    options.ignore = {'E301', 'D102'}
     options.linters = ['pycodestyle', 'pydocstyle', 'pyflakes', 'mccabe']
     errors = run('dummy.py', options=options)
     assert errors
@@ -45,11 +45,11 @@ def test_ignore_select(parse_options, run):
     assert 'E301' not in numbers
     assert 'D102' not in numbers
 
-    options.ignore = ['E3', 'D', 'E2', 'E8']
+    options.ignore = {'E', 'D', 'W'}
     errors = run('dummy.py', options=options)
     assert not errors
 
-    options.select = ['E301']
+    options.select = {'E301'}
     errors = run('dummy.py', options=options)
     assert len(errors) == 1
     assert errors[0].col

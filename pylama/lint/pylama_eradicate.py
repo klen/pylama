@@ -1,14 +1,9 @@
-"""Commented-out code checking.
-
-Support stdin.
-"""
-
-from typing import Any, Dict, List
+"""Commented-out code checking."""
 
 from eradicate import Eradicator
 
-from pylama.lint import Linter as Abstract
-from pylama.utils import get_lines
+from pylama.context import RunContext
+from pylama.lint import LinterV2 as Abstract
 
 
 class Linter(Abstract):
@@ -16,27 +11,18 @@ class Linter(Abstract):
 
     name = "eradicate"
 
-    def run(self, path: str, *, code: str = None, **_) -> List[Dict[str, Any]]:  # noqa
+    def run_check(self, ctx: RunContext):
         """Eradicate code checking.
 
         TODO: Support params
         """
-        if not code:
-            return []
-
         eradicator = Eradicator()
-        line_numbers = eradicator.commented_out_code_line_numbers(code)
-        lines = get_lines(code)
-
-        result = []
+        line_numbers = eradicator.commented_out_code_line_numbers(ctx.source)
         for line_number in line_numbers:
-            line = lines[line_number - 1]
-            result.append(
-                dict(
-                    lnum=line_number,
-                    offset=len(line) - len(line.rstrip()),
-                    text=str("E800 Found commented out code: ") + line,
-                    type="E800",
-                )
+            ctx.push(
+                lnum=line_number,
+                source="eradicate",
+                text=str("Found commented out code"),
+                number="E800",
+                type="E",
             )
-        return result

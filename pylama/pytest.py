@@ -44,6 +44,7 @@ def pytest_collect_file(path, parent):
     config = parent.config
     if config.option.pylama and path.ext == ".py":
         return PylamaItem.from_parent(parent, fspath=path)
+    return None
 
 
 class PylamaError(Exception):
@@ -52,7 +53,7 @@ class PylamaError(Exception):
 
 class PylamaItem(pytest.Item, pytest.File):
     def __init__(self, fspath, parent):
-        super(PylamaItem, self).__init__(fspath, parent)
+        super().__init__(fspath, parent)
         self.add_marker("pycodestyle")
         self.cache = None
         self._pylamamtimes = None
@@ -71,6 +72,8 @@ class PylamaItem(pytest.Item, pytest.File):
         if old == self._pylamamtimes:
             pytest.skip("file(s) previously passed Pylama checks")
 
+        return True
+
     def runtest(self):
         errors = check_file(self.fspath)
         if errors:
@@ -85,7 +88,7 @@ class PylamaItem(pytest.Item, pytest.File):
     def repr_failure(self, excinfo):
         if excinfo.errisinstance(PylamaError):
             return excinfo.value.args[0]
-        return super(PylamaItem, self).repr_failure(excinfo)
+        return super().repr_failure(excinfo)
 
 
 def check_file(path):

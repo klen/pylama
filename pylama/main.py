@@ -13,10 +13,10 @@ from .core import LOGGER, run
 from .errors import Error
 from .utils import read_stdin
 
-DEFAULT_FORMAT = "{filename}:{lnum}:{col} [{etype}] {text} [{linter}]"
+DEFAULT_FORMAT = "{filename}:{lnum}:{col} [{etype}] {number} {message} [{source}]"
 MESSAGE_FORMATS = {
-    "pylint": "{filename}:{lnum}: [{etype}] {text} [{linter}]",
-    "pycodestyle": "{filename}:{lnum}:{col} {text} [{linter}]",
+    "pylint": "{filename}:{lnum}: [{etype}] {number} {message} [{source}]",
+    "pycodestyle": "{filename}:{lnum}:{col} {number} {message} [{source}]",
     "parsable": DEFAULT_FORMAT,
 }
 
@@ -57,11 +57,7 @@ def check_paths(
         path = candidates[0]
         rootdir = path if op.isdir(path) else op.dirname(path)
 
-    linters = options.linters
-    if not options.force:
-        candidates = [
-            path for path in candidates if any(l.allow(path) for _, l in linters)
-        ]
+    candidates = [path for path in candidates if path.endswith('.py')]
 
     if options.concurrent:
         return check_async(candidates, code=code, options=options, rootdir=rootdir)

@@ -7,4 +7,4 @@ def test_git_hook():
 def test_hg_hook():
     from pylama.hook import hg_hook
 
-    assert not hg_hook(None, dict())
+    assert not hg_hook(None, {})

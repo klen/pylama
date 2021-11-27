@@ -1,31 +1,12 @@
 import os.path as op
 
 
-def test_filter_errors():
-    from pylama.core import filter_errors
-    from pylama.errors import Error
-
-    assert list(filter_errors([Error(text='E1')], select=['E'], ignore=['E101']))
-    assert not list(filter_errors([Error(text='W1')], select=['W100'], ignore=['W']))
-
-
 def test_remove_duplicates():
     from pylama.errors import Error, remove_duplicates
 
-    errors = [Error(linter='pycodestyle', text='E701'), Error(linter='pylint', text='C0321')]
+    errors = [Error(source='pycodestyle', text='E701'), Error(source='pylint', text='C0321')]
     errors = list(remove_duplicates(errors))
     assert len(errors) == 1
-
-
-def test_parser_modeline():
-    from pylama.core import parse_modeline
-
-    code = """
-        bla bla bla
-        # pylama: ignore=W12,E14:select=R:skip=0
-    """
-    params = parse_modeline(code)
-    assert params == dict(ignore='W12,E14', select='R', skip='0')
 
 
 def test_checkpath(parse_options):

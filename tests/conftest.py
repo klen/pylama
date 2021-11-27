@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Dict
 
 import pytest
 
@@ -30,3 +31,15 @@ def run():
 def source():
     dummy = Path(__file__).parent / "../dummy.py"
     return dummy.read_text()
+
+
+@pytest.fixture
+def context(source):
+    from pylama.context import RunContext
+
+    def fabric(*, code: str = None, options = None, **linters_params):
+        ctx = RunContext('dummy.py', source if code is None else code, options=options)
+        ctx.linters_params = linters_params
+        return ctx
+
+    return fabric
