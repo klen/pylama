@@ -18,7 +18,7 @@ class Linter(Abstract):
         number = McCabeChecker._code
         for lineno, offset, text, _ in McCabeChecker(ctx.ast, ctx.filename).run():
             ctx.push(
-                col=offset,
+                col=offset + 1,
                 lnum=lineno,
                 number=number,
                 text=text,

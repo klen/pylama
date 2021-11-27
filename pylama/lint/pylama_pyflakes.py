@@ -41,7 +41,7 @@ class Linter(Abstract):
         for msg in check.messages:
             context.push(
                 lnum=msg.lineno,
-                col=msg.col,
+                col=msg.col + 1,
                 text=msg.message % msg.message_args,
                 number=CODES.get(msg.message, ""),
                 source="pyflakes",

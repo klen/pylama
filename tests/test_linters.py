@@ -16,6 +16,7 @@ def test_mccabe(context):
     assert errors
     assert errors[0].number
     assert not errors[0].message.startswith(errors[0].number)
+    assert errors[0].col == 5
 
 
 def test_pydocstyle(context):
@@ -127,6 +128,7 @@ def test_radon(context):
     errors = ctx.errors
     assert errors
     assert errors[0].number
+    assert errors[0].col == 1
     assert not errors[0].message.startswith(errors[0].number)
 
     # Issue #164
@@ -144,6 +146,7 @@ def test_pylint(context):
     errors = ctx.errors
     assert errors
     assert errors[0].number
+    assert errors[0].col == 1
     assert not errors[0].message.startswith(errors[0].number)
 
     # Test immutable params
@@ -175,4 +178,5 @@ def test_vulture(context):
     errors = ctx.errors
     assert errors
     assert errors[0].number
+    assert errors[0].col == 1
     assert not errors[0].message.startswith(errors[0].number)

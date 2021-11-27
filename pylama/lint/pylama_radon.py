@@ -29,7 +29,7 @@ class Linter(Abstract):
             if block.complexity > complexity:
                 context.push(
                     lnum=block.lineno,
-                    col=block.col_offset,
+                    col=block.col_offset + 1,
                     source="radon",
                     type="R",
                     number="R901",
