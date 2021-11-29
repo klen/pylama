@@ -1,3 +1,9 @@
+2021-11-28  k.klenov
+	* Version 8.2.0
+	* Added `--max-line-length` to setup max line length for pycodestyle and
+	  pylint
+	* Support for linters options in command line
+
 2021-11-27  k.klenov
 
 	* Version 8.1.4

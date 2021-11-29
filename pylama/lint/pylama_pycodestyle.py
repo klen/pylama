@@ -1,6 +1,5 @@
 """pycodestyle support."""
-from pycodestyle import (BaseReport, StyleGuide, Checker, _parse_multi_options,
-                         get_parser)
+from pycodestyle import (BaseReport, StyleGuide, Checker, get_parser)
 
 from pylama.lint import LinterV2 as Abstract
 from pylama.context import RunContext
@@ -14,6 +13,10 @@ class Linter(Abstract):
     def run_check(self, ctx: RunContext):  # noqa
         """Check code with pycodestyle."""
         params = ctx.get_params('pycodestyle')
+        options = ctx.options
+        if options:
+            params.setdefault('max_line_length', options.max_line_length)
+
         if params:
             parser = get_parser()
             for option in parser.option_list:
@@ -22,13 +25,10 @@ class Linter(Abstract):
                     if isinstance(value, str):
                         params[option.dest] = option.convert_value(option, value)
 
-            for key in ["filename", "exclude", "select", "ignore"]:
-                if key in params and isinstance(params[key], str):
-                    params[key] = _parse_multi_options(params[key])
-
         style = StyleGuide(reporter=_PycodestyleReport, **params)
-        style.options.report.ctx = ctx
-        checker = Checker(ctx.filename, lines=ctx.lines, options=style.options)
+        options = style.options
+        options.report.ctx = ctx
+        checker = Checker(ctx.filename, lines=ctx.lines, options=options)
         checker.check_all()
 
 
@@ -38,7 +38,7 @@ class _PycodestyleReport(BaseReport):
 
     def error(self, line_number, offset, text, _):
         """Save errors."""
-        code, _,  text = text.partition(' ')
+        code, _, text = text.partition(' ')
         self.ctx.push(
             text=text,
             type=code[0],

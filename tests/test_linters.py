@@ -18,6 +18,11 @@ def test_mccabe(context):
     assert not errors[0].message.startswith(errors[0].number)
     assert errors[0].col == 5
 
+    ctx = context(args='--max-complexity 3')
+    mccabe().run_check(ctx)
+    errors = ctx.errors
+    assert errors
+
 
 def test_pydocstyle(context):
     from pylama.lint import LINTERS
@@ -37,6 +42,12 @@ def test_pydocstyle(context):
     errors2 = ctx.errors
     assert errors2
     assert len(errors) > len(errors2)
+
+    ctx = context(args='--pydocstyle-convention numpy')
+    pydocstyle().run_check(ctx)
+    errors3 = ctx.errors
+    assert errors3
+    assert len(errors3) == len(errors2)
 
 
 def test_pycodestyle(context):
@@ -58,6 +69,12 @@ def test_pycodestyle(context):
     errors2 = ctx.errors
     assert errors2
     assert len(errors2) > len(errors)
+
+    ctx = context(args='--max-line-length=60')
+    pycodestyle().run_check(ctx)
+    errors3 = ctx.errors
+    assert errors3
+    assert len(errors3) == len(errors2)
 
 
 def test_pyflakes(context):
@@ -134,6 +151,11 @@ def test_radon(context):
     # Issue #164
     assert ':' not in errors[0].message
 
+    ctx = context(args='--max-complexity=3 --radon-no-assert')
+    radon().run_check(ctx)
+    errors = ctx.errors
+    assert errors
+
 
 def test_pylint(context):
     from pylama.lint import LINTERS
@@ -154,6 +176,20 @@ def test_pylint(context):
     pylint().run_check(ctx)
     assert ctx.errors
     assert not ctx.linters_params
+
+    ctx = context(args="--pylint-confidence=HIGH --ignore=C")
+    pylint().run_check(ctx)
+    assert not ctx.errors
+
+    ctx = context(pylint={'ignore': 'E,R,W,C'})
+    pylint().run_check(ctx)
+    errors = ctx.errors
+    assert not errors
+
+    ctx = context(args='--ignore=E,R,W,C')
+    pylint().run_check(ctx)
+    errors = ctx.errors
+    assert not errors
 
 
 def test_quotes(source):
@@ -180,3 +216,7 @@ def test_vulture(context):
     assert errors[0].number
     assert errors[0].col == 1
     assert not errors[0].message.startswith(errors[0].number)
+
+    ctx = context(args="--vulture-min-confidence=80")
+    vulture().run_check(ctx)
+    assert not ctx.errors

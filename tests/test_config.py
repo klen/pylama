@@ -7,6 +7,7 @@ def test_config(parse_options):
     options = parse_options()
     assert options
     assert options.skip
+    assert options.max_line_length
     assert not options.verbose
     assert options.paths
     assert options.paths[0].endswith('pylama')

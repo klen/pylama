@@ -4,10 +4,10 @@ import ast
 import os.path as op
 import re
 from argparse import Namespace
+from functools import lru_cache
 from os import remove
 from tempfile import NamedTemporaryFile
 from typing import Dict, Set
-from functools import lru_cache
 
 from pylama.errors import Error
 from pylama.utils import read
@@ -20,18 +20,34 @@ MODELINE_RE = re.compile(
 SKIP_PATTERN = re.compile(r"# *noqa\b", re.I).search
 
 
-class RunContext:
+class RunContext:  # pylint: disable=R0902
     """Manage resources."""
 
-    linters_params = {}
+    __slots__ = (
+        "errors",
+        "options",
+        "skip",
+        "ignore",
+        "select",
+        "linters",
+        "linters_params",
+        "filename",
+        "_ast",
+        "_from_stdin",
+        "_source",
+        "_tempfile",
+        "_lines",
+    )
 
     def __init__(self, filename: str, source: str = None, options: Namespace = None):
         """Initialize the class."""
-        self.skip = False
         self.errors = []
+        self.options = options
+        self.skip = False
         self.ignore = set()
         self.select = set()
         self.linters = None
+        self.linters_params = {}
 
         self._ast = None
         self._from_stdin = source is not None
@@ -69,7 +85,7 @@ class RunContext:
         """Enter to context."""
         return self
 
-    def __exit__(self, etype, evalue, tb):  # noqa
+    def __exit__(self, etype, evalue, _):
         """Exit from the context."""
         if self._tempfile is not None:
             remove(self._tempfile)
@@ -116,7 +132,9 @@ class RunContext:
             return self.filename
 
         if self._tempfile is None:
-            file = NamedTemporaryFile("w", encoding="utf8", suffix=".py", delete=False)  # noqa
+            file = NamedTemporaryFile(  # noqa
+                "w", encoding="utf8", suffix=".py", delete=False
+            )
             file.write(self.source)
             file.close()
             self._tempfile = file.name
@@ -126,11 +144,11 @@ class RunContext:
     def update_params(self, ignore=None, select=None, linters=None, skip=None, **_):
         """Update general params (from file configs or modeline)."""
         if select:
-            self.select |= set(select.split(','))
+            self.select |= set(select.split(","))
         if ignore:
-            self.ignore |= set(ignore.split(','))
+            self.ignore |= set(ignore.split(","))
         if linters:
-            self.linters = linters.split(',')
+            self.linters = linters.split(",")
         if skip is not None:
             self.skip = bool(int(skip))
 
@@ -138,9 +156,9 @@ class RunContext:
     def get_params(self, name: str) -> Dict:
         """Get params for a linter with the given name."""
         lparams = self.linters_params.get(name, {})
-        for key in ('ignore', 'select'):
+        for key in ("ignore", "select"):
             if key in lparams:
-                lparams[key] = set(lparams[key].split(','))
+                lparams[key] = set(lparams[key].split(","))
         return lparams
 
     @lru_cache(42)
@@ -149,20 +167,22 @@ class RunContext:
         lparams = self.get_params(name)
         return lparams.get(key, set())
 
-    def push(self, **params):
+    def push(self, filtrate: bool = True, **params):
         """Record an error."""
         err = Error(filename=self.filename, **params)
         number = err.number
 
-        for rule in self.select | self.get_filter(err.source, 'select'):
-            if number.startswith(rule):
-                return self.errors.append(err)
-
-        for rule in self.ignore | self.get_filter(err.source, 'ignore'):
-            if number.startswith(rule):
-                return None
-
         if SKIP_PATTERN(self.lines[err.lnum - 1]):
             return None
+
+        if filtrate:
+
+            for rule in self.select | self.get_filter(err.source, "select"):
+                if number.startswith(rule):
+                    return self.errors.append(err)
+
+            for rule in self.ignore | self.get_filter(err.source, "ignore"):
+                if number.startswith(rule):
+                    return None
 
         return self.errors.append(err)

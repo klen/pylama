@@ -1,6 +1,7 @@
 """Custom module loader."""
 from __future__ import annotations
 
+from argparse import ArgumentParser
 from importlib import import_module
 from pathlib import Path
 from pkgutil import walk_packages
@@ -20,7 +21,7 @@ class LinterMeta(type):
 
     def __new__(cls, name, bases, params):
         """Register linters."""
-        kls = super().__new__(cls, name, bases, params)
+        kls: Type[LinterV2] = super().__new__(cls, name, bases, params)
         if kls.name is not None:
             LINTERS[kls.name] = kls
         return kls
@@ -30,6 +31,13 @@ class Linter(metaclass=LinterMeta):
     """Abstract class for linter plugin."""
 
     name: Optional[str] = None
+
+    @classmethod
+    def add_args(cls, _: ArgumentParser):
+        """Add options from linters.
+
+        The method has to be a classmethod.
+        """
 
     def run(self, path: str, **meta) -> List[Dict[str, Any]]:  # noqa
         """Legacy method (support old extenstions)."""

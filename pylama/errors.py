@@ -64,7 +64,7 @@ class Error:
 
     __slots__ = 'source', 'col', 'lnum', 'etype', 'message', 'filename', 'number'
 
-    def __init__(self, source="pylama", col=1, lnum=1, type=None,
+    def __init__(self, source="pylama", col=1, lnum=1, type=None,  # pylint: disable=R0913
                  text="unknown error", filename="", number="", **_):
         """ Init error information with default values. """
         text = str(text).strip().replace('\n', ' ')
@@ -75,7 +75,7 @@ class Error:
             self.number = number.group(1).upper() if number else ""
 
         self.etype = type[:1] if type else (number[0] if number else 'E')
-        self.col = col
+        self.col = max(col, 1)
         self.filename = filename
         self.source = source
         self.lnum = int(lnum)
