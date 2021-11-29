@@ -20,7 +20,7 @@ MODELINE_RE = re.compile(
 SKIP_PATTERN = re.compile(r"# *noqa\b", re.I).search
 
 
-class RunContext:
+class RunContext:  # pylint: disable=R0902
     """Manage resources."""
 
     __slots__ = (
