@@ -177,7 +177,7 @@ def test_pylint(context):
     assert ctx.errors
     assert not ctx.linters_params
 
-    ctx = context(args="--pylint-confidence=HIGH")
+    ctx = context(args="--pylint-confidence=HIGH --ignore=C")
     pylint().run_check(ctx)
     assert not ctx.errors
 
