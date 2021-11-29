@@ -7,7 +7,7 @@ import sys
 from argparse import ArgumentParser, Namespace
 from typing import Any, Collection, Dict, List, Optional, Set, Union
 
-from pylama import __version__, LOGGER
+from pylama import LOGGER, __version__
 from pylama.libs import inirama
 from pylama.lint import LINTERS
 
@@ -71,106 +71,104 @@ def get_default_config_file(rootdir: str = None) -> Optional[str]:
 DEFAULT_CONFIG_FILE = get_default_config_file(CURDIR)
 
 
-PARSER = ArgumentParser(description="Code audit tool for python.")
-PARSER.add_argument(
-    "paths",
-    nargs="*",
-    default=_Default([CURDIR]),
-    help="Paths to files or directories for code check.",
-)
+def setup_parser() -> ArgumentParser:
+    """Create and setup parser for command line."""
+    parser = ArgumentParser(description="Code audit tool for python.")
+    parser.add_argument(
+        "paths",
+        nargs="*",
+        default=_Default([CURDIR]),
+        help="Paths to files or directories for code check.",
+    )
+    parser.add_argument("--version", action="version", version="%(prog)s " + __version__)
+    parser.add_argument("--verbose", "-v", action="store_true", help="Verbose mode.")
+    parser.add_argument(
+        "--options",
+        "-o",
+        default=DEFAULT_CONFIG_FILE,
+        metavar="FILE",
+        help=(
+            "Specify configuration file. "
+            f"Looks for {', '.join(CONFIG_FILES[:-1])}, or {CONFIG_FILES[-1]}"
+            f" in the current directory (default: {DEFAULT_CONFIG_FILE})"
+        ),
+    )
+    parser.add_argument(
+        "--linters",
+        "-l",
+        default=_Default(",".join(DEFAULT_LINTERS)),
+        type=parse_linters,
+        help=(
+            f"Select linters. (comma-separated). Choices are {','.join(s for s in LINTERS)}."
+        ),
+    )
+    parser.add_argument(
+        "--from-stdin",
+        action="store_true",
+        help="Interpret the stdin as a python script, "
+        "whose filename needs to be passed as the path argument.",
+    )
+    parser.add_argument(
+        "--concurrent",
+        "--async",
+        action="store_true",
+        help="Enable async mode. Useful for checking a lot of files. ",
+    )
 
-PARSER.add_argument("--verbose", "-v", action="store_true", help="Verbose mode.")
+    parser.add_argument(
+        "--format",
+        "-f",
+        default=_Default("pycodestyle"),
+        choices=["pydocstyle", "pycodestyle", "pylint", "parsable", "json"],
+        help="Choose output format.",
+    )
+    parser.add_argument(
+        "--abspath",
+        "-a",
+        action="store_true",
+        default=_Default(False),
+        help="Use absolute paths in output.",
+    )
+    parser.add_argument(
+        "--max-line-length",
+        "-m",
+        default=_Default(100),
+        type=int,
+        help="Maximum allowed line length",
+    )
+    parser.add_argument(
+        "--select",
+        "-s",
+        default=_Default(""),
+        type=split_csp_str,
+        help="Select errors and warnings. (comma-separated list)",
+    )
+    parser.add_argument(
+        "--ignore",
+        "-i",
+        default=_Default(""),
+        type=split_csp_str,
+        help="Ignore errors and warnings. (comma-separated)",
+    )
+    parser.add_argument(
+        "--skip",
+        default=_Default(""),
+        type=lambda s: [re.compile(fnmatch.translate(p)) for p in s.split(",") if p],
+        help="Skip files by masks (comma-separated, Ex. */messages.py)",
+    )
+    parser.add_argument(
+        "--sort",
+        default=_Default(),
+        type=prepare_sorter,
+        help="Sort result by error types. Ex. E,W,D",
+    )
+    parser.add_argument("--report", "-r", help="Send report to file [REPORT]")
+    parser.add_argument("--hook", action="store_true", help="Install Git (Mercurial) hook.")
 
-PARSER.add_argument("--version", action="version", version="%(prog)s " + __version__)
+    for linter_type in LINTERS.values():
+        linter_type.add_args(parser)
 
-PARSER.add_argument(
-    "--from-stdin",
-    action="store_true",
-    help="Interpret the stdin as a python script, "
-    "whose filename needs to be passed as the path argument.",
-)
-
-
-PARSER.add_argument(
-    "--format",
-    "-f",
-    default=_Default("pycodestyle"),
-    choices=["pydocstyle", "pycodestyle", "pylint", "parsable", "json"],
-    help="Choose output format.",
-)
-
-PARSER.add_argument(
-    "--select",
-    "-s",
-    default=_Default(""),
-    type=split_csp_str,
-    help="Select errors and warnings. (comma-separated list)",
-)
-
-PARSER.add_argument(
-    "--sort",
-    default=_Default(),
-    type=prepare_sorter,
-    help="Sort result by error types. Ex. E,W,D",
-)
-
-PARSER.add_argument(
-    "--linters",
-    "-l",
-    default=_Default(",".join(DEFAULT_LINTERS)),
-    type=parse_linters,
-    help=(
-        f"Select linters. (comma-separated). Choices are {','.join(s for s in LINTERS)}."
-    ),
-)
-
-PARSER.add_argument(
-    "--ignore",
-    "-i",
-    default=_Default(""),
-    type=split_csp_str,
-    help="Ignore errors and warnings. (comma-separated)",
-)
-
-PARSER.add_argument(
-    "--skip",
-    default=_Default(""),
-    type=lambda s: [re.compile(fnmatch.translate(p)) for p in s.split(",") if p],
-    help="Skip files by masks (comma-separated, Ex. */messages.py)",
-)
-
-PARSER.add_argument("--report", "-r", help="Send report to file [REPORT]")
-PARSER.add_argument("--hook", action="store_true", help="Install Git (Mercurial) hook.")
-
-PARSER.add_argument(
-    "--concurrent",
-    "--async",
-    action="store_true",
-    help="Enable async mode. Useful for checking a lot of files. ",
-)
-
-PARSER.add_argument(
-    "--options",
-    "-o",
-    default=DEFAULT_CONFIG_FILE,
-    metavar="FILE",
-    help=(
-        "Specify configuration file. "
-        f"Looks for {', '.join(CONFIG_FILES[:-1])}, or {CONFIG_FILES[-1]}"
-        f" in the current directory (default: {DEFAULT_CONFIG_FILE})"
-    ),
-)
-
-PARSER.add_argument(
-    "--abspath",
-    "-a",
-    action="store_true",
-    default=_Default(False),
-    help="Use absolute paths in output.",
-)
-
-
-ACTIONS = dict((a.dest, a) for a in PARSER._actions)  # pylint: disable=protected-access
+    return parser
 
 
 def parse_options(  # noqa
@@ -178,7 +176,10 @@ def parse_options(  # noqa
 ) -> Namespace:
     """Parse options from command line and configuration files."""
     # Parse args from command string
-    options = PARSER.parse_args(args or [])
+    parser = setup_parser()
+    actions = dict((a.dest, a) for a in parser._actions)  # pylint: disable=protected-access
+
+    options = parser.parse_args(args or [])
     options.file_params = {}
     options.linters_params = {}
 
@@ -213,13 +214,13 @@ def parse_options(  # noqa
 
     # Override options
     for opt, val in overrides.items():
-        setattr(options, opt, process_value(opt, val))
+        setattr(options, opt, process_value(actions, opt, val))
 
     # Postprocess options
     for name in options.__dict__:
         value = getattr(options, name)
         if isinstance(value, _Default):
-            setattr(options, name, process_value(name, value.value))
+            setattr(options, name, process_value(actions, name, value.value))
 
     if options.concurrent and "pylint" in options.linters:
         LOGGER.warning("Can't parse code asynchronously with pylint enabled.")
@@ -228,9 +229,9 @@ def parse_options(  # noqa
     return options
 
 
-def process_value(name: str, value: Any) -> Any:
+def process_value(actions: Dict, name: str, value: Any) -> Any:
     """Compile option value."""
-    action = ACTIONS.get(name)
+    action = actions.get(name)
     if not action:
         return value
 

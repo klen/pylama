@@ -75,7 +75,7 @@ class Error:
             self.number = number.group(1).upper() if number else ""
 
         self.etype = type[:1] if type else (number[0] if number else 'E')
-        self.col = col
+        self.col = max(col, 1)
         self.filename = filename
         self.source = source
         self.lnum = int(lnum)

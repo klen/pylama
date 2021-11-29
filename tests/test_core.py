@@ -31,3 +31,10 @@ def test_async(parse_options):
     options = parse_options(config=False)
     errors = check_async(['dummy.py'], options=options, rootdir='.')
     assert errors
+
+
+def test_errors():
+    from pylama.errors import Error
+
+    err = Error(col=0)
+    assert err.col == 1
