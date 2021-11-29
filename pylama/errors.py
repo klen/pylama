@@ -64,7 +64,7 @@ class Error:
 
     __slots__ = 'source', 'col', 'lnum', 'etype', 'message', 'filename', 'number'
 
-    def __init__(self, source="pylama", col=1, lnum=1, type=None,
+    def __init__(self, source="pylama", col=1, lnum=1, type=None,  # pylint: ignore=R0913
                  text="unknown error", filename="", number="", **_):
         """ Init error information with default values. """
         text = str(text).strip().replace('\n', ' ')
