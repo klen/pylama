@@ -111,43 +111,43 @@ Command line options
 
     $ pylama --help
 
-usage: pylama [-h] [--version] [--verbose] [--options FILE] [--linters LINTERS] [--from-stdin] [--concurrent] [--format {pydocstyle,pycodestyle,pylint,parsable,json}] [--abspath]
-              [--max-line-length MAX_LINE_LENGTH] [--select SELECT] [--ignore IGNORE] [--skip SKIP] [--sort SORT] [--report REPORT] [--hook] [--max-complexity MAX_COMPLEXITY]
-              [--pydocstyle-convention {pep257,numpy,google}] [--pylint-confidence {HIGH,INFERENCE,INFERENCE_FAILURE,UNDEFINED}]
-              [paths ...]
+    usage: pylama [-h] [--version] [--verbose] [--options FILE] [--linters LINTERS] [--from-stdin] [--concurrent] [--format {pydocstyle,pycodestyle,pylint,parsable,json}] [--abspath]
+                  [--max-line-length MAX_LINE_LENGTH] [--select SELECT] [--ignore IGNORE] [--skip SKIP] [--sort SORT] [--report REPORT] [--hook] [--max-complexity MAX_COMPLEXITY]
+                  [--pydocstyle-convention {pep257,numpy,google}] [--pylint-confidence {HIGH,INFERENCE,INFERENCE_FAILURE,UNDEFINED}]
+                  [paths ...]
 
-Code audit tool for python.
+    Code audit tool for python.
 
-positional arguments:
-  paths                 Paths to files or directories for code check.
+    positional arguments:
+      paths                 Paths to files or directories for code check.
 
-optional arguments:
-  -h, --help            show this help message and exit
-  --version             show program's version number and exit
-  --verbose, -v         Verbose mode.
-  --options FILE, -o FILE
-                        Specify configuration file. Looks for pylama.ini, setup.cfg, tox.ini, or pytest.ini in the current directory (default: None)
-  --linters LINTERS, -l LINTERS
-                        Select linters. (comma-separated). Choices are eradicate,mccabe,mypy,pycodestyle,pydocstyle,pyflakes,pylint,isort.
-  --from-stdin          Interpret the stdin as a python script, whose filename needs to be passed as the path argument.
-  --concurrent, --async
-                        Enable async mode. Useful for checking a lot of files.
-  --format {pydocstyle,pycodestyle,pylint,parsable,json}, -f {pydocstyle,pycodestyle,pylint,parsable,json}
-                        Choose output format.
-  --abspath, -a         Use absolute paths in output.
-  --max-line-length MAX_LINE_LENGTH, -m MAX_LINE_LENGTH
-                        Maximum allowed line length
-  --select SELECT, -s SELECT
-                        Select errors and warnings. (comma-separated list)
-  --ignore IGNORE, -i IGNORE
-                        Ignore errors and warnings. (comma-separated)
-  --skip SKIP           Skip files by masks (comma-separated, Ex. */messages.py)
-  --sort SORT           Sort result by error types. Ex. E,W,D
-  --report REPORT, -r REPORT
-                        Send report to file [REPORT]
-  --hook                Install Git (Mercurial) hook.
-  --max-complexity MAX_COMPLEXITY
-                        Max complexity threshold
+    optional arguments:
+      -h, --help            show this help message and exit
+      --version             show program's version number and exit
+      --verbose, -v         Verbose mode.
+      --options FILE, -o FILE
+                            Specify configuration file. Looks for pylama.ini, setup.cfg, tox.ini, or pytest.ini in the current directory (default: None)
+      --linters LINTERS, -l LINTERS
+                            Select linters. (comma-separated). Choices are eradicate,mccabe,mypy,pycodestyle,pydocstyle,pyflakes,pylint,isort.
+      --from-stdin          Interpret the stdin as a python script, whose filename needs to be passed as the path argument.
+      --concurrent, --async
+                            Enable async mode. Useful for checking a lot of files.
+      --format {pydocstyle,pycodestyle,pylint,parsable,json}, -f {pydocstyle,pycodestyle,pylint,parsable,json}
+                            Choose output format.
+      --abspath, -a         Use absolute paths in output.
+      --max-line-length MAX_LINE_LENGTH, -m MAX_LINE_LENGTH
+                            Maximum allowed line length
+      --select SELECT, -s SELECT
+                            Select errors and warnings. (comma-separated list)
+      --ignore IGNORE, -i IGNORE
+                            Ignore errors and warnings. (comma-separated)
+      --skip SKIP           Skip files by masks (comma-separated, Ex. */messages.py)
+      --sort SORT           Sort result by error types. Ex. E,W,D
+      --report REPORT, -r REPORT
+                            Send report to file [REPORT]
+      --hook                Install Git (Mercurial) hook.
+      --max-complexity MAX_COMPLEXITY
+                            Max complexity threshold
 
 .. note:: additional options may be available depending on installed linters
 
