@@ -1,5 +1,6 @@
 """Support Vulture."""
 from argparse import ArgumentParser
+
 from vulture.core import ERROR_CODES, Vulture, make_config
 
 from pylama.context import RunContext
@@ -30,16 +31,14 @@ class Linter(BaseLinter):
 
     def run_check(self, ctx: RunContext):  # noqa
         """Check code with vulture."""
-        params = ctx.get_params('vulture')
+        params = ctx.get_params("vulture")
         options = ctx.options
         if options:
-            params.setdefault('min-confidence', options.vulture_min_confidence)
-            params.setdefault('ignore-names', options.vulture_ignore_names)
-            params.setdefault('ignore-decorators', options.vulture_ignore_decorators)
+            params.setdefault("min-confidence", options.vulture_min_confidence)
+            params.setdefault("ignore-names", options.vulture_ignore_names)
+            params.setdefault("ignore-decorators", options.vulture_ignore_decorators)
 
-        config = make_config(
-            parse_params(ctx.filename, params)
-        )
+        config = make_config(parse_params(ctx.filename, params))
         vulture = Vulture(
             verbose=config["verbose"],
             ignore_names=config["ignore_names"],

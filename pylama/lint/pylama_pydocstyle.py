@@ -28,7 +28,7 @@ class Linter(Abstract):
         params = ctx.get_params("pydocstyle")
         options = ctx.options
         if options and options.pydocstyle_convention:
-            params.setdefault('convention', options.pydocstyle_convention)
+            params.setdefault("convention", options.pydocstyle_convention)
         convention_codes = conventions.get(params.get("convention"))
         for err in PyDocChecker().check_source(
             ctx.source,

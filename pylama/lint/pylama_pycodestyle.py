@@ -1,8 +1,8 @@
 """pycodestyle support."""
-from pycodestyle import (BaseReport, StyleGuide, Checker, get_parser)
+from pycodestyle import BaseReport, Checker, StyleGuide, get_parser
 
-from pylama.lint import LinterV2 as Abstract
 from pylama.context import RunContext
+from pylama.lint import LinterV2 as Abstract
 
 
 class Linter(Abstract):
@@ -12,10 +12,10 @@ class Linter(Abstract):
 
     def run_check(self, ctx: RunContext):  # noqa
         """Check code with pycodestyle."""
-        params = ctx.get_params('pycodestyle')
+        params = ctx.get_params("pycodestyle")
         options = ctx.options
         if options:
-            params.setdefault('max_line_length', options.max_line_length)
+            params.setdefault("max_line_length", options.max_line_length)
 
         if params:
             parser = get_parser()
@@ -38,12 +38,12 @@ class _PycodestyleReport(BaseReport):
 
     def error(self, line_number, offset, text, _):
         """Save errors."""
-        code, _, text = text.partition(' ')
+        code, _, text = text.partition(" ")
         self.ctx.push(
             text=text,
             type=code[0],
             number=code,
             col=offset + 1,
             lnum=line_number,
-            source='pycodestyle',
+            source="pycodestyle",
         )

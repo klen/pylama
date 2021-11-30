@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type
 
 from pkg_resources import iter_entry_points
 
-
 LINTERS: Dict[str, Type[LinterV2]] = {}
 
 if TYPE_CHECKING:
@@ -19,12 +18,12 @@ if TYPE_CHECKING:
 class LinterMeta(type):
     """Register linters."""
 
-    def __new__(cls, name, bases, params):
+    def __new__(mcs, name, bases, params):
         """Register linters."""
-        kls: Type[LinterV2] = super().__new__(cls, name, bases, params)
-        if kls.name is not None:
-            LINTERS[kls.name] = kls
-        return kls
+        cls: Type[LinterV2] = super().__new__(mcs, name, bases, params)
+        if cls.name is not None:
+            LINTERS[cls.name] = cls
+        return cls
 
 
 class Linter(metaclass=LinterMeta):
@@ -39,7 +38,7 @@ class Linter(metaclass=LinterMeta):
         The method has to be a classmethod.
         """
 
-    def run(self, path: str, **meta) -> List[Dict[str, Any]]:  # noqa
+    def run(self, _path: str, **_meta) -> List[Dict[str, Any]]:  # noqa
         """Legacy method (support old extenstions)."""
         return []
 
