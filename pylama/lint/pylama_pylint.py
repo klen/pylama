@@ -41,8 +41,8 @@ class Linter(BaseLinter):
             params.setdefault("max_line_length", options.max_line_length)
             params.setdefault("confidence", options.pylint_confidence)
 
-        params['enable'] = ctx.select | ctx.get_filter('pylint', 'select')
-        params['disable'] = ctx.ignore | ctx.get_filter('pylint', 'ignore')
+        params.setdefault("enable", ctx.select | ctx.get_filter("pylint", "select"))
+        params.setdefault("disable", ctx.ignore | ctx.get_filter("pylint", "ignore"))
 
         class Reporter(BaseReporter):
             """Handle messages."""
@@ -76,7 +76,8 @@ class _Params:
     def __init__(self, params: Dict):
         attrs = {
             name.replace("_", "-"): self.prepare_value(value)
-            for name, value in params.items() if value
+            for name, value in params.items()
+            if value
         }
         if HOME_RCFILE.exists():
             attrs["rcfile"] = HOME_RCFILE.as_posix()

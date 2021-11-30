@@ -1,7 +1,7 @@
 def test_skip_optional_if_not_installed():
     from pylama.lint import LINTERS
 
-    assert 'fake' not in LINTERS
+    assert "fake" not in LINTERS
 
 
 def test_mccabe(context):
@@ -10,7 +10,7 @@ def test_mccabe(context):
     mccabe = LINTERS["mccabe"]
     assert mccabe
 
-    ctx = context(mccabe={'max-complexity': 3})
+    ctx = context(mccabe={"max-complexity": 3})
     mccabe().run_check(ctx)
     errors = ctx.errors
     assert errors
@@ -18,7 +18,7 @@ def test_mccabe(context):
     assert not errors[0].message.startswith(errors[0].number)
     assert errors[0].col == 5
 
-    ctx = context(args='--max-complexity 3')
+    ctx = context(args="--max-complexity 3")
     mccabe().run_check(ctx)
     errors = ctx.errors
     assert errors
@@ -37,13 +37,13 @@ def test_pydocstyle(context):
     assert errors[0].number
     assert not errors[0].message.startswith(errors[0].number)
 
-    ctx = context(pydocstyle={'convention': 'numpy'})
+    ctx = context(pydocstyle={"convention": "numpy"})
     pydocstyle().run_check(ctx)
     errors2 = ctx.errors
     assert errors2
     assert len(errors) > len(errors2)
 
-    ctx = context(args='--pydocstyle-convention numpy')
+    ctx = context(args="--pydocstyle-convention numpy")
     pydocstyle().run_check(ctx)
     errors3 = ctx.errors
     assert errors3
@@ -64,13 +64,13 @@ def test_pycodestyle(context):
     assert not errors[0].message.startswith(errors[0].number)
     assert len(errors) == 5
 
-    ctx = context(pycodestyle={'max_line_length': 60})
+    ctx = context(pycodestyle={"max_line_length": 60})
     pycodestyle().run_check(ctx)
     errors2 = ctx.errors
     assert errors2
     assert len(errors2) > len(errors)
 
-    ctx = context(args='--max-line-length=60')
+    ctx = context(args="--max-line-length=60")
     pycodestyle().run_check(ctx)
     errors3 = ctx.errors
     assert errors3
@@ -104,17 +104,12 @@ def test_eradicate(context):
     assert errors[0].number
     assert not errors[0].message.startswith(errors[0].number)
 
-    ctx = context(code=(
-        "#import os\n"
-        "# from foo import junk\n"
-        "#a = 3\n"
-        "a = 4\n"
-    ))
+    ctx = context(code=("#import os\n" "# from foo import junk\n" "#a = 3\n" "a = 4\n"))
     eradicate().run_check(ctx)
     errors = ctx.errors
     assert len(errors) == 3
 
-    ctx = context(code='')
+    ctx = context(code="")
     eradicate().run_check(ctx)
     errors = ctx.errors
     assert not errors
@@ -140,7 +135,7 @@ def test_radon(context):
     radon = LINTERS["radon"]
     assert radon
 
-    ctx = context(radon={'complexity': 3})
+    ctx = context(radon={"complexity": 3})
     radon().run_check(ctx)
     errors = ctx.errors
     assert errors
@@ -149,9 +144,9 @@ def test_radon(context):
     assert not errors[0].message.startswith(errors[0].number)
 
     # Issue #164
-    assert ':' not in errors[0].message
+    assert ":" not in errors[0].message
 
-    ctx = context(args='--max-complexity=3 --radon-no-assert')
+    ctx = context(args="--max-complexity=3 --radon-no-assert")
     radon().run_check(ctx)
     errors = ctx.errors
     assert errors
@@ -181,12 +176,17 @@ def test_pylint(context):
     pylint().run_check(ctx)
     assert not ctx.errors
 
-    ctx = context(pylint={'ignore': 'E,R,W,C'})
+    ctx = context(pylint={"ignore": "E,R,W,C"})
     pylint().run_check(ctx)
     errors = ctx.errors
     assert not errors
 
-    ctx = context(args='--ignore=E,R,W,C')
+    ctx = context(args="--ignore=E,R,W,C")
+    pylint().run_check(ctx)
+    errors = ctx.errors
+    assert not errors
+
+    ctx = context(pylint={"disable": "E,R,W,C"})
     pylint().run_check(ctx)
     errors = ctx.errors
     assert not errors

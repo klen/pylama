@@ -1,5 +1,6 @@
 """Code complexity checking."""
 from argparse import ArgumentError
+
 from mccabe import McCabeChecker
 
 from pylama.context import RunContext
@@ -27,7 +28,7 @@ class Linter(Abstract):
         params = ctx.get_params("mccabe")
         options = ctx.options
         if options:
-            params.setdefault('max-complexity', options.max_complexity)
+            params.setdefault("max-complexity", options.max_complexity)
 
         McCabeChecker.max_complexity = int(params.get("max-complexity", 10))
         McCabeChecker._error_tmpl = "%r is too complex (%d)"

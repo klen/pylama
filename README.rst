@@ -17,7 +17,7 @@
 
 .. _description:
 
-Code audit tool for Python and JavaScript. Pylama wraps these tools:
+Code audit tool for Python. Pylama wraps these tools:
 
 * pycodestyle_ (formerly pep8) © 2012-2013, Florent Xicluna;
 * pydocstyle_ (formerly pep257 by Vladimir Keleshev) © 2014, Amir Rachum;
