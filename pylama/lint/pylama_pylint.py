@@ -62,11 +62,10 @@ class Linter(BaseLinter):
                     source="pylint",
                 )
 
-        params = _Params(params)
         logger.debug(params)
 
         reporter = Reporter()
-        args = params.to_attrs()
+        args = _Params(params).to_attrs()
         Run([ctx.temp_filename] + args, reporter=reporter, exit=False)
 
 

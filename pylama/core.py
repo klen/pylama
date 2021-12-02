@@ -3,6 +3,7 @@
 Prepare params, check a modeline and run the checkers.
 """
 import os.path as op
+from pathlib import Path
 from typing import List
 
 from pylama.config import CURDIR, LOGGER, Namespace
@@ -12,7 +13,10 @@ from pylama.lint import LINTERS, LinterV2
 
 
 def run(
-    path: str, code: str = None, rootdir: str = CURDIR, options: Namespace = None
+    path: str,
+    code: str = None,
+    rootdir: Path = CURDIR,
+    options: Namespace = None,
 ) -> List[Error]:
     """Run code checkers with the given params.
 
@@ -26,7 +30,10 @@ def run(
 
         else:
             for lname in ctx.linters or LINTERS:
-                linter = LINTERS.get(lname)()
+                linter_cls = LINTERS.get(lname)
+                if not linter_cls:
+                    continue
+                linter = linter_cls()
                 LOGGER.info("Run [%s] %s", lname, path)
                 if isinstance(linter, LinterV2):
                     linter.run_check(ctx)
