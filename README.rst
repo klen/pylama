@@ -195,14 +195,18 @@ Configuration file
 
 **Pylama** looks for a configuration file in the current directory.
 
+You can use a “global” configuration, stored in `.pylama.ini` in your home
+directory. This will be used as a fallback configuration.
+
 The program searches for the first matching ini-style configuration file in
 the directories of command line argument. Pylama looks for the configuration
 in this order: ::
 
-    pylama.ini
-    setup.cfg
-    tox.ini
-    pytest.ini
+    ./pylama.ini
+    ./setup.cfg
+    ./tox.ini
+    ./pytest.ini
+    ~/.pylama.init
 
 The ``--option`` / ``-o`` argument can be used to specify a configuration file.
 

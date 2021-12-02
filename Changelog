@@ -1,3 +1,7 @@
+2021-12-02  k.klenov
+	* Version 8.3.0
+	* Added support for default config file `~/.pylama.ini`
+
 2021-11-28  k.klenov
 	* Version 8.2.0
 	* Added `--max-line-length` to setup max line length for pycodestyle and
