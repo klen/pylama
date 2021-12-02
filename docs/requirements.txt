@@ -1,0 +1,4 @@
+sphinx-rtd-theme
+sphinx-copybutton
+git+https://github.com/klen/pylama
+
