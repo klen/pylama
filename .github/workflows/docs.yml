@@ -3,7 +3,7 @@ name: docs
 on:
   workflow_run:
     workflows: [tests]
-    branches: [develop]
+    branches: [master]
     types: [completed]
 
 jobs:

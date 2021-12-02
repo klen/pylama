@@ -36,7 +36,8 @@ Code audit tool for Python. Pylama wraps these tools:
 
 .. _documentation:
 
-Docs are available at https://pylama.readthedocs.org/. Pull requests with documentation enhancements and/or fixes are awesome and most welcome.
+Docs are available at https://klen.github.io/pylama/. Pull requests with
+documentation enhancements and/or fixes are awesome and most welcome.
 
 
 .. _contents:
@@ -49,8 +50,10 @@ Requirements:
 =============
 
 - Python (3.7, 3.8, 3.9, 3.10)
-- If your tests are failing on Win platform you are missing: ``curses`` - http://www.lfd.uci.edu/~gohlke/pythonlibs/
-  (The curses library supplies a terminal-independent screen-painting and keyboard-handling facility for text-based terminals)
+- If your tests are failing on Win platform you are missing: ``curses`` -
+  http://www.lfd.uci.edu/~gohlke/pythonlibs/ (The curses library supplies a
+  terminal-independent screen-painting and keyboard-handling facility for
+  text-based terminals)
 
 For python versions < 3.7 install pylama 7.7.1
 
@@ -81,8 +84,9 @@ Or install them all: ::
 Quickstart
 ==========
 
-**Pylama** is easy to use and really fun for checking code quality.
-Just run `pylama` and get common output from all pylama plugins (pycodestyle_, PyFlakes_, etc.)
+**Pylama** is easy to use and really fun for checking code quality.  Just run
+`pylama` and get common output from all pylama plugins (pycodestyle_,
+PyFlakes_, etc.)
 
 Recursively check the current directory. ::
 
