@@ -5,6 +5,7 @@ import os
 import re
 import sys
 from argparse import ArgumentParser, Namespace
+from pathlib import Path
 from typing import Any, Collection, Dict, List, Optional, Set, Union
 
 from pylama import LOGGER, __version__
@@ -14,7 +15,8 @@ from pylama.lint import LINTERS
 #: A default checkers
 DEFAULT_LINTERS = "pycodestyle", "pyflakes", "mccabe"
 
-CURDIR = os.getcwd()
+CURDIR = Path.cwd()
+HOMECFG = Path.home() / ".pylama.ini"
 CONFIG_FILES = "pylama.ini", "setup.cfg", "tox.ini", "pytest.ini"
 
 # Setup a logger
@@ -55,15 +57,15 @@ def parse_linters(linters: str) -> List[str]:
     return [name for name in split_csp_str(linters) if name in LINTERS]
 
 
-def get_default_config_file(rootdir: str = None) -> Optional[str]:
+def get_default_config_file(rootdir: Path = None) -> Optional[str]:
     """Search for configuration file."""
     if rootdir is None:
         return DEFAULT_CONFIG_FILE
 
-    for path in CONFIG_FILES:
-        path = os.path.join(rootdir, path)
-        if os.path.isfile(path) and os.access(path, os.R_OK):
-            return path
+    for filename in CONFIG_FILES:
+        path = rootdir / filename
+        if path.is_file() and os.access(path, os.R_OK):
+            return path.as_posix()
 
     return None
 
@@ -77,7 +79,7 @@ def setup_parser() -> ArgumentParser:
     parser.add_argument(
         "paths",
         nargs="*",
-        default=_Default([CURDIR]),
+        default=_Default([CURDIR.as_posix()]),
         help="Paths to files or directories for code check.",
     )
     parser.add_argument("--version", action="version", version="%(prog)s " + __version__)
@@ -98,9 +100,7 @@ def setup_parser() -> ArgumentParser:
         "-l",
         default=_Default(",".join(DEFAULT_LINTERS)),
         type=parse_linters,
-        help=(
-            f"Select linters. (comma-separated). Choices are {','.join(s for s in LINTERS)}."
-        ),
+        help=(f"Select linters. (comma-separated). Choices are {','.join(s for s in LINTERS)}."),
     )
     parser.add_argument(
         "--from-stdin",
@@ -172,7 +172,7 @@ def setup_parser() -> ArgumentParser:
 
 
 def parse_options(  # noqa
-    args: List[str] = None, config: bool = True, rootdir: str = CURDIR, **overrides
+    args: List[str] = None, config: bool = True, rootdir: Path = CURDIR, **overrides
 ) -> Namespace:
     """Parse options from command line and configuration files."""
     # Parse args from command string
@@ -185,7 +185,7 @@ def parse_options(  # noqa
 
     # Compile options from ini
     if config:
-        cfg = get_config(str(options.options), rootdir=rootdir)
+        cfg = get_config(options.options, rootdir=rootdir)
         for opt, val in cfg.default.items():
             LOGGER.info("Find option %s (%s)", opt, val)
             passed_value = getattr(options, opt, _Default())
@@ -244,17 +244,18 @@ def process_value(actions: Dict, name: str, value: Any) -> Any:
     return value
 
 
-def get_config(ini_path: str = None, rootdir: str = None) -> inirama.Namespace:
+def get_config(ini_path: str = None, rootdir: Path = None) -> inirama.Namespace:
     """Load configuration from INI."""
     config = inirama.Namespace()
     config.default_section = "pylama"
 
-    if not ini_path:
-        path = get_default_config_file(rootdir)
-        if path:
-            config.read(path)
-    else:
-        config.read(ini_path)
+    cfg_path = ini_path or get_default_config_file(rootdir)
+    if not cfg_path and HOMECFG.exists():
+        cfg_path = HOMECFG.as_posix()
+
+    if cfg_path:
+        LOGGER.info("Read config: %s", cfg_path)
+        config.read(cfg_path)
 
     return config
 

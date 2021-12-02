@@ -27,7 +27,7 @@ class Linter(Abstract):
 
         style = StyleGuide(reporter=_PycodestyleReport, **params)
         options = style.options
-        options.report.ctx = ctx
+        options.report.ctx = ctx  # type: ignore
         checker = Checker(ctx.filename, lines=ctx.lines, options=options)
         checker.check_all()
 

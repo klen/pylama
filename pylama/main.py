@@ -5,6 +5,7 @@ import warnings
 from json import dumps
 from os import path as op
 from os import walk
+from pathlib import Path
 from typing import List, Optional
 
 from .check_async import check_async
@@ -25,7 +26,7 @@ def check_paths(
     paths: Optional[List[str]],
     options: Namespace,
     code: str = None,
-    rootdir: str = None,
+    rootdir: Path = None,
 ) -> List[Error]:
     """Check the given paths.
 
@@ -55,9 +56,9 @@ def check_paths(
 
     if rootdir is None:
         path = candidates[0]
-        rootdir = path if op.isdir(path) else op.dirname(path)
+        rootdir = Path(path if op.isdir(path) else op.dirname(path))
 
-    candidates = [path for path in candidates if path.endswith('.py')]
+    candidates = [path for path in candidates if path.endswith(".py")]
 
     if options.concurrent:
         return check_async(candidates, code=code, options=options, rootdir=rootdir)
@@ -80,7 +81,12 @@ def check_path(
         "pylama.main.check_path is depricated and will be removed in pylama 9",
         DeprecationWarning,
     )
-    return check_paths(candidates, code=code, options=options, rootdir=rootdir)
+    return check_paths(
+        candidates,
+        code=code,
+        options=options,
+        rootdir=rootdir and Path(rootdir) or None,
+    )
 
 
 def shell(args: List[str] = None, error: bool = True):
@@ -103,7 +109,7 @@ def shell(args: List[str] = None, error: bool = True):
             return install_hook(path)
 
     if options.from_stdin and not options.paths:
-        LOGGER.error('--from-stdin requires a filename')
+        LOGGER.error("--from-stdin requires a filename")
         return sys.exit(1)
 
     errors = check_paths(

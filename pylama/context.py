@@ -7,7 +7,7 @@ from argparse import Namespace
 from functools import lru_cache
 from os import remove
 from tempfile import NamedTemporaryFile
-from typing import Dict, Set
+from typing import Dict, List, Set
 
 from pylama.errors import Error
 from pylama.utils import read
@@ -41,7 +41,7 @@ class RunContext:  # pylint: disable=R0902
 
     def __init__(self, filename: str, source: str = None, options: Namespace = None):
         """Initialize the class."""
-        self.errors = []
+        self.errors: List[Error] = []
         self.options = options
         self.skip = False
         self.ignore = set()
@@ -77,9 +77,8 @@ class RunContext:  # pylint: disable=R0902
         if not self.skip:
             modeline = MODELINE_RE(self.source)
             if modeline:
-                self.update_params(
-                    **dict(v.split("=", 1) for v in modeline.group(1).split(":"))
-                )
+                values = modeline.group(1).split(":")
+                self.update_params(**dict(v.split("=", 1) for v in values))  # type: ignore
 
     def __enter__(self):
         """Enter to context."""
