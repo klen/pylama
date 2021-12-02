@@ -53,5 +53,12 @@ latex_use_modindex = False
 latex_use_parts = True
 man_pages = [("index", "Pylama", "Pylama Documentation", ["Kirill Klenov"], 1)]
 pygments_style = "tango"
-html_theme = "default"
-html_theme_options = {}
+
+# The theme to use for HTML and HTML Help pages.  Major themes that come with
+# Sphinx are currently 'default' and 'sphinxdoc'.
+html_theme = "sphinx_rtd_theme"
+
+# Theme options are theme-specific and customize the look and feel of a theme
+# further.  For a list of options available for each theme, see the
+# documentation.
+html_theme_options = {"github_url": "https://github.com/klen/pylama"}
