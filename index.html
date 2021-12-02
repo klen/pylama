@@ -1,44 +1,101 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-    <title>Welcome to Pylama &#8212; Pylama 8.3.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Pylama &mdash; Pylama 8.3.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="nav-item nav-item-0"><a href="#">Pylama 8.3.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Welcome to Pylama</a></li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> Pylama
+          </a>
+              <div class="version">
+                8.3.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to Pylama</a></li>
+<li><a class="reference internal" href="#requirements">Requirements:</a></li>
+<li><a class="reference internal" href="#installation">Installation:</a></li>
+<li><a class="reference internal" href="#quickstart">Quickstart</a></li>
+<li><a class="reference internal" href="#set-pylama-checkers-options">Set Pylama (checkers) options</a><ul>
+<li><a class="reference internal" href="#command-line-options">Command line options</a></li>
+<li><a class="reference internal" href="#file-modelines">File modelines</a></li>
+<li><a class="reference internal" href="#skip-lines-noqa">Skip lines (noqa)</a></li>
+<li><a class="reference internal" href="#configuration-file">Configuration file</a></li>
+<li><a class="reference internal" href="#set-code-checkers-options">Set code-checkers’ options</a></li>
+<li><a class="reference internal" href="#set-options-for-file-group-of-files">Set options for file (group of files)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pytest-integration">Pytest integration</a></li>
+<li><a class="reference internal" href="#writing-a-linter">Writing a linter</a><ul>
+<li><a class="reference internal" href="#example">Example:</a></li>
+<li><a class="reference internal" href="#run-pylama-from-python-code">Run pylama from python code</a></li>
+<li><a class="reference internal" href="#bug-tracker">Bug tracker</a></li>
+<li><a class="reference internal" href="#contributing">Contributing</a><ul>
+<li><a class="reference internal" href="#contributors">Contributors</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#license">License</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Pylama</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>Welcome to Pylama</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="welcome-to-pylama">
-<h1><a class="toc-backref" href="#id6">Welcome to Pylama</a><a class="headerlink" href="#welcome-to-pylama" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id6">Welcome to Pylama</a><a class="headerlink" href="#welcome-to-pylama" title="Permalink to this headline"></a></h1>
 <img alt="_images/logo.png" src="_images/logo.png" />
 <p>Welcome to Pylama’s documentation.</p>
 <p>Code audit tool for Python. Pylama wraps these tools:</p>
@@ -96,7 +153,7 @@
 </div>
 </section>
 <section id="requirements">
-<h1><a class="toc-backref" href="#id7">Requirements:</a><a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id7">Requirements:</a><a class="headerlink" href="#requirements" title="Permalink to this headline"></a></h1>
 <ul class="simple">
 <li><p>Python (3.7, 3.8, 3.9, 3.10)</p></li>
 <li><p>If your tests are failing on Win platform you are missing: <code class="docutils literal notranslate"><span class="pre">curses</span></code> - <a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/">http://www.lfd.uci.edu/~gohlke/pythonlibs/</a>
@@ -105,7 +162,7 @@
 <p>For python versions &lt; 3.7 install pylama 7.7.1</p>
 </section>
 <section id="installation">
-<span id="id1"></span><h1><a class="toc-backref" href="#id8">Installation:</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1><a class="toc-backref" href="#id8">Installation:</a><a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
 <p><strong>Pylama</strong> can be installed using pip:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install pylama
 </pre></div>
@@ -124,7 +181,7 @@ $ pip install pylama[vulture]
 </div>
 </section>
 <section id="quickstart">
-<span id="id2"></span><h1><a class="toc-backref" href="#id9">Quickstart</a><a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+<span id="id2"></span><h1><a class="toc-backref" href="#id9">Quickstart</a><a class="headerlink" href="#quickstart" title="Permalink to this headline"></a></h1>
 <p><strong>Pylama</strong> is easy to use and really fun for checking code quality.
 Just run <cite>pylama</cite> and get common output from all pylama plugins (<a class="reference external" href="https://github.com/PyCQA/pycodestyle">pycodestyle</a>, <a class="reference external" href="https://github.com/pyflakes/pyflakes">PyFlakes</a>, etc.)</p>
 <p>Recursively check the current directory.</p>
@@ -149,9 +206,9 @@ Just run <cite>pylama</cite> and get common output from all pylama plugins (<a c
 </div>
 </section>
 <section id="set-pylama-checkers-options">
-<span id="options"></span><h1><a class="toc-backref" href="#id10">Set Pylama (checkers) options</a><a class="headerlink" href="#set-pylama-checkers-options" title="Permalink to this headline">¶</a></h1>
+<span id="options"></span><h1><a class="toc-backref" href="#id10">Set Pylama (checkers) options</a><a class="headerlink" href="#set-pylama-checkers-options" title="Permalink to this headline"></a></h1>
 <section id="command-line-options">
-<h2><a class="toc-backref" href="#id11">Command line options</a><a class="headerlink" href="#command-line-options" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id11">Command line options</a><a class="headerlink" href="#command-line-options" title="Permalink to this headline"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pylama --help
 
 usage: pylama [-h] [--version] [--verbose] [--options FILE] [--linters LINTERS] [--from-stdin] [--concurrent] [--format {pydocstyle,pycodestyle,pylint,parsable,json}] [--abspath]
@@ -199,7 +256,7 @@ optional arguments:
 </div>
 </section>
 <section id="file-modelines">
-<span id="modeline"></span><h2><a class="toc-backref" href="#id12">File modelines</a><a class="headerlink" href="#file-modelines" title="Permalink to this headline">¶</a></h2>
+<span id="modeline"></span><h2><a class="toc-backref" href="#id12">File modelines</a><a class="headerlink" href="#file-modelines" title="Permalink to this headline"></a></h2>
 <p>You can set options for <strong>Pylama</strong> inside a source file. Use
 a pylama <em>modeline</em> for this, anywhere in the file.</p>
 <p>Format:</p>
@@ -217,7 +274,7 @@ a pylama <em>modeline</em> for this, anywhere in the file.</p>
 <p>Those options have a higher priority.</p>
 </section>
 <section id="skip-lines-noqa">
-<span id="skiplines"></span><h2><a class="toc-backref" href="#id13">Skip lines (noqa)</a><a class="headerlink" href="#skip-lines-noqa" title="Permalink to this headline">¶</a></h2>
+<span id="skiplines"></span><h2><a class="toc-backref" href="#id13">Skip lines (noqa)</a><a class="headerlink" href="#skip-lines-noqa" title="Permalink to this headline"></a></h2>
 <p>Just add <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">noqa</span></code> at the end of a line to ignore:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">urgent_fuction</span><span class="p">():</span>
     <span class="n">unused_var</span> <span class="o">=</span> <span class="s1">&#39;No errors here&#39;</span> <span class="c1"># noqa</span>
@@ -225,7 +282,7 @@ a pylama <em>modeline</em> for this, anywhere in the file.</p>
 </div>
 </section>
 <section id="configuration-file">
-<span id="config"></span><h2><a class="toc-backref" href="#id14">Configuration file</a><a class="headerlink" href="#configuration-file" title="Permalink to this headline">¶</a></h2>
+<span id="config"></span><h2><a class="toc-backref" href="#id14">Configuration file</a><a class="headerlink" href="#configuration-file" title="Permalink to this headline"></a></h2>
 <p><strong>Pylama</strong> looks for a configuration file in the current directory.</p>
 <p>You can use a “global” configuration, stored in <cite>.pylama.ini</cite> in your home
 directory. This will be used as a fallback configuration.</p>
@@ -251,7 +308,7 @@ in this order:</p>
 </div>
 </section>
 <section id="set-code-checkers-options">
-<h2><a class="toc-backref" href="#id15">Set code-checkers’ options</a><a class="headerlink" href="#set-code-checkers-options" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id15">Set code-checkers’ options</a><a class="headerlink" href="#set-code-checkers-options" title="Permalink to this headline"></a></h2>
 <p>You can set options for a special code checkers with pylama configurations.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">pylama</span><span class="p">:</span><span class="n">pyflakes</span><span class="p">]</span>
 <span class="n">builtins</span> <span class="o">=</span> <span class="n">_</span>
@@ -269,7 +326,7 @@ replaced by underscores (e.g. Pylint’s <code class="docutils literal notransla
 <code class="docutils literal notranslate"><span class="pre">max_line_length</span></code>).</p>
 </section>
 <section id="set-options-for-file-group-of-files">
-<h2><a class="toc-backref" href="#id16">Set options for file (group of files)</a><a class="headerlink" href="#set-options-for-file-group-of-files" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16">Set options for file (group of files)</a><a class="headerlink" href="#set-options-for-file-group-of-files" title="Permalink to this headline"></a></h2>
 <p>You can set options for special file (group of files)
 with sections:</p>
 <p>The options have a higher priority than in the <cite>pylama</cite> section.</p>
@@ -287,7 +344,7 @@ with sections:</p>
 </section>
 </section>
 <section id="pytest-integration">
-<h1><a class="toc-backref" href="#id17">Pytest integration</a><a class="headerlink" href="#pytest-integration" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id17">Pytest integration</a><a class="headerlink" href="#pytest-integration" title="Permalink to this headline"></a></h1>
 <p>Pylama has <a class="reference external" href="http://pytest.org">Pytest</a> support. The package automatically registers itself as a pytest
 plugin during installation. Pylama also supports the <cite>pytest_cache</cite> plugin.</p>
 <p>Check files with pylama</p>
@@ -298,7 +355,7 @@ plugin during installation. Pylama also supports the <cite>pytest_cache</cite> p
 files (see below).</p>
 </section>
 <section id="writing-a-linter">
-<h1><a class="toc-backref" href="#id18">Writing a linter</a><a class="headerlink" href="#writing-a-linter" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id18">Writing a linter</a><a class="headerlink" href="#writing-a-linter" title="Permalink to this headline"></a></h1>
 <p>You can write a custom extension for Pylama.
 The custom linter should be a python module. Its name should be like ‘pylama_&lt;name&gt;’.</p>
 <p>In ‘setup.py’, ‘pylama.linter’ entry point should be defined.</p>
@@ -318,7 +375,7 @@ It must implement two methods:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">run</span></code> takes a <cite>path</cite> argument and <cite>meta</cite> keyword arguments and returns a list of errors.</p></li>
 </ol>
 <section id="example">
-<h2><a class="toc-backref" href="#id19">Example:</a><a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id19">Example:</a><a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
 <p>Just a virtual ‘WOW’ checker.</p>
 <p>setup.py:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span>
@@ -352,7 +409,7 @@ It must implement two methods:</p>
 </div>
 </section>
 <section id="run-pylama-from-python-code">
-<h2><a class="toc-backref" href="#id20">Run pylama from python code</a><a class="headerlink" href="#run-pylama-from-python-code" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id20">Run pylama from python code</a><a class="headerlink" href="#run-pylama-from-python-code" title="Permalink to this headline"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pylama.main</span> <span class="kn">import</span> <span class="n">check_paths</span><span class="p">,</span> <span class="n">parse_options</span>
 
 <span class="c1"># Use and/or modify 0 or more of the options defined as keys in the variable my_redefined_options below.</span>
@@ -376,19 +433,19 @@ It must implement two methods:</p>
 </div>
 </section>
 <section id="bug-tracker">
-<span id="bagtracker"></span><h2><a class="toc-backref" href="#id21">Bug tracker</a><a class="headerlink" href="#bug-tracker" title="Permalink to this headline">¶</a></h2>
+<span id="bagtracker"></span><h2><a class="toc-backref" href="#id21">Bug tracker</a><a class="headerlink" href="#bug-tracker" title="Permalink to this headline"></a></h2>
 <p>If you have any suggestions, bug reports or annoyances please report them to the issue tracker at <a class="reference external" href="https://github.com/klen/pylama/issues">https://github.com/klen/pylama/issues</a></p>
 </section>
 <section id="contributing">
-<span id="id3"></span><h2><a class="toc-backref" href="#id22">Contributing</a><a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
+<span id="id3"></span><h2><a class="toc-backref" href="#id22">Contributing</a><a class="headerlink" href="#contributing" title="Permalink to this headline"></a></h2>
 <p>Development of <cite>pylama</cite> happens at GitHub: <a class="reference external" href="https://github.com/klen/pylama">https://github.com/klen/pylama</a></p>
 <section id="contributors">
-<span id="id4"></span><h3><a class="toc-backref" href="#id23">Contributors</a><a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h3>
+<span id="id4"></span><h3><a class="toc-backref" href="#id23">Contributors</a><a class="headerlink" href="#contributors" title="Permalink to this headline"></a></h3>
 <p>See <a class="reference external" href="https://github.com/klen/pylama/blob/develop/AUTHORS">AUTHORS</a>.</p>
 </section>
 </section>
 <section id="license">
-<span id="id5"></span><h2><a class="toc-backref" href="#id24">License</a><a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2><a class="toc-backref" href="#id24">License</a><a class="headerlink" href="#license" title="Permalink to this headline"></a></h2>
 <p>This is free software. You are permitted to use, copy, modify, merge, publish,
 distribute, sublicense, and/or sell copies of it, under the terms of the MIT
 License. See LICENSE file for the complete license.</p>
@@ -399,74 +456,28 @@ LICENSE file for the complete disclaimer.</p>
 </section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Welcome to Pylama</a></li>
-<li><a class="reference internal" href="#requirements">Requirements:</a></li>
-<li><a class="reference internal" href="#installation">Installation:</a></li>
-<li><a class="reference internal" href="#quickstart">Quickstart</a></li>
-<li><a class="reference internal" href="#set-pylama-checkers-options">Set Pylama (checkers) options</a><ul>
-<li><a class="reference internal" href="#command-line-options">Command line options</a></li>
-<li><a class="reference internal" href="#file-modelines">File modelines</a></li>
-<li><a class="reference internal" href="#skip-lines-noqa">Skip lines (noqa)</a></li>
-<li><a class="reference internal" href="#configuration-file">Configuration file</a></li>
-<li><a class="reference internal" href="#set-code-checkers-options">Set code-checkers’ options</a></li>
-<li><a class="reference internal" href="#set-options-for-file-group-of-files">Set options for file (group of files)</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#pytest-integration">Pytest integration</a></li>
-<li><a class="reference internal" href="#writing-a-linter">Writing a linter</a><ul>
-<li><a class="reference internal" href="#example">Example:</a></li>
-<li><a class="reference internal" href="#run-pylama-from-python-code">Run pylama from python code</a></li>
-<li><a class="reference internal" href="#bug-tracker">Bug tracker</a></li>
-<li><a class="reference internal" href="#contributing">Contributing</a><ul>
-<li><a class="reference internal" href="#contributors">Contributors</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#license">License</a></li>
-</ul>
-</li>
-</ul>
+          <footer>
 
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/index.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2013, Kirill Klenov.</p>
+  </div>
+
+   
+
+</footer>
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="nav-item nav-item-0"><a href="#">Pylama 8.3.0 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Welcome to Pylama</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2013, Kirill Klenov.
-    </div>
-  </body>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>
