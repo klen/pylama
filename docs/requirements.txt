@@ -1,2 +1,3 @@
+sphinx-copybutton
 git+https://github.com/klen/pylama
 
