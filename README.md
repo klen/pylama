@@ -1,3 +1,3 @@
 GitHub Pages of [klen/pylama](https://github.com/klen/pylama.git)
 ===
-Sphinx html documentation of [1f73399c](https://github.com/klen/pylama/tree/1f73399c8ceff8a4db28b55322eb3dd530ab2df8)
+Sphinx html documentation of [2c7f00f7](https://github.com/klen/pylama/tree/2c7f00f781e79208784edae663f29d00106c836d)
