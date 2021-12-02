@@ -6,8 +6,6 @@ import sys
 
 import pkg_resources
 
-from pylama import __version__ as release
-
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
@@ -28,7 +26,7 @@ copyright = "2013, Kirill Klenov"
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 try:
-    release = pkg_resources.get_distribution("Muffin").version
+    release = pkg_resources.get_distribution("pylama").version
 except pkg_resources.DistributionNotFound:
     print("To build the documentation, The distribution information of Muffin")
     print("Has to be available.  Either install the package into your")

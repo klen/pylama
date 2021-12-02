@@ -4,8 +4,12 @@
 .. _badges:
 
 .. image:: https://github.com/klen/pylama/workflows/tests/badge.svg
-    :target: https://github.com/klen/pylama/actions
+    :target: https://github.com/klen/pylama/actions/workflows/tests.yml
     :alt: Tests Status
+
+.. image:: https://github.com/klen/pylama/workflows/docs/badge.svg
+    :target: https://klen.github.io/pylama
+    :alt: Documentation Status
 
 .. image:: https://img.shields.io/pypi/v/pylama
     :target: https://pypi.org/project/pylama/
