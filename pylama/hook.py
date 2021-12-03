@@ -61,7 +61,7 @@ def hg_hook(_, repo, node=None, **kwargs):  # noqa
 def install_git(path):
     """Install hook in Git repository."""
     hook = op.join(path, "pre-commit")
-    with open(hook, "w", encoding='utf-8') as target:
+    with open(hook, "w", encoding="utf-8") as target:
         target.write(
             """#!/usr/bin/env python
 import sys
@@ -78,10 +78,10 @@ def install_hg(path):
     """Install hook in Mercurial repository."""
     hook = op.join(path, "hgrc")
     if not op.isfile(hook):
-        open(hook, "w+", encoding='utf-8').close()
+        open(hook, "w+", encoding="utf-8").close()
 
     cfgp = ConfigParser()
-    with open(hook, "r", encoding='utf-8') as source:
+    with open(hook, "r", encoding="utf-8") as source:
         cfgp.read_file(source)
 
     if not cfgp.has_section("hooks"):
@@ -93,7 +93,7 @@ def install_hg(path):
     if not cfgp.has_option("hooks", "qrefresh"):
         cfgp.set("hooks", "qrefresh", "python:pylama.hooks.hg_hook")
 
-    with open(hook, "w+", encoding='utf-8') as target:
+    with open(hook, "w+", encoding="utf-8") as target:
         cfgp.write(target)
 
 
