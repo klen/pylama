@@ -385,9 +385,6 @@ Contributing
 
 Development of `pylama` happens at GitHub: https://github.com/klen/pylama
 
-
-.. _contributors:
-
 Contributors
 ^^^^^^^^^^^^
 
