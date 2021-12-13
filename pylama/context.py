@@ -160,7 +160,7 @@ class RunContext:  # pylint: disable=R0902
         """Get params for a linter with the given name."""
         lparams = self.linters_params.get(name, {})
         for key in ("ignore", "select"):
-            if key in lparams:
+            if key in lparams and not isinstance(lparams[key], set):
                 lparams[key] = set(lparams[key].split(","))
         return lparams
 

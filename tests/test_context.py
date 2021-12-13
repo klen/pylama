@@ -47,3 +47,17 @@ def test_context_doesnt_suppress_exception(context):
     with pytest.raises(Exception):
         with ctx:
             raise Exception()
+            
+        
+def test_get_params_doesnt_fail_on_subsequent_invocation(context):
+    linter_params ={
+        "pycodestyle": {
+            "ignore": "D203,W503"
+        }
+    }
+
+    ctx = context(**linter_params)
+    ctx.get_params("pycodestyle")
+
+    ctx = context(**linter_params)
+    ctx.get_params("pycodestyle")
