@@ -1,3 +1,6 @@
+import pytest
+
+
 def test_modeline(context):
     ctx = context(code=(
         "def test():\n"
@@ -36,3 +39,25 @@ def test_filter(parse_args, context):
     ctx.push(number='E300', source='pydocstyle')
     assert ctx.errors
     assert len(ctx.errors) == 2
+
+
+def test_context_doesnt_suppress_exception(context):
+    ctx = context()
+
+    with pytest.raises(Exception):
+        with ctx:
+            raise Exception()
+            
+        
+def test_get_params_doesnt_fail_on_subsequent_invocation(context):
+    linter_params ={
+        "pycodestyle": {
+            "ignore": "D203,W503"
+        }
+    }
+
+    ctx = context(**linter_params)
+    ctx.get_params("pycodestyle")
+
+    ctx = context(**linter_params)
+    ctx.get_params("pycodestyle")

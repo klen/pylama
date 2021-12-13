@@ -391,7 +391,7 @@ Development of `pylama` happens at GitHub: https://github.com/klen/pylama
 Contributors
 ^^^^^^^^^^^^
 
-See AUTHORS_.
+See CONTRIBUTORS_.
 
 
 .. _license:
@@ -410,7 +410,7 @@ LICENSE file for the complete disclaimer.
 
 .. _links:
 
-.. _AUTHORS: https://github.com/klen/pylama/blob/develop/AUTHORS
+.. _CONTRIBUTORS: https://github.com/klen/pylama/graphs/contributors
 .. _Mccabe: http://nedbatchelder.com/blog/200803/python_code_complexity_microtool.html
 .. _pydocstyle: https://github.com/PyCQA/pydocstyle/
 .. _pycodestyle: https://github.com/PyCQA/pycodestyle
