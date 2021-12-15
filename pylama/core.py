@@ -13,10 +13,7 @@ from pylama.lint import LINTERS, LinterV2
 
 
 def run(
-    path: str,
-    code: str = None,
-    rootdir: Path = CURDIR,
-    options: Namespace = None,
+    path: str, code: str = None, rootdir: Path = CURDIR, options: Namespace = None
 ) -> List[Error]:
     """Run code checkers with the given params.
 

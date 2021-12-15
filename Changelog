@@ -1,3 +1,7 @@
+2021-12-15  k.klenov
+	* Version 8.3.1
+	* Fixed processing of linters params
+
 2021-12-02  k.klenov
 	* Version 8.3.0
 	* Added support for default config file `~/.pylama.ini`

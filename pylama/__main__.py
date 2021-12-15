@@ -1,6 +1,6 @@
 """Support the module execution."""
 
-from .main import shell
+from pylama.main import shell
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     shell()
