@@ -4,23 +4,22 @@ from typing import Dict
 import pytest
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def parse_options():
     from pylama.config import parse_options as parse_options_
 
     return parse_options_
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def parse_args(parse_options):
-
     def parse_args_(args: str):
         return parse_options(args.split())
 
     return parse_args_
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def run():
     from pylama.core import run as run_
 
@@ -37,10 +36,10 @@ def source():
 def context(source, parse_args):
     from pylama.context import RunContext
 
-    def fabric(*, code: str = None, args: str = None, options = None, **linters_params):
+    def fabric(*, code: str = None, args: str = None, options=None, **linters_params):
         if args:
             options = parse_args(args)
-        ctx = RunContext('dummy.py', source if code is None else code, options=options)
+        ctx = RunContext("dummy.py", source if code is None else code, options=options)
         ctx.linters_params = linters_params
         return ctx
 

@@ -82,7 +82,9 @@ def setup_parser() -> ArgumentParser:
         default=_Default([CURDIR.as_posix()]),
         help="Paths to files or directories for code check.",
     )
-    parser.add_argument("--version", action="version", version="%(prog)s " + __version__)
+    parser.add_argument(
+        "--version", action="version", version="%(prog)s " + __version__
+    )
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose mode.")
     parser.add_argument(
         "--options",
@@ -100,7 +102,9 @@ def setup_parser() -> ArgumentParser:
         "-l",
         default=_Default(",".join(DEFAULT_LINTERS)),
         type=parse_linters,
-        help=(f"Select linters. (comma-separated). Choices are {','.join(s for s in LINTERS)}."),
+        help=(
+            f"Select linters. (comma-separated). Choices are {','.join(s for s in LINTERS)}."
+        ),
     )
     parser.add_argument(
         "--from-stdin",
@@ -163,7 +167,9 @@ def setup_parser() -> ArgumentParser:
         help="Sort result by error types. Ex. E,W,D",
     )
     parser.add_argument("--report", "-r", help="Send report to file [REPORT]")
-    parser.add_argument("--hook", action="store_true", help="Install Git (Mercurial) hook.")
+    parser.add_argument(
+        "--hook", action="store_true", help="Install Git (Mercurial) hook."
+    )
 
     for linter_type in LINTERS.values():
         linter_type.add_args(parser)
@@ -177,7 +183,9 @@ def parse_options(  # noqa
     """Parse options from command line and configuration files."""
     # Parse args from command string
     parser = setup_parser()
-    actions = dict((a.dest, a) for a in parser._actions)  # pylint: disable=protected-access
+    actions = dict(
+        (a.dest, a) for a in parser._actions
+    )  # pylint: disable=protected-access
 
     options = parser.parse_args(args or [])
     options.file_params = {}
@@ -233,6 +241,7 @@ def process_value(actions: Dict, name: str, value: Any) -> Any:
     """Compile option value."""
     action = actions.get(name)
     if not action:
+
         return value
 
     if callable(action.type):

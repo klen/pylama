@@ -4,6 +4,7 @@ import ast
 import os.path as op
 import re
 from argparse import Namespace
+from copy import copy
 from functools import lru_cache
 from os import remove
 from tempfile import NamedTemporaryFile
@@ -92,16 +93,16 @@ class RunContext:  # pylint: disable=R0902
         suppress_exception = False
         if evalue is not None:
             if etype is IOError:
-                self.push(text=f"E001 {evalue}", number="E001")
+                self.push(text=f"{evalue}", number="E001")
                 suppress_exception = True
             elif etype is UnicodeDecodeError:
-                self.push(text=f"E001 UnicodeError: {self.filename}", number="E001")
+                self.push(text=f"UnicodeError: {self.filename}", number="E001")
                 suppress_exception = True
             elif etype is SyntaxError:
                 self.push(
                     lnum=evalue.lineno,
                     col=evalue.offset,
-                    text=f"E0100 SyntaxError: {evalue.args[0]}",
+                    text=f"SyntaxError: {evalue.args[0]}",
                 )
                 suppress_exception = True
 
@@ -158,7 +159,7 @@ class RunContext:  # pylint: disable=R0902
     @lru_cache(42)
     def get_params(self, name: str) -> Dict:
         """Get params for a linter with the given name."""
-        lparams = self.linters_params.get(name, {})
+        lparams = copy(self.linters_params.get(name, {}))
         for key in ("ignore", "select"):
             if key in lparams and not isinstance(lparams[key], set):
                 lparams[key] = set(lparams[key].split(","))
