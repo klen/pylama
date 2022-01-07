@@ -47,7 +47,7 @@ class RunContext:  # pylint: disable=R0902
         self.skip = False
         self.ignore = set()
         self.select = set()
-        self.linters = None
+        self.linters = []
         self.linters_params = {}
 
         self._ast = None
@@ -62,10 +62,10 @@ class RunContext:  # pylint: disable=R0902
             self.skip = options.skip and any(
                 ptrn.match(filename) for ptrn in options.skip
             )
-            self.linters = options.linters
-            self.ignore = options.ignore
-            self.select = options.select
-            self.linters_params = options.linters_params
+            self.linters.extend(options.linters)
+            self.ignore |= options.ignore
+            self.select |= options.select
+            self.linters_params.update(options.linters_params)
 
             for mask in options.file_params:
                 if mask.match(filename):
