@@ -4,13 +4,13 @@ from __future__ import absolute_import
 
 import sys
 from configparser import ConfigParser  # noqa
-from os import chmod
+from os import chmod, getcwd
 from os import path as op
 from subprocess import PIPE, Popen
 from typing import List, Tuple
 
-from .config import parse_options, setup_logger
-from .main import LOGGER, check_paths, display_errors
+from pylama.config import parse_options, setup_logger
+from pylama.main import LOGGER, check_paths, display_errors
 
 
 def run(command: str) -> Tuple[int, List[bytes], List[bytes]]:
@@ -32,7 +32,7 @@ def git_hook(error=True):
     setup_logger(options)
     candidates = [f.decode("utf-8") for f in files_modified]
     if candidates:
-        errors = check_paths(candidates, options)
+        errors = check_paths(candidates, options, rootdir=getcwd())
         display_errors(errors, options)
         sys.exit(int(error and bool(errors)))
 

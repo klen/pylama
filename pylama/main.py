@@ -8,11 +8,11 @@ from os import walk
 from pathlib import Path
 from typing import List, Optional
 
-from .check_async import check_async
-from .config import CURDIR, Namespace, parse_options, setup_logger
-from .core import LOGGER, run
-from .errors import Error
-from .utils import read_stdin
+from pylama.check_async import check_async
+from pylama.config import CURDIR, Namespace, parse_options, setup_logger
+from pylama.core import LOGGER, run
+from pylama.errors import Error
+from pylama.utils import read_stdin
 
 DEFAULT_FORMAT = "{filename}:{lnum}:{col} [{etype}] {number} {message} [{source}]"
 MESSAGE_FORMATS = {

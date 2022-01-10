@@ -33,7 +33,7 @@ def source():
 
 
 @pytest.fixture
-def context(source, parse_args):
+def context(source, parse_args, request):
     from pylama.context import RunContext
 
     def fabric(*, code: str = None, args: str = None, options=None, **linters_params):
@@ -41,6 +41,7 @@ def context(source, parse_args):
             options = parse_args(args)
         ctx = RunContext("dummy.py", source if code is None else code, options=options)
         ctx.linters_params = linters_params
+        request.addfinalizer(lambda: ctx.__exit__(None, None, None))
         return ctx
 
     return fabric

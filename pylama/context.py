@@ -6,8 +6,8 @@ import re
 from argparse import Namespace
 from copy import copy
 from functools import lru_cache
-from os import remove
-from tempfile import NamedTemporaryFile
+from pathlib import Path
+from tempfile import NamedTemporaryFile, mkdtemp
 from typing import Dict, List, Set
 
 from pylama.errors import Error
@@ -88,25 +88,26 @@ class RunContext:  # pylint: disable=R0902
     def __exit__(self, etype, evalue, _):
         """Exit from the context."""
         if self._tempfile is not None:
-            remove(self._tempfile)
+            tmpfile = Path(self._tempfile)
+            tmpfile.unlink()
+            tmpfile.parent.rmdir()
 
-        suppress_exception = False
         if evalue is not None:
             if etype is IOError:
                 self.push(text=f"{evalue}", number="E001")
-                suppress_exception = True
             elif etype is UnicodeDecodeError:
                 self.push(text=f"UnicodeError: {self.filename}", number="E001")
-                suppress_exception = True
             elif etype is SyntaxError:
                 self.push(
                     lnum=evalue.lineno,
                     col=evalue.offset,
                     text=f"SyntaxError: {evalue.args[0]}",
                 )
-                suppress_exception = True
+            else:
+                self.push(lnum=1, col=1, text=str(evalue))
+                return False
 
-        return suppress_exception
+        return True
 
     @property
     def source(self):
@@ -137,7 +138,11 @@ class RunContext:  # pylint: disable=R0902
 
         if self._tempfile is None:
             file = NamedTemporaryFile(  # noqa
-                "w", encoding="utf8", suffix=".py", delete=False
+                "w",
+                encoding="utf8",
+                suffix=".py",
+                dir=mkdtemp(prefix="pylama_"),
+                delete=False,
             )
             file.write(self.source)
             file.close()

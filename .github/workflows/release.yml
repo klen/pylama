@@ -48,17 +48,3 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.PYPI }}
-
-  notify:
-    runs-on: ubuntu-latest
-    needs: release
-    steps:
-
-    - name: Notify Success
-      uses: archive/github-actions-slack@master
-      with:
-          slack-channel: C2CRL4C4V
-          slack-text: Build is success *[${{ github.repository }}] (${{ github.ref }})* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_TOKEN }}
-          slack-optional-as_user: false
-          slack-optional-icon_emoji: ":white_check_mark:"
