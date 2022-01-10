@@ -56,7 +56,7 @@ def test_get_params_doesnt_fail_on_subsequent_invocation(context):
 
 
 def test_context_linters_params(context):
-    params = {'pylint': {'good_names': 'f'}}
+    params = {"pylint": {"good_names": "f"}}
     ctx = context(**params)
     lparams = ctx.get_params("pylint")
     assert lparams
@@ -67,3 +67,18 @@ def test_context_linters_params(context):
     lparams = ctx.get_params("pylint")
     assert lparams
     assert "enable" not in lparams
+
+
+def test_context_does_not_change_global_options(context, parse_args):
+    """Ensure a RunContext does not change the passed in options object."""
+    options = parse_args(" --select=W123 --ignore=W234 --linters=pylint dummy.py")
+    ctx = context(options=options)
+    ctx.update_params(linters="pycodestyle", select="W345", ignore="W678")
+
+    assert ctx.linters is not options.linters
+    assert ctx.select is not options.select
+    assert ctx.ignore is not options.ignore
+
+    assert options.linters == ["pylint"]
+    assert options.select == {"W123"}
+    assert options.ignore == {"W234"}
