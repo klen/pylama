@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 from os import path as op
+import pathlib
 
 import pytest
 
@@ -43,7 +44,7 @@ def pytest_sessionfinish(session):
 def pytest_collect_file(path, parent):
     config = parent.config
     if config.option.pylama and path.ext == ".py":
-        return PylamaItem.from_parent(parent, fspath=path)
+        return PylamaFile.from_parent(parent, path=pathlib.Path(path))
     return None
 
 
@@ -51,15 +52,17 @@ class PylamaError(Exception):
     """indicates an error during pylama checks."""
 
 
-class PylamaItem(pytest.Item, pytest.File):
-    def __init__(self, fspath, parent):
-        super().__init__(fspath, parent)
+class PylamaFile(pytest.File):
+    def collect(self):
+        return [PylamaItem.from_parent(self, name="pylama")]
+
+
+class PylamaItem(pytest.Item):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.add_marker("pycodestyle")
         self.cache = None
         self._pylamamtimes = None
-
-    def collect(self):
-        pass
 
     def setup(self):
         if not getattr(self.config, "cache", None):
@@ -85,10 +88,10 @@ class PylamaItem(pytest.Item, pytest.File):
         if self.cache:
             self.config._pylamamtimes[str(self.fspath)] = self._pylamamtimes
 
-    def repr_failure(self, excinfo):
+    def repr_failure(self, excinfo, style=None):
         if excinfo.errisinstance(PylamaError):
             return excinfo.value.args[0]
-        return super().repr_failure(excinfo)
+        return super().repr_failure(excinfo, style)
 
 
 def check_file(path):
