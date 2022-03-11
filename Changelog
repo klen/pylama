@@ -1,3 +1,7 @@
+2022-03-11  k.klenov
+	* Version 8.3.8
+	* Better pytest integration
+
 2021-12-15  k.klenov
 	* Version 8.3.6
 	* Fixed processing of linters params

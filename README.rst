@@ -214,7 +214,7 @@ in this order: ::
     ./setup.cfg
     ./tox.ini
     ./pytest.ini
-    ~/.pylama.init
+    ~/.pylama.ini
 
 The ``--option`` / ``-o`` argument can be used to specify a configuration file.
 
