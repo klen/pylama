@@ -181,8 +181,10 @@ class RunContext:  # pylint: disable=R0902
         err = Error(filename=self.filename, **params)
         number = err.number
 
-        if SKIP_PATTERN(self.lines[err.lnum - 1]):
-            return None
+        if bool(len(self.lines)):
+
+            if SKIP_PATTERN(self.lines[err.lnum - 1 ]):
+                return None
 
         if filtrate:
 
