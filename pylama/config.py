@@ -12,12 +12,19 @@ from pylama import LOGGER, __version__
 from pylama.libs import inirama
 from pylama.lint import LINTERS
 
+try:
+    from pylama import config_toml
+    CONFIG_FILES = ["pylama.ini", "pyproject.toml", "setup.cfg", "tox.ini", "pytest.ini"]
+except ImportError:
+    CONFIG_FILES = ["pylama.ini", "setup.cfg", "tox.ini", "pytest.ini"]
+
+
 #: A default checkers
 DEFAULT_LINTERS = "pycodestyle", "pyflakes", "mccabe"
 
 CURDIR = Path.cwd()
 HOMECFG = Path.home() / ".pylama.ini"
-CONFIG_FILES = "pylama.ini", "setup.cfg", "tox.ini", "pytest.ini"
+DEFAULT_SECTION = "pylama"
 
 # Setup a logger
 LOGGER.propagate = False
@@ -253,18 +260,36 @@ def process_value(actions: Dict, name: str, value: Any) -> Any:
     return value
 
 
-def get_config(ini_path: str = None, rootdir: Path = None) -> inirama.Namespace:
-    """Load configuration from INI."""
-    config = inirama.Namespace()
-    config.default_section = "pylama"
-
-    cfg_path = ini_path or get_default_config_file(rootdir)
+def get_config(user_path: str = None, rootdir: Path = None) -> inirama.Namespace:
+    """Load configuration from files."""
+    cfg_path = user_path or get_default_config_file(rootdir)
     if not cfg_path and HOMECFG.exists():
         cfg_path = HOMECFG.as_posix()
 
     if cfg_path:
         LOGGER.info("Read config: %s", cfg_path)
-        config.read(cfg_path)
+        if cfg_path.endswith(".toml"):
+            return get_config_toml(cfg_path)
+        else:
+            return get_config_ini(cfg_path)
+
+    return inirama.Namespace()
+
+
+def get_config_ini(ini_path: str) -> inirama.Namespace:
+    """Load configuration from INI."""
+    config = inirama.Namespace()
+    config.default_section = DEFAULT_SECTION
+    config.read(ini_path)
+
+    return config
+
+
+def get_config_toml(toml_path: str) -> inirama.Namespace:
+    """Load configuration from TOML."""
+    config = config_toml.Namespace()
+    config.default_section = DEFAULT_SECTION
+    config.read(toml_path)
 
     return config
 
