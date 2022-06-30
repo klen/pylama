@@ -66,6 +66,10 @@ Installation:
 
     $ pip install pylama
 
+TOML configuration can be enabled optionally: ::
+
+    $ pip install pylama[toml]
+
 You may optionally install the requirements with the library: ::
 
     $ pip install pylama[mypy]
@@ -199,24 +203,28 @@ Just add ``# noqa`` at the end of a line to ignore:
 .. _config:
 
 Configuration file
-------------------
+==================
 
 **Pylama** looks for a configuration file in the current directory.
 
 You can use a “global” configuration, stored in `.pylama.ini` in your home
 directory. This will be used as a fallback configuration.
 
-The program searches for the first matching ini-style configuration file in
-the directories of command line argument. Pylama looks for the configuration
-in this order: ::
+The program searches for the first matching configuration file in the
+directories of command line argument. Pylama looks for the configuration in
+this order: ::
 
     ./pylama.ini
+    ./pyproject.toml
     ./setup.cfg
     ./tox.ini
     ./pytest.ini
     ~/.pylama.ini
 
 The ``--option`` / ``-o`` argument can be used to specify a configuration file.
+
+INI-style configuration
+-----------------------
 
 Pylama searches for sections whose names start with `pylama`.
 
@@ -231,7 +239,7 @@ The `pylama` section configures global options like `linters` and `skip`.
     ignore = F0401,C0111,E731
 
 Set code-checkers' options
---------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can set options for a special code checkers with pylama configurations.
 
@@ -253,7 +261,7 @@ replaced by underscores (e.g. Pylint's ``max-line-length`` becomes
 
 
 Set options for file (group of files)
--------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can set options for special file (group of files)
 with sections:
@@ -270,6 +278,66 @@ The options have a higher priority than in the `pylama` section.
     ignore = C0110
 
     [pylama:*/setup.py]
+    skip = 1
+
+TOML configuration
+-----------------------
+
+Pylama searches for sections whose names start with `tool.pylama`.
+
+The `tool.pylama` section configures global options like `linters` and `skip`.
+
+::
+
+    [tool.pylama]
+    format = "pylint"
+    skip = "*/.tox/*,*/.env/*"
+    linters = "pylint,mccabe"
+    ignore = "F0401,C0111,E731"
+
+Set code-checkers' options
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can set options for a special code checkers with pylama configurations.
+
+::
+
+    [tool.pylama.linter.pyflakes]
+    builtins = "_"
+
+    [tool.pylama.linter.pycodestyle]
+    max_line_length = 100
+
+    [tool.pylama.linter.pylint]
+    max_line_length = 100
+    disable = "R"
+
+See code-checkers' documentation for more info. Note that dashes are
+replaced by underscores (e.g. Pylint's ``max-line-length`` becomes
+``max_line_length``).
+
+
+Set options for file (group of files)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can set options for special file (group of files)
+with sections:
+
+The options have a higher priority than in the `tool.pylama` section.
+
+::
+
+    [[tool.pylama.files]]
+    path = "*/pylama/main.py"
+    ignore = "C901,R0914,W0212"
+    select = "R"
+
+    [[tool.pylama.files]]
+    path = "pylama:*/tests.py"
+    ignore = "C0110"
+
+    [[tool.pylama.files]]
+    path = "pylama:*/setup.py"
     skip = 1
 
 
