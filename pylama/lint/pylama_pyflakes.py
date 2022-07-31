@@ -9,7 +9,6 @@ m = checker.messages
 CODES = {
     m.UnusedImport.message: "W0611",
     m.RedefinedWhileUnused.message: "W0404",
-    m.RedefinedInListComp.message: "W0621",
     m.ImportShadowedByLoopVar.message: "W0621",
     m.ImportStarUsed.message: "W0401",
     m.ImportStarUsage.message: "W0401",
@@ -20,7 +19,6 @@ CODES = {
     m.DuplicateArgument.message: "E1122",
     m.LateFutureImport.message: "W0410",
     m.UnusedVariable.message: "W0612",
-    m.ReturnWithArgsInsideGenerator.message: "E0106",
     m.ReturnOutsideFunction.message: "E0104",
 }
 
