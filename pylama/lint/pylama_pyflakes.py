@@ -22,6 +22,13 @@ CODES = {
     m.ReturnOutsideFunction.message: "E0104",
 }
 
+# RedefinedInListComp and ReturnWithArgsInsideGenerator were removed at pyflakes 2.5.0:
+#   https://github.com/PyCQA/pyflakes/commit/2246217295dc8cb30ef4a7b9d8dc449ce32e603a
+if hasattr(m, "RedefinedInListComp"):
+    CODES[m.RedefinedInListComp.message] = "W0621"
+if hasattr(m, "ReturnWithArgsInsideGenerator"):
+    CODES[m.ReturnWithArgsInsideGenerator.message] = "E0106"
+
 
 class Linter(Abstract):
     """Pyflakes runner."""
