@@ -1,3 +1,8 @@
+2022-08-08  k.klenov
+	* Version 8.4.0
+        * Support TOML configuration (thank you https://github.com/villainy)
+        * Fix pylint integration
+
 2022-03-11  k.klenov
 	* Version 8.3.8
 	* Better pytest integration
