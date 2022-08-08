@@ -53,4 +53,4 @@ def run(
     return sorted(errors, key=sorter)
 
 
-# pylama:ignore=R0912,D210,F0001
+# pylama:ignore=R0912,D210,F0001,C3001
