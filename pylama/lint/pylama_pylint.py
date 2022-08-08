@@ -43,6 +43,8 @@ class Linter(BaseLinter):
 
         params.setdefault("enable", ctx.select | ctx.get_filter("pylint", "select"))
         params.setdefault("disable", ctx.ignore | ctx.get_filter("pylint", "ignore"))
+        # if params.get("disable"):
+        #     params["disable"].add("W0012")
 
         class Reporter(BaseReporter):
             """Handle messages."""
@@ -80,6 +82,11 @@ class _Params:
         }
         if HOME_RCFILE.exists():
             attrs["rcfile"] = HOME_RCFILE.as_posix()
+
+        if attrs.get("disable"):
+            attrs["disable"] += ",W0012"
+        else:
+            attrs["disable"] = "W0012"
 
         self.attrs = attrs
 
