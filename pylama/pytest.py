@@ -1,13 +1,13 @@
 """ py.test plugin for checking files with pylama. """
 from __future__ import absolute_import
 
-from os import path as op
 import pathlib
+from os import path as op
 
 import pytest
 
 from pylama.config import CURDIR
-from pylama.main import DEFAULT_FORMAT, parse_options, check_paths
+from pylama.main import DEFAULT_FORMAT, check_paths, parse_options
 
 HISTKEY = "pylama/mtimes"
 

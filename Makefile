@@ -81,3 +81,12 @@ audit:
 .PHONY: docs
 docs: docs
 	@python setup.py build_sphinx --source-dir=docs/ --build-dir=docs/_build --all-files
+
+docker:
+	docker build -t pylama .
+
+docker-sh:
+	docker run --rm -it pylama sh
+
+docker-test:
+	docker run --rm -it pylama pytest --pylama pylama

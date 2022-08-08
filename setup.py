@@ -20,6 +20,7 @@ setup(
     install_requires=parse_requirements("requirements/requirements.txt"),
     extras_require=dict(
         tests=parse_requirements("requirements/requirements-tests.txt"),
-        all=OPTIONAL_LINTERS, **{linter: [linter] for linter in OPTIONAL_LINTERS}
+        all=OPTIONAL_LINTERS, **{linter: [linter] for linter in OPTIONAL_LINTERS},
+        toml="toml>=0.10.2",
     ),
 )

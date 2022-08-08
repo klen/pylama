@@ -25,17 +25,8 @@ jobs:
       uses: actions/setup-python@main
       with:
         python-version: ${{ matrix.python-version }}
-
-    - name: Get pip cache dir
-      id: pip-cache
-      run: |
-        echo "::set-output name=dir::$(pip cache dir)"
-
-    - name: Cache pip
-      uses: actions/cache@main
-      with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-${{ hashFiles('requirements/requirements.txt', 'requirements/requirements-tests.txt') }}
+        cache: pip
+        cache-dependency-path: 'requirements/*.txt'
 
     - name: Install dependencies
       run: |

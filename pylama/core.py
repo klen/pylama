@@ -48,9 +48,9 @@ def run(
     sorter = default_sorter
     if options and options.sort:
         sort = options.sort
-        sorter = lambda err: (sort.get(err.etype, 999), err.lnum)
+        sorter = lambda err: (sort.get(err.etype, 999), err.lnum)  # pylint: disable=C3001
 
     return sorted(errors, key=sorter)
 
 
-# pylama:ignore=R0912,D210,F0001
+# pylama:ignore=R0912,D210,F0001,C3001
