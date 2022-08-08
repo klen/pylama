@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to Pylama &mdash; Pylama 8.3.8 documentation</title>
+  <title>Welcome to Pylama &mdash; Pylama 8.4.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -15,6 +15,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/clipboard.min.js"></script>
         <script src="_static/copybutton.js"></script>
@@ -31,7 +32,7 @@
             <a href="#" class="icon icon-home"> Pylama
           </a>
               <div class="version">
-                8.3.8
+                8.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -51,9 +52,19 @@
 <li><a class="reference internal" href="#command-line-options">Command line options</a></li>
 <li><a class="reference internal" href="#file-modelines">File modelines</a></li>
 <li><a class="reference internal" href="#skip-lines-noqa">Skip lines (noqa)</a></li>
-<li><a class="reference internal" href="#configuration-file">Configuration file</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration-file">Configuration file</a><ul>
+<li><a class="reference internal" href="#ini-style-configuration">INI-style configuration</a><ul>
 <li><a class="reference internal" href="#set-code-checkers-options">Set code-checkers’ options</a></li>
 <li><a class="reference internal" href="#set-options-for-file-group-of-files">Set options for file (group of files)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#toml-configuration">TOML configuration</a><ul>
+<li><a class="reference internal" href="#id3">Set code-checkers’ options</a></li>
+<li><a class="reference internal" href="#id4">Set options for file (group of files)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#pytest-integration">Pytest integration</a></li>
@@ -95,7 +106,7 @@
            <div itemprop="articleBody">
              
   <section id="welcome-to-pylama">
-<h1><a class="toc-backref" href="#id6">Welcome to Pylama</a><a class="headerlink" href="#welcome-to-pylama" title="Permalink to this headline"></a></h1>
+<h1><a class="toc-backref" href="#id8">Welcome to Pylama</a><a class="headerlink" href="#welcome-to-pylama" title="Permalink to this heading"></a></h1>
 <img alt="_images/logo.png" src="_images/logo.png" />
 <p>Welcome to Pylama’s documentation.</p>
 <p>Code audit tool for Python. Pylama wraps these tools:</p>
@@ -121,39 +132,52 @@
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#welcome-to-pylama" id="id6">Welcome to Pylama</a></p></li>
-<li><p><a class="reference internal" href="#requirements" id="id7">Requirements:</a></p></li>
-<li><p><a class="reference internal" href="#installation" id="id8">Installation:</a></p></li>
-<li><p><a class="reference internal" href="#quickstart" id="id9">Quickstart</a></p></li>
-<li><p><a class="reference internal" href="#set-pylama-checkers-options" id="id10">Set Pylama (checkers) options</a></p>
+<li><p><a class="reference internal" href="#welcome-to-pylama" id="id8">Welcome to Pylama</a></p></li>
+<li><p><a class="reference internal" href="#requirements" id="id9">Requirements:</a></p></li>
+<li><p><a class="reference internal" href="#installation" id="id10">Installation:</a></p></li>
+<li><p><a class="reference internal" href="#quickstart" id="id11">Quickstart</a></p></li>
+<li><p><a class="reference internal" href="#set-pylama-checkers-options" id="id12">Set Pylama (checkers) options</a></p>
 <ul>
-<li><p><a class="reference internal" href="#command-line-options" id="id11">Command line options</a></p></li>
-<li><p><a class="reference internal" href="#file-modelines" id="id12">File modelines</a></p></li>
-<li><p><a class="reference internal" href="#skip-lines-noqa" id="id13">Skip lines (noqa)</a></p></li>
-<li><p><a class="reference internal" href="#configuration-file" id="id14">Configuration file</a></p></li>
-<li><p><a class="reference internal" href="#set-code-checkers-options" id="id15">Set code-checkers’ options</a></p></li>
-<li><p><a class="reference internal" href="#set-options-for-file-group-of-files" id="id16">Set options for file (group of files)</a></p></li>
+<li><p><a class="reference internal" href="#command-line-options" id="id13">Command line options</a></p></li>
+<li><p><a class="reference internal" href="#file-modelines" id="id14">File modelines</a></p></li>
+<li><p><a class="reference internal" href="#skip-lines-noqa" id="id15">Skip lines (noqa)</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#pytest-integration" id="id17">Pytest integration</a></p></li>
-<li><p><a class="reference internal" href="#writing-a-linter" id="id18">Writing a linter</a></p>
+<li><p><a class="reference internal" href="#configuration-file" id="id16">Configuration file</a></p>
 <ul>
-<li><p><a class="reference internal" href="#example" id="id19">Example:</a></p></li>
-<li><p><a class="reference internal" href="#run-pylama-from-python-code" id="id20">Run pylama from python code</a></p></li>
-<li><p><a class="reference internal" href="#bug-tracker" id="id21">Bug tracker</a></p></li>
-<li><p><a class="reference internal" href="#contributing" id="id22">Contributing</a></p>
+<li><p><a class="reference internal" href="#ini-style-configuration" id="id17">INI-style configuration</a></p>
 <ul>
-<li><p><a class="reference internal" href="#contributors" id="id23">Contributors</a></p></li>
+<li><p><a class="reference internal" href="#set-code-checkers-options" id="id18">Set code-checkers’ options</a></p></li>
+<li><p><a class="reference internal" href="#set-options-for-file-group-of-files" id="id19">Set options for file (group of files)</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#license" id="id24">License</a></p></li>
+<li><p><a class="reference internal" href="#toml-configuration" id="id20">TOML configuration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id3" id="id21">Set code-checkers’ options</a></p></li>
+<li><p><a class="reference internal" href="#id4" id="id22">Set options for file (group of files)</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#pytest-integration" id="id23">Pytest integration</a></p></li>
+<li><p><a class="reference internal" href="#writing-a-linter" id="id24">Writing a linter</a></p>
+<ul>
+<li><p><a class="reference internal" href="#example" id="id25">Example:</a></p></li>
+<li><p><a class="reference internal" href="#run-pylama-from-python-code" id="id26">Run pylama from python code</a></p></li>
+<li><p><a class="reference internal" href="#bug-tracker" id="id27">Bug tracker</a></p></li>
+<li><p><a class="reference internal" href="#contributing" id="id28">Contributing</a></p>
+<ul>
+<li><p><a class="reference internal" href="#contributors" id="id29">Contributors</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#license" id="id30">License</a></p></li>
 </ul>
 </li>
 </ul>
 </div>
 </section>
 <section id="requirements">
-<h1><a class="toc-backref" href="#id7">Requirements:</a><a class="headerlink" href="#requirements" title="Permalink to this headline"></a></h1>
+<h1><a class="toc-backref" href="#id9">Requirements:</a><a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h1>
 <ul class="simple">
 <li><p>Python (3.7, 3.8, 3.9, 3.10)</p></li>
 <li><p>If your tests are failing on Win platform you are missing: <code class="docutils literal notranslate"><span class="pre">curses</span></code> -
@@ -164,9 +188,13 @@ text-based terminals)</p></li>
 <p>For python versions &lt; 3.7 install pylama 7.7.1</p>
 </section>
 <section id="installation">
-<span id="id1"></span><h1><a class="toc-backref" href="#id8">Installation:</a><a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
+<span id="id1"></span><h1><a class="toc-backref" href="#id10">Installation:</a><a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
 <p><strong>Pylama</strong> can be installed using pip:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install pylama
+</pre></div>
+</div>
+<p>TOML configuration can be enabled optionally:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install pylama[toml]
 </pre></div>
 </div>
 <p>You may optionally install the requirements with the library:</p>
@@ -183,7 +211,7 @@ $ pip install pylama[vulture]
 </div>
 </section>
 <section id="quickstart">
-<span id="id2"></span><h1><a class="toc-backref" href="#id9">Quickstart</a><a class="headerlink" href="#quickstart" title="Permalink to this headline"></a></h1>
+<span id="id2"></span><h1><a class="toc-backref" href="#id11">Quickstart</a><a class="headerlink" href="#quickstart" title="Permalink to this heading"></a></h1>
 <p><strong>Pylama</strong> is easy to use and really fun for checking code quality.  Just run
 <cite>pylama</cite> and get common output from all pylama plugins (<a class="reference external" href="https://github.com/PyCQA/pycodestyle">pycodestyle</a>,
 <a class="reference external" href="https://github.com/pyflakes/pyflakes">PyFlakes</a>, etc.)</p>
@@ -209,9 +237,9 @@ $ pip install pylama[vulture]
 </div>
 </section>
 <section id="set-pylama-checkers-options">
-<span id="options"></span><h1><a class="toc-backref" href="#id10">Set Pylama (checkers) options</a><a class="headerlink" href="#set-pylama-checkers-options" title="Permalink to this headline"></a></h1>
+<span id="options"></span><h1><a class="toc-backref" href="#id12">Set Pylama (checkers) options</a><a class="headerlink" href="#set-pylama-checkers-options" title="Permalink to this heading"></a></h1>
 <section id="command-line-options">
-<h2><a class="toc-backref" href="#id11">Command line options</a><a class="headerlink" href="#command-line-options" title="Permalink to this headline"></a></h2>
+<h2><a class="toc-backref" href="#id13">Command line options</a><a class="headerlink" href="#command-line-options" title="Permalink to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pylama --help
 
 usage: pylama [-h] [--version] [--verbose] [--options FILE] [--linters LINTERS] [--from-stdin] [--concurrent] [--format {pydocstyle,pycodestyle,pylint,parsable,json}] [--abspath]
@@ -259,7 +287,7 @@ optional arguments:
 </div>
 </section>
 <section id="file-modelines">
-<span id="modeline"></span><h2><a class="toc-backref" href="#id12">File modelines</a><a class="headerlink" href="#file-modelines" title="Permalink to this headline"></a></h2>
+<span id="modeline"></span><h2><a class="toc-backref" href="#id14">File modelines</a><a class="headerlink" href="#file-modelines" title="Permalink to this heading"></a></h2>
 <p>You can set options for <strong>Pylama</strong> inside a source file. Use
 a pylama <em>modeline</em> for this, anywhere in the file.</p>
 <p>Format:</p>
@@ -277,22 +305,24 @@ a pylama <em>modeline</em> for this, anywhere in the file.</p>
 <p>Those options have a higher priority.</p>
 </section>
 <section id="skip-lines-noqa">
-<span id="skiplines"></span><h2><a class="toc-backref" href="#id13">Skip lines (noqa)</a><a class="headerlink" href="#skip-lines-noqa" title="Permalink to this headline"></a></h2>
+<span id="skiplines"></span><h2><a class="toc-backref" href="#id15">Skip lines (noqa)</a><a class="headerlink" href="#skip-lines-noqa" title="Permalink to this heading"></a></h2>
 <p>Just add <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">noqa</span></code> at the end of a line to ignore:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">urgent_fuction</span><span class="p">():</span>
     <span class="n">unused_var</span> <span class="o">=</span> <span class="s1">&#39;No errors here&#39;</span> <span class="c1"># noqa</span>
 </pre></div>
 </div>
 </section>
+</section>
 <section id="configuration-file">
-<span id="config"></span><h2><a class="toc-backref" href="#id14">Configuration file</a><a class="headerlink" href="#configuration-file" title="Permalink to this headline"></a></h2>
+<span id="config"></span><h1><a class="toc-backref" href="#id16">Configuration file</a><a class="headerlink" href="#configuration-file" title="Permalink to this heading"></a></h1>
 <p><strong>Pylama</strong> looks for a configuration file in the current directory.</p>
 <p>You can use a “global” configuration, stored in <cite>.pylama.ini</cite> in your home
 directory. This will be used as a fallback configuration.</p>
-<p>The program searches for the first matching ini-style configuration file in
-the directories of command line argument. Pylama looks for the configuration
-in this order:</p>
+<p>The program searches for the first matching configuration file in the
+directories of command line argument. Pylama looks for the configuration in
+this order:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">pylama</span><span class="o">.</span><span class="n">ini</span>
+<span class="o">./</span><span class="n">pyproject</span><span class="o">.</span><span class="n">toml</span>
 <span class="o">./</span><span class="n">setup</span><span class="o">.</span><span class="n">cfg</span>
 <span class="o">./</span><span class="n">tox</span><span class="o">.</span><span class="n">ini</span>
 <span class="o">./</span><span class="n">pytest</span><span class="o">.</span><span class="n">ini</span>
@@ -300,6 +330,8 @@ in this order:</p>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">--option</span></code> / <code class="docutils literal notranslate"><span class="pre">-o</span></code> argument can be used to specify a configuration file.</p>
+<section id="ini-style-configuration">
+<h2><a class="toc-backref" href="#id17">INI-style configuration</a><a class="headerlink" href="#ini-style-configuration" title="Permalink to this heading"></a></h2>
 <p>Pylama searches for sections whose names start with <cite>pylama</cite>.</p>
 <p>The <cite>pylama</cite> section configures global options like <cite>linters</cite> and <cite>skip</cite>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">pylama</span><span class="p">]</span>
@@ -309,9 +341,8 @@ in this order:</p>
 <span class="n">ignore</span> <span class="o">=</span> <span class="n">F0401</span><span class="p">,</span><span class="n">C0111</span><span class="p">,</span><span class="n">E731</span>
 </pre></div>
 </div>
-</section>
 <section id="set-code-checkers-options">
-<h2><a class="toc-backref" href="#id15">Set code-checkers’ options</a><a class="headerlink" href="#set-code-checkers-options" title="Permalink to this headline"></a></h2>
+<h3><a class="toc-backref" href="#id18">Set code-checkers’ options</a><a class="headerlink" href="#set-code-checkers-options" title="Permalink to this heading"></a></h3>
 <p>You can set options for a special code checkers with pylama configurations.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">pylama</span><span class="p">:</span><span class="n">pyflakes</span><span class="p">]</span>
 <span class="n">builtins</span> <span class="o">=</span> <span class="n">_</span>
@@ -329,7 +360,7 @@ replaced by underscores (e.g. Pylint’s <code class="docutils literal notransla
 <code class="docutils literal notranslate"><span class="pre">max_line_length</span></code>).</p>
 </section>
 <section id="set-options-for-file-group-of-files">
-<h2><a class="toc-backref" href="#id16">Set options for file (group of files)</a><a class="headerlink" href="#set-options-for-file-group-of-files" title="Permalink to this headline"></a></h2>
+<h3><a class="toc-backref" href="#id19">Set options for file (group of files)</a><a class="headerlink" href="#set-options-for-file-group-of-files" title="Permalink to this heading"></a></h3>
 <p>You can set options for special file (group of files)
 with sections:</p>
 <p>The options have a higher priority than in the <cite>pylama</cite> section.</p>
@@ -346,8 +377,59 @@ with sections:</p>
 </div>
 </section>
 </section>
+<section id="toml-configuration">
+<h2><a class="toc-backref" href="#id20">TOML configuration</a><a class="headerlink" href="#toml-configuration" title="Permalink to this heading"></a></h2>
+<p>Pylama searches for sections whose names start with <cite>tool.pylama</cite>.</p>
+<p>The <cite>tool.pylama</cite> section configures global options like <cite>linters</cite> and <cite>skip</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">tool</span><span class="o">.</span><span class="n">pylama</span><span class="p">]</span>
+<span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;pylint&quot;</span>
+<span class="n">skip</span> <span class="o">=</span> <span class="s2">&quot;*/.tox/*,*/.env/*&quot;</span>
+<span class="n">linters</span> <span class="o">=</span> <span class="s2">&quot;pylint,mccabe&quot;</span>
+<span class="n">ignore</span> <span class="o">=</span> <span class="s2">&quot;F0401,C0111,E731&quot;</span>
+</pre></div>
+</div>
+<section id="id3">
+<h3><a class="toc-backref" href="#id21">Set code-checkers’ options</a><a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<p>You can set options for a special code checkers with pylama configurations.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">tool</span><span class="o">.</span><span class="n">pylama</span><span class="o">.</span><span class="n">linter</span><span class="o">.</span><span class="n">pyflakes</span><span class="p">]</span>
+<span class="n">builtins</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span>
+
+<span class="p">[</span><span class="n">tool</span><span class="o">.</span><span class="n">pylama</span><span class="o">.</span><span class="n">linter</span><span class="o">.</span><span class="n">pycodestyle</span><span class="p">]</span>
+<span class="n">max_line_length</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="p">[</span><span class="n">tool</span><span class="o">.</span><span class="n">pylama</span><span class="o">.</span><span class="n">linter</span><span class="o">.</span><span class="n">pylint</span><span class="p">]</span>
+<span class="n">max_line_length</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">disable</span> <span class="o">=</span> <span class="s2">&quot;R&quot;</span>
+</pre></div>
+</div>
+<p>See code-checkers’ documentation for more info. Note that dashes are
+replaced by underscores (e.g. Pylint’s <code class="docutils literal notranslate"><span class="pre">max-line-length</span></code> becomes
+<code class="docutils literal notranslate"><span class="pre">max_line_length</span></code>).</p>
+</section>
+<section id="id4">
+<h3><a class="toc-backref" href="#id22">Set options for file (group of files)</a><a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<p>You can set options for special file (group of files)
+with sections:</p>
+<p>The options have a higher priority than in the <cite>tool.pylama</cite> section.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">tool</span><span class="o">.</span><span class="n">pylama</span><span class="o">.</span><span class="n">files</span><span class="p">]]</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;*/pylama/main.py&quot;</span>
+<span class="n">ignore</span> <span class="o">=</span> <span class="s2">&quot;C901,R0914,W0212&quot;</span>
+<span class="n">select</span> <span class="o">=</span> <span class="s2">&quot;R&quot;</span>
+
+<span class="p">[[</span><span class="n">tool</span><span class="o">.</span><span class="n">pylama</span><span class="o">.</span><span class="n">files</span><span class="p">]]</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;pylama:*/tests.py&quot;</span>
+<span class="n">ignore</span> <span class="o">=</span> <span class="s2">&quot;C0110&quot;</span>
+
+<span class="p">[[</span><span class="n">tool</span><span class="o">.</span><span class="n">pylama</span><span class="o">.</span><span class="n">files</span><span class="p">]]</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;pylama:*/setup.py&quot;</span>
+<span class="n">skip</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
 <section id="pytest-integration">
-<h1><a class="toc-backref" href="#id17">Pytest integration</a><a class="headerlink" href="#pytest-integration" title="Permalink to this headline"></a></h1>
+<h1><a class="toc-backref" href="#id23">Pytest integration</a><a class="headerlink" href="#pytest-integration" title="Permalink to this heading"></a></h1>
 <p>Pylama has <a class="reference external" href="http://pytest.org">Pytest</a> support. The package automatically registers itself as a pytest
 plugin during installation. Pylama also supports the <cite>pytest_cache</cite> plugin.</p>
 <p>Check files with pylama</p>
@@ -358,7 +440,7 @@ plugin during installation. Pylama also supports the <cite>pytest_cache</cite> p
 files (see below).</p>
 </section>
 <section id="writing-a-linter">
-<h1><a class="toc-backref" href="#id18">Writing a linter</a><a class="headerlink" href="#writing-a-linter" title="Permalink to this headline"></a></h1>
+<h1><a class="toc-backref" href="#id24">Writing a linter</a><a class="headerlink" href="#writing-a-linter" title="Permalink to this heading"></a></h1>
 <p>You can write a custom extension for Pylama.
 The custom linter should be a python module. Its name should be like ‘pylama_&lt;name&gt;’.</p>
 <p>In ‘setup.py’, ‘pylama.linter’ entry point should be defined.</p>
@@ -378,7 +460,7 @@ It must implement two methods:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">run</span></code> takes a <cite>path</cite> argument and <cite>meta</cite> keyword arguments and returns a list of errors.</p></li>
 </ol>
 <section id="example">
-<h2><a class="toc-backref" href="#id19">Example:</a><a class="headerlink" href="#example" title="Permalink to this headline"></a></h2>
+<h2><a class="toc-backref" href="#id25">Example:</a><a class="headerlink" href="#example" title="Permalink to this heading"></a></h2>
 <p>Just a virtual ‘WOW’ checker.</p>
 <p>setup.py:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span>
@@ -412,7 +494,7 @@ It must implement two methods:</p>
 </div>
 </section>
 <section id="run-pylama-from-python-code">
-<h2><a class="toc-backref" href="#id20">Run pylama from python code</a><a class="headerlink" href="#run-pylama-from-python-code" title="Permalink to this headline"></a></h2>
+<h2><a class="toc-backref" href="#id26">Run pylama from python code</a><a class="headerlink" href="#run-pylama-from-python-code" title="Permalink to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pylama.main</span> <span class="kn">import</span> <span class="n">check_paths</span><span class="p">,</span> <span class="n">parse_options</span>
 
 <span class="c1"># Use and/or modify 0 or more of the options defined as keys in the variable my_redefined_options below.</span>
@@ -436,19 +518,19 @@ It must implement two methods:</p>
 </div>
 </section>
 <section id="bug-tracker">
-<span id="bagtracker"></span><h2><a class="toc-backref" href="#id21">Bug tracker</a><a class="headerlink" href="#bug-tracker" title="Permalink to this headline"></a></h2>
+<span id="bagtracker"></span><h2><a class="toc-backref" href="#id27">Bug tracker</a><a class="headerlink" href="#bug-tracker" title="Permalink to this heading"></a></h2>
 <p>If you have any suggestions, bug reports or annoyances please report them to the issue tracker at <a class="reference external" href="https://github.com/klen/pylama/issues">https://github.com/klen/pylama/issues</a></p>
 </section>
 <section id="contributing">
-<span id="id3"></span><h2><a class="toc-backref" href="#id22">Contributing</a><a class="headerlink" href="#contributing" title="Permalink to this headline"></a></h2>
+<span id="id5"></span><h2><a class="toc-backref" href="#id28">Contributing</a><a class="headerlink" href="#contributing" title="Permalink to this heading"></a></h2>
 <p>Development of <cite>pylama</cite> happens at GitHub: <a class="reference external" href="https://github.com/klen/pylama">https://github.com/klen/pylama</a></p>
 <section id="contributors">
-<h3><a class="toc-backref" href="#id23">Contributors</a><a class="headerlink" href="#contributors" title="Permalink to this headline"></a></h3>
+<h3><a class="toc-backref" href="#id29">Contributors</a><a class="headerlink" href="#contributors" title="Permalink to this heading"></a></h3>
 <p>See <a class="reference external" href="https://github.com/klen/pylama/graphs/contributors">CONTRIBUTORS</a>.</p>
 </section>
 </section>
 <section id="license">
-<span id="id4"></span><h2><a class="toc-backref" href="#id24">License</a><a class="headerlink" href="#license" title="Permalink to this headline"></a></h2>
+<span id="id6"></span><h2><a class="toc-backref" href="#id30">License</a><a class="headerlink" href="#license" title="Permalink to this heading"></a></h2>
 <p>This is free software. You are permitted to use, copy, modify, merge, publish,
 distribute, sublicense, and/or sell copies of it, under the terms of the MIT
 License. See LICENSE file for the complete license.</p>
