@@ -1,10 +1,9 @@
-""" Pytest plugin for checking files with pylama."""
-
+""" py.test plugin for checking files with pylama. """
 from __future__ import absolute_import
 
+import pathlib
 from os import path as op
 
-import py
 import pytest
 
 from pylama.config import CURDIR
@@ -45,8 +44,7 @@ def pytest_sessionfinish(session):
 def pytest_collect_file(path, parent):
     config = parent.config
     if config.option.pylama and path.ext == ".py":
-        fspath = py.path.local(path)
-        return PylamaFile.from_parent(parent, fspath=fspath)
+        return PylamaFile.from_parent(parent, path=pathlib.Path(path))
     return None
 
 
