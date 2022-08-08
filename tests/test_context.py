@@ -69,6 +69,12 @@ def test_context_linters_params(context):
     assert "enable" not in lparams
 
 
+def test_context_push_with_empty_file(context):
+    ctx = context(code="")
+    ctx.push(number="D100")
+    assert ctx.errors
+
+
 def test_context_does_not_change_global_options(context, parse_args):
     """Ensure a RunContext does not change the passed in options object."""
     options = parse_args(" --select=W123 --ignore=W234 --linters=pylint dummy.py")
