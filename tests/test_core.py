@@ -28,12 +28,6 @@ def test_run_with_code(run, parse_options):
     assert errors
 
 
-def test_run_empty_code(run, parse_options):
-    options = parse_options(linters="pyflakes")
-    errors = run("filename.py", code="", options=options)
-    assert errors
-
-
 def test_async(parse_options):
     from pylama.check_async import check_async
 
