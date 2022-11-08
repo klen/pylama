@@ -21,6 +21,6 @@ setup(
     extras_require=dict(
         tests=parse_requirements("requirements/requirements-tests.txt"),
         all=OPTIONAL_LINTERS, **{linter: [linter] for linter in OPTIONAL_LINTERS},
-        toml="toml>=0.10.2",
+        toml="tomli>=1.2.3; python_version < '3.11'",
     ),
 )

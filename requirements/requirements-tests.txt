@@ -5,8 +5,7 @@ radon       >= 5.1.0
 mypy
 pylint      >= 2.11.1
 pylama-quotes
-toml
+tomli       >= 1.2.3  ; python_version < "3.11"
 vulture
 
 types-setuptools
-types-toml

@@ -1,8 +1,13 @@
 """Pylama TOML configuration."""
 
-import toml
+import sys
 
 from pylama.libs.inirama import Namespace as _Namespace
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 
 class Namespace(_Namespace):
@@ -10,7 +15,7 @@ class Namespace(_Namespace):
 
     def parse(self, source: str, update: bool = True, **params):
         """Parse TOML source as string."""
-        content = toml.loads(source)
+        content = tomllib.loads(source)
         tool = content.get("tool", {})
         pylama = tool.get("pylama", {})
         linters = pylama.pop("linter", {})
