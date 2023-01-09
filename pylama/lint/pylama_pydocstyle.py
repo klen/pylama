@@ -33,8 +33,8 @@ class Linter(Abstract):
         for err in PyDocChecker().check_source(
             ctx.source,
             ctx.filename,
-            params.get("ignore_decorators"),
-            params.get("ignore_inline_noqa", False),
+            ignore_decorators=params.get("ignore_decorators"),
+            ignore_inline_noqa=params.get("ignore_inline_noqa", False),
         ):
             if convention_codes is None or err.code in convention_codes:
                 ctx.push(
