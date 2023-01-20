@@ -18,7 +18,7 @@ class Linter(Abstract):
     def run_check(self, ctx: RunContext):
         """Check code with mypy."""
         # Support stdin
-        args = [ctx.temp_filename, "--follow-imports=skip", "--show-column-numbers"]
+        args = [ctx.temp_filename, "--show-column-numbers"]
         stdout, _, _ = api.run(args)  # noqa
 
         for line in stdout.splitlines():
