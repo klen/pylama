@@ -15,7 +15,8 @@ from pylama.utils import read
 
 # Parse modeline
 MODELINE_RE = re.compile(
-    r"^\s*#\s+(?:pylama:)\s*((?:[\w_]*=[^:\n\s]+:?)+)", re.I | re.M
+    r"^\s*#\s+(?:pylama:)\s*((?:[\w_]*=[^:\n\s]+:?)+)",
+    re.I | re.M,
 ).search
 
 SKIP_PATTERN = re.compile(r"# *noqa\b", re.I).search

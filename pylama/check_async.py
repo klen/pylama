@@ -28,14 +28,18 @@ def worker(params):
 
 
 def check_async(
-    paths: List[str], code: str = None, options: Namespace = None, rootdir: Path = None
+    paths: List[str],
+    code: str = None,
+    options: Namespace = None,
+    rootdir: Path = None,
 ) -> List[Error]:
     """Check given paths asynchronously."""
     with ProcessPoolExecutor(CPU_COUNT) as pool:
         return [
             err
             for res in pool.map(
-                worker, [(path, code, options, rootdir) for path in paths]
+                worker,
+                [(path, code, options, rootdir) for path in paths],
             )
             for err in res
         ]

@@ -34,7 +34,7 @@ path = "tests/*"
 ignore = "D,C,W,E1103"
 """
 
-CONFIG_INI="""
+CONFIG_INI = """
 [pylama]
 async = 1
 ignore = D203,D213,F0401,C0111,E731,I0011
@@ -59,14 +59,21 @@ ignore = R0914,W0212,C901,E1103
 ignore = D,C,W,E1103
 """
 
+
 def test_toml_parsing_matches_ini():
     """Ensure the parsed TOML namepsace matches INI parsing."""
-    with mock.patch("pylama.libs.inirama.io.open", mock.mock_open(read_data=CONFIG_INI)):
+    with mock.patch(
+        "pylama.libs.inirama.io.open",
+        mock.mock_open(read_data=CONFIG_INI),
+    ):
         ini = inirama.Namespace()
         ini.default_section = DEFAULT_SECTION
         ini.read("ini")
 
-    with mock.patch("pylama.libs.inirama.io.open", mock.mock_open(read_data=CONFIG_TOML)):
+    with mock.patch(
+        "pylama.libs.inirama.io.open",
+        mock.mock_open(read_data=CONFIG_TOML),
+    ):
         toml = config_toml.Namespace()
         toml.default_section = DEFAULT_SECTION
         toml.read("toml")

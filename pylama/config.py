@@ -14,7 +14,14 @@ from pylama.lint import LINTERS
 
 try:
     from pylama import config_toml
-    CONFIG_FILES = ["pylama.ini", "pyproject.toml", "setup.cfg", "tox.ini", "pytest.ini"]
+
+    CONFIG_FILES = [
+        "pylama.ini",
+        "pyproject.toml",
+        "setup.cfg",
+        "tox.ini",
+        "pytest.ini",
+    ]
 except ImportError:
     CONFIG_FILES = ["pylama.ini", "setup.cfg", "tox.ini", "pytest.ini"]
 
@@ -90,7 +97,9 @@ def setup_parser() -> ArgumentParser:
         help="Paths to files or directories for code check.",
     )
     parser.add_argument(
-        "--version", action="version", version="%(prog)s " + __version__
+        "--version",
+        action="version",
+        version="%(prog)s " + __version__,
     )
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose mode.")
     parser.add_argument(
@@ -175,7 +184,9 @@ def setup_parser() -> ArgumentParser:
     )
     parser.add_argument("--report", "-r", help="Send report to file [REPORT]")
     parser.add_argument(
-        "--hook", action="store_true", help="Install Git (Mercurial) hook."
+        "--hook",
+        action="store_true",
+        help="Install Git (Mercurial) hook.",
     )
 
     for linter_type in LINTERS.values():
@@ -185,7 +196,10 @@ def setup_parser() -> ArgumentParser:
 
 
 def parse_options(  # noqa
-    args: List[str] = None, config: bool = True, rootdir: Path = CURDIR, **overrides
+    args: List[str] = None,
+    config: bool = True,
+    rootdir: Path = CURDIR,
+    **overrides,
 ) -> Namespace:
     """Parse options from command line and configuration files."""
     # Parse args from command string

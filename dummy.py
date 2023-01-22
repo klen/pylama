@@ -4,20 +4,21 @@
 
 
 # commented code
-#import os
+# import os
 # from foo import junk
 # a = 3
 a = 4
-#foo(1, 2, 3)
+# foo(1, 2, 3)
 
 
-class Message(object):
-    message = ''
+class Message:
+    message = ""
     message_args = ()
+
     def __init__(self, filename, loc, use_column=True):
         self.filename = filename
         self.lineno = loc.lineno
-        self.col = getattr(loc, 'col_offset', None) if use_column else None
+        self.col = getattr(loc, "col_offset", None) if use_column else None
         test = 1
         if test == 1:
             if test == 1:
@@ -29,11 +30,11 @@ class Message(object):
             return 28
 
     def __str__(self):
-        return '%s:%s: %s' % (self.filename, self.lineno, self.message % self.message_args)
+        return f"{self.filename}:{self.lineno}: {self.message % self.message_args}"
 
 
 class UnusedImport(Message):
-    message = 'W402 %r imported but unused'
+    message = "W402 %r imported but unused"
 
     def __init__(self, filename, lineno, name):
         Message.__init__(self, filename, lineno)
@@ -41,7 +42,7 @@ class UnusedImport(Message):
 
 
 class RedefinedWhileUnused(Message):
-    message = 'W801 redefinition of unused %r from line %r'
+    message = "W801 redefinition of unused %r from line %r"
 
     def __init__(self, filename, lineno, name, orig_lineno):
         Message.__init__(self, filename, lineno)
@@ -49,7 +50,7 @@ class RedefinedWhileUnused(Message):
 
 
 class ImportShadowedByLoopVar(Message):
-    message = 'W403 import %r from line %r shadowed by loop variable'
+    message = "W403 import %r from line %r shadowed by loop variable"
 
     def __init__(self, filename, lineno, name, orig_lineno):
         Message.__init__(self, filename, lineno)
@@ -65,7 +66,7 @@ class ImportStarUsed(Message):
 
 
 class UndefinedName(Message):
-    message = 'W802 undefined name %r'
+    message = "W802 undefined name %r"
 
     def __init__(self, filename, lineno, name):
         Message.__init__(self, filename, lineno)
@@ -73,7 +74,7 @@ class UndefinedName(Message):
 
 
 class UndefinedExport(Message):
-    message = 'W803 undefined name %r in __all__'
+    message = "W803 undefined name %r in __all__"
 
     def __init__(self, filename, lineno, name):
         Message.__init__(self, filename, lineno)
@@ -81,8 +82,10 @@ class UndefinedExport(Message):
 
 
 class UndefinedLocal(Message):
-    message = "W804 local variable %r (defined in enclosing scope on line " \
-            "%r) referenced before assignment"
+    message = (
+        "W804 local variable %r (defined in enclosing scope on line "
+        "%r) referenced before assignment"
+    )
 
     def __init__(self, filename, lineno, name, orig_lineno):
         Message.__init__(self, filename, lineno)
@@ -90,7 +93,7 @@ class UndefinedLocal(Message):
 
 
 class DuplicateArgument(Message):
-    message = 'W805 duplicate argument %r in function definition'
+    message = "W805 duplicate argument %r in function definition"
 
     def __init__(self, filename, lineno, name):
         Message.__init__(self, filename, lineno)
@@ -98,7 +101,7 @@ class DuplicateArgument(Message):
 
 
 class RedefinedFunction(Message):
-    message = 'W806 redefinition of function %r from line %r'
+    message = "W806 redefinition of function %r from line %r"
 
     def __init__(self, filename, lineno, name, orig_lineno):
         Message.__init__(self, filename, lineno)
@@ -106,7 +109,7 @@ class RedefinedFunction(Message):
 
 
 class LateFutureImport(Message):
-    message = 'W405 future import(s) %r after other statements'
+    message = "W405 future import(s) %r after other statements"
 
     def __init__(self, filename, lineno, names):
         Message.__init__(self, filename, lineno)
@@ -119,19 +122,19 @@ class UnusedVariable(Message):
     used.
     """
 
-    message = 'W806 local variable %r is assigned to but never used'
+    message = "W806 local variable %r is assigned to but never used"
 
     def __init__(self, filename, lineno, names):
         Message.__init__(self, filename, lineno)
         self.message_args = (names,)
-        error = 1 # noQa and some comments
+        error = 1  # noQa and some comments
         another = 42
 
 
 class BadTyping(Message):
     """Test the MyPy linting."""
 
-    message = 'error: No return value expected'
+    message = "error: No return value expected"
 
     def bad_method(self):  # type: () -> None
         """Return type mismatch."""
