@@ -13,7 +13,10 @@ from pylama.lint import LINTERS, LinterV2
 
 
 def run(
-    path: str, code: str = None, rootdir: Path = CURDIR, options: Namespace = None
+    path: str,
+    code: str = None,
+    rootdir: Path = CURDIR,
+    options: Namespace = None,
 ) -> List[Error]:
     """Run code checkers with the given params.
 
@@ -36,7 +39,9 @@ def run(
                     linter.run_check(ctx)
                 else:
                     for err_info in linter.run(
-                        ctx.temp_filename, code=ctx.source, params=ctx.get_params(lname)
+                        ctx.temp_filename,
+                        code=ctx.source,
+                        params=ctx.get_params(lname),
                     ):
                         ctx.push(source=lname, **err_info)
 
@@ -48,7 +53,10 @@ def run(
     sorter = default_sorter
     if options and options.sort:
         sort = options.sort
-        sorter = lambda err: (sort.get(err.etype, 999), err.lnum)  # pylint: disable=C3001
+        sorter = lambda err: (
+            sort.get(err.etype, 999),
+            err.lnum,
+        )  # pylint: disable=C3001
 
     return sorted(errors, key=sorter)
 

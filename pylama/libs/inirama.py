@@ -14,8 +14,7 @@
     :copyright: 2013 by Kirill Klenov.
     :license: BSD, see LICENSE for more details.
 """
-from __future__ import unicode_literals, print_function
-
+from __future__ import print_function, unicode_literals
 
 __version__ = "0.8.0"
 __project__ = "Inirama"
@@ -24,20 +23,18 @@ __license__ = "BSD"
 
 
 import io
-import re
 import logging
+import re
 from collections import OrderedDict
 
-
-NS_LOGGER = logging.getLogger('inirama')
+NS_LOGGER = logging.getLogger("inirama")
 
 
 class Scanner:
-
-    """ Split a code string on tokens. """
+    """Split a code string on tokens."""
 
     def __init__(self, source, ignore=None, patterns=None):
-        """ Init Scanner instance.
+        """Init Scanner instance.
 
         :param patterns: List of token patterns [(token, regexp)]
         :param ignore: List of ignored tokens
@@ -53,7 +50,7 @@ class Scanner:
             self.ignore = ignore
 
     def reset(self, source):
-        """ Reset scanner's state.
+        """Reset scanner's state.
 
         :param source: Source for parsing
 
@@ -63,8 +60,7 @@ class Scanner:
         self.pos = 0
 
     def scan(self):
-        """ Scan source and grab tokens. """
-
+        """Scan source and grab tokens."""
         self.pre_scan()
 
         token = None
@@ -84,9 +80,7 @@ class Scanner:
                     break
 
             if best_pat is None:
-                raise SyntaxError(
-                    "SyntaxError[@char {0}: {1}]".format(
-                        self.pos, "Bad token."))
+                raise SyntaxError(f"SyntaxError[@char {self.pos}: Bad token.]")
 
             # Ignore patterns
             if best_pat in self.ignore:
@@ -96,7 +90,7 @@ class Scanner:
             # Create token
             token = (
                 best_pat,
-                self.source[self.pos:self.pos + best_pat_len],
+                self.source[self.pos : self.pos + best_pat_len],
                 self.pos,
                 self.pos + best_pat_len,
             )
@@ -105,48 +99,49 @@ class Scanner:
             self.tokens.append(token)
 
     def pre_scan(self):
-        """ Prepare source. """
+        """Prepare source."""
         pass
 
     def __repr__(self):
-        """ Print the last 5 tokens that have been scanned in.
+        """Print the last 5 tokens that have been scanned in.
 
         :return str:
 
         """
-        return '<Scanner: ' + ','.join(
-            "{0}({2}:{3})".format(*t) for t in self.tokens[-5:]) + ">"
+        return (
+            "<Scanner: "
+            + ",".join("{0}({2}:{3})".format(*t) for t in self.tokens[-5:])
+            + ">"
+        )
 
 
 class INIScanner(Scanner):
-
-    """ Get tokens for INI. """
+    """Get tokens for INI."""
 
     patterns = [
-        ('SECTION', re.compile(r'\[[^]]+\]')),
-        ('IGNORE', re.compile(r'[ \r\t\n]+')),
-        ('COMMENT', re.compile(r'[;#].*')),
-        ('KEY_VALUE', re.compile(r'[^=\s]+\s*[:=].*')),
-        ('CONTINUATION', re.compile(r'.*'))
+        ("SECTION", re.compile(r"\[[^]]+\]")),
+        ("IGNORE", re.compile(r"[ \r\t\n]+")),
+        ("COMMENT", re.compile(r"[;#].*")),
+        ("KEY_VALUE", re.compile(r"[^=\s]+\s*[:=].*")),
+        ("CONTINUATION", re.compile(r".*")),
     ]
 
-    ignore = ['IGNORE']
+    ignore = ["IGNORE"]
 
     def pre_scan(self):
-        """ Prepare string for scanning. """
-        escape_re = re.compile(r'\\\n[\t ]+')
-        self.source = escape_re.sub('', self.source)
+        """Prepare string for scanning."""
+        escape_re = re.compile(r"\\\n[\t ]+")
+        self.source = escape_re.sub("", self.source)
 
 
 undefined = object()
 
 
 class Section(OrderedDict):
-
-    """ Representation of INI section. """
+    """Representation of INI section."""
 
     def __init__(self, namespace, *args, **kwargs):
-        super(Section, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.namespace = namespace
 
     def __setitem__(self, name, value):
@@ -154,22 +149,20 @@ class Section(OrderedDict):
         if value.isdigit():
             value = int(value)
 
-        super(Section, self).__setitem__(name, value)
+        super().__setitem__(name, value)
 
 
 class InterpolationSection(Section):
+    """INI section with interpolation support."""
 
-    """ INI section with interpolation support. """
-
-    var_re = re.compile('{([^}]+)}')
+    var_re = re.compile("{([^}]+)}")
 
     def get(self, name, default=None):
-        """ Get item by name.
+        """Get item by name.
 
         :return object: value or None if name not exists
 
         """
-
         if name in self:
             return self[name]
         return default
@@ -179,34 +172,31 @@ class InterpolationSection(Section):
             key = math.group(1).strip()
             return self.namespace.default.get(key) or self[key]
         except KeyError:
-            return ''
+            return ""
 
     def __getitem__(self, name, raw=False):
-        value = super(InterpolationSection, self).__getitem__(name)
+        value = super().__getitem__(name)
         if not raw:
             sample = undefined
             while sample != value:
                 try:
-                    sample, value = value, self.var_re.sub(
-                        self.__interpolate__, value)
+                    sample, value = value, self.var_re.sub(self.__interpolate__, value)
                 except RuntimeError:
-                    message = "Interpolation failed: {0}".format(name)
+                    message = f"Interpolation failed: {name}"
                     NS_LOGGER.error(message)
                     raise ValueError(message)
         return value
 
     def iteritems(self, raw=False):
-        """ Iterate self items. """
-
+        """Iterate self items."""
         for key in self:
             yield key, self.__getitem__(key, raw=raw)
 
     items = iteritems
 
 
-class Namespace(object):
-
-    """ Default class for parsing INI.
+class Namespace:
+    """Default class for parsing INI.
 
     :param **default_items: Default items for default section.
 
@@ -228,7 +218,7 @@ class Namespace(object):
     """
 
     #: Name of default section (:attr:`~inirama.Namespace.default`)
-    default_section = 'DEFAULT'
+    default_section = "DEFAULT"
 
     #: Dont raise any exception on file reading errors
     silent_read = True
@@ -243,7 +233,7 @@ class Namespace(object):
 
     @property
     def default(self):
-        """ Return default section or empty dict.
+        """Return default section or empty dict.
 
         :return :class:`inirama.Section`: section
 
@@ -251,7 +241,7 @@ class Namespace(object):
         return self.sections.get(self.default_section, dict())
 
     def read(self, *files, **params):
-        """ Read and parse INI files.
+        """Read and parse INI files.
 
         :param *files: Files for reading
         :param **params: Params for parsing
@@ -261,36 +251,36 @@ class Namespace(object):
         """
         for f in files:
             try:
-                with io.open(f, encoding='utf-8') as ff:
-                    NS_LOGGER.info('Read from `{0}`'.format(ff.name))
+                with io.open(f, encoding="utf-8") as ff:
+                    NS_LOGGER.info(f"Read from `{ff.name}`")
                     self.parse(ff.read(), **params)
             except (IOError, TypeError, SyntaxError, io.UnsupportedOperation):
                 if not self.silent_read:
-                    NS_LOGGER.error('Reading error `{0}`'.format(ff.name))
+                    NS_LOGGER.error(f"Reading error `{ff.name}`")
                     raise
 
     def write(self, f):
-        """ Write namespace as INI file.
+        """Write namespace as INI file.
 
         :param f: File object or path to file.
 
         """
         if isinstance(f, str):
-            f = io.open(f, 'w', encoding='utf-8')
+            f = io.open(f, "w", encoding="utf-8")
 
-        if not hasattr(f, 'read'):
-            raise AttributeError("Wrong type of file: {0}".format(type(f)))
+        if not hasattr(f, "read"):
+            raise AttributeError(f"Wrong type of file: {type(f)}")
 
-        NS_LOGGER.info('Write to `{0}`'.format(f.name))
+        NS_LOGGER.info(f"Write to `{f.name}`")
         for section in self.sections.keys():
-            f.write('[{0}]\n'.format(section))
+            f.write(f"[{section}]\n")
             for k, v in self[section].items():
-                f.write('{0:15}= {1}\n'.format(k, v))
-            f.write('\n')
+                f.write(f"{k:15}= {v}\n")
+            f.write("\n")
         f.close()
 
     def parse(self, source, update=True, **params):
-        """ Parse INI source as string.
+        """Parse INI source as string.
 
         :param source: Source of INI
         :param update: Replace already defined items
@@ -303,25 +293,25 @@ class Namespace(object):
         name = None
 
         for token in scanner.tokens:
-            if token[0] == 'KEY_VALUE':
-                name, value = re.split('[=:]', token[1], 1)
+            if token[0] == "KEY_VALUE":
+                name, value = re.split("[=:]", token[1], 1)
                 name, value = name.strip(), value.strip()
                 if not update and name in self[section]:
                     continue
                 self[section][name] = value
 
-            elif token[0] == 'SECTION':
-                section = token[1].strip('[]')
+            elif token[0] == "SECTION":
+                section = token[1].strip("[]")
 
-            elif token[0] == 'CONTINUATION':
+            elif token[0] == "CONTINUATION":
                 if not name:
                     raise SyntaxError(
-                        "SyntaxError[@char {0}: {1}]".format(
-                            token[2], "Bad continuation."))
-                self[section][name] += '\n' + token[1].strip()
+                        f"SyntaxError[@char {token[2]}: Bad continuation.]",
+                    )
+                self[section][name] += "\n" + token[1].strip()
 
     def __getitem__(self, name):
-        """ Look name in self sections.
+        """Look name in self sections.
 
         :return :class:`inirama.Section`: section
 
@@ -334,12 +324,11 @@ class Namespace(object):
         return name in self.sections
 
     def __repr__(self):
-        return "<Namespace: {0}>".format(self.sections)
+        return f"<Namespace: {self.sections}>"
 
 
 class InterpolationNamespace(Namespace):
-
-    """ That implements the interpolation feature.
+    """That implements the interpolation feature.
 
     ::
 
@@ -357,5 +346,6 @@ class InterpolationNamespace(Namespace):
     """
 
     section_type = InterpolationSection
+
 
 # pylama:ignore=D,W02,E731,W0621

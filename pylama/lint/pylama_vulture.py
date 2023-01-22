@@ -46,7 +46,8 @@ class Linter(BaseLinter):
         )
         vulture.scan(ctx.source, filename=ctx.filename)
         unused_code_items = vulture.get_unused_code(
-            min_confidence=config["min_confidence"], sort_by_size=config["sort_by_size"]
+            min_confidence=config["min_confidence"],
+            sort_by_size=config["sort_by_size"],
         )
         for item in unused_code_items:
             error_code = ERROR_CODES[item.typ]

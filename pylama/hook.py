@@ -69,7 +69,7 @@ from pylama.hook import git_hook
 
 if __name__ == '__main__':
     sys.exit(git_hook())
-"""
+""",
         )
     chmod(hook, 484)
 

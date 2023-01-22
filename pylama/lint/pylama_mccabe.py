@@ -18,7 +18,10 @@ class Linter(Abstract):
         """Add --max-complexity option."""
         try:
             parser.add_argument(
-                "--max-complexity", default=10, type=int, help="Max complexity threshold"
+                "--max-complexity",
+                default=10,
+                type=int,
+                help="Max complexity threshold",
             )
         except ArgumentError:
             pass

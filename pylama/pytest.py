@@ -16,7 +16,8 @@ def pytest_load_initial_conftests(early_config, *_):
     # Marks have to be registered before usage
     # to not fail with --strict command line argument
     early_config.addinivalue_line(
-        "markers", "pycodestyle: Mark test as using pylama code audit tool."
+        "markers",
+        "pycodestyle: Mark test as using pylama code audit tool.",
     )
 
 
