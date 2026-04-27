@@ -1,6 +1,6 @@
 pytest      >= 7.1.2
 pytest-mypy
-eradicate   >= 2.0.0
+eradicate   >= 3.0.1
 radon       >= 5.1.0
 mypy
 pylint      >= 2.11.1
