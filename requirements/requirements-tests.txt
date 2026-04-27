@@ -1,7 +1,7 @@
 pytest      >= 7.1.2
 pytest-mypy
 eradicate   >= 2.0.0
-radon       >= 5.1.0
+radon       >= 6.0.1
 mypy
 pylint      >= 2.11.1
 pylama-quotes
