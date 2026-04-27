@@ -2,5 +2,5 @@
 
 mccabe      >= 0.7.0
 pycodestyle >= 2.9.1
-pydocstyle  >= 6.1.1
+pydocstyle  >= 6.3.0
 pyflakes    >= 2.5.0
