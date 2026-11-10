@@ -106,7 +106,8 @@ def shell(args: List[str] = None, error: bool = True):
         from .hook import install_hook  # noqa
 
         for path in options.paths:
-            return install_hook(path)
+            install_hook(path)
+        return
 
     if options.from_stdin and not options.paths:
         LOGGER.error("--from-stdin requires a filename")

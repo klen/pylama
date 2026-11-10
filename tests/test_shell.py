@@ -11,6 +11,20 @@ def test_shell():
     assert not errors
 
 
+def test_hook_installs_all_paths(tmp_path):
+    from pylama.main import shell
+
+    first = tmp_path / "first"
+    second = tmp_path / "second"
+    (first / ".git" / "hooks").mkdir(parents=True)
+    (second / ".git" / "hooks").mkdir(parents=True)
+
+    shell(["--hook", str(first), str(second)], error=False)
+
+    assert (first / ".git" / "hooks" / "pre-commit").is_file()
+    assert (second / ".git" / "hooks" / "pre-commit").is_file()
+
+
 def test_sort(parse_options):
     from pylama.core import run
 
